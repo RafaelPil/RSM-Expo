@@ -11,14 +11,10 @@ import React, {useEffect, useState} from 'react';
 import {COLORS, dummyPosts, SHADOWS, SIZES} from '../constants';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {HomeHeader} from '../components';
 import HeaderComponent from '../components/HeaderComponent';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Animated from 'react-native-reanimated';
-import BottomSheet from 'reanimated-bottom-sheet';
 import {createRef} from 'react';
-import ImagePicker from 'react-native-image-crop-picker';
 
 const AddPost = () => {
   const navigation = useNavigation();
@@ -58,72 +54,9 @@ const AddPost = () => {
     console.log(title);
   };
 
-  const takePhotoFromCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
-      setImageUri(image.path);
-      bs.current.snapTo(1);
-    });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
-      setImageUri(image.path);
-      bs.current.snapTo(1);
-    });
-  };
-
-  const renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Įkelk Nuotrauka</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>Nuofotografuoti</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={choosePhotoFromLibrary}>
-        <Text style={styles.panelButtonTitle}>Pasirinkti iš galerijos</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={() => bs.current.snapTo(1)}>
-        <Text style={styles.panelButtonTitle}>Atšaukti</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderHeader = () => (
-    <View style={styles.headerModal}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle}></View>
-      </View>
-    </View>
-  );
-
   return (
     <SafeAreaView>
-      <BottomSheet
-        ref={bs}
-        snapPoints={[280, 0]}
-        renderContent={renderInner}
-        renderHeader={renderHeader}
-        initialSnap={1}
-        callbackNode={fall}
-        enabledGestureInteraction={true}
-      />
+      
       <HeaderComponent headerTitle={'Įdėkite skelbimą'} />
       <Animated.View
         style={{

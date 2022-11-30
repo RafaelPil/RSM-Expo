@@ -1,12 +1,10 @@
 import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SHADOWS, SIZES, assets} from '../constants';
 import {PostCity, PostTitle, PostImg, PostPrice} from './PostInfo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import SavedPostScreen from '../screens/SavedPostScreen';
 
 const PostCard = props => {
   const navigation = useNavigation();
