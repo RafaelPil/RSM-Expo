@@ -39,18 +39,20 @@ const AuthStack = () => {
     );
   }
 
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Home" component={DrawerStack} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-      {/* <Stack.Screen name="Messages" component={MessagesScreen} /> */}
-      {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
-    </Stack.Navigator>
-  );
+  if (isAuthenticated) {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Home" component={DrawerStack} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+        {/* <Stack.Screen name="Messages" component={MessagesScreen} /> */}
+        {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
+      </Stack.Navigator>
+    );
+  }
 };
 
 export default AuthStack;
