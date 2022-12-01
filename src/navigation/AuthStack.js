@@ -7,6 +7,7 @@ import { useAuthenticationStatus } from "@nhost/react";
 import { ActivityIndicator } from "react-native";
 import DrawerStack from "./DrawerStack";
 import DetailsScreen from "../screens/DetailsScreen";
+import UsersModal from "../modals/UsersModal";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ const AuthStack = () => {
       >
         <Stack.Screen name="Home" component={DrawerStack} />
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="UsersModal" component={UsersModal} />
         {/* <Stack.Screen name="Messages" component={MessagesScreen} /> */}
         {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
       </Stack.Navigator>

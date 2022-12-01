@@ -5,6 +5,8 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
+  StyleSheet,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -18,6 +20,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { LikedPeople } from "./PostInfo";
 
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
@@ -60,6 +63,9 @@ const PostDetailsHeader = ({ post }) => {
 
 const PostDetails = ({ post }) => {
   const [postData, setPostData] = useState(post);
+  const id = postData.id;
+  console.log(postData);
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -91,6 +97,13 @@ const PostDetails = ({ post }) => {
       </View>
 
       <PostDetailsHeader post={postData} />
+
+      <Pressable
+        style={{ marginTop: -30 }}
+        onPress={() => navigation.navigate("UsersModal", { id: postData.id })}
+      >
+        <LikedPeople />
+      </Pressable>
 
       <View style={{ padding: SIZES.font }}>
         <PostTitle
@@ -124,5 +137,37 @@ const PostDetails = ({ post }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 10,
+  },
+  time: {
+    fontSize: 20,
+  },
+  footer: {
+    marginTop: "auto",
+  },
+  users: {
+    flexDirection: "row",
+  },
+  userAvatar: {
+    width: 50,
+    aspectRatio: 1,
+    borderRadius: 25,
+    margin: 2,
+    borderWidth: 2,
+    borderColor: "white",
+    backgroundColor: "gainsboro",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default PostDetails;
