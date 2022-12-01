@@ -5,6 +5,7 @@ import AuthStack from "./src/navigation/AuthStack";
 import { NhostClient, NhostReactProvider } from "@nhost/react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
+import { NhostApolloProvider } from "@nhost/react-apollo";
 
 const nhost = new NhostClient({
   subdomain: "zeffilurptqhgdwygtvd",
@@ -25,9 +26,11 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NhostReactProvider nhost={nhost}>
-        <NavigationContainer theme={theme}>
-          <AuthStack />
-        </NavigationContainer>
+        <NhostApolloProvider nhost={nhost}>
+          <NavigationContainer theme={theme}>
+            <AuthStack />
+          </NavigationContainer>
+        </NhostApolloProvider>
       </NhostReactProvider>
     </SafeAreaProvider>
   );

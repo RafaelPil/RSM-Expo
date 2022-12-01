@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { Text, StyleSheet, Pressable, Image } from "react-native";
 import React from "react";
 import { assets, dummyPosts } from "../constants";
 
 const UsersListItem = ({ user }) => {
   return (
     <Pressable style={styles.container}>
-      <Image source={{ uri: user.img }} style={styles.image} />
-      <Text style={styles.name}>{user.vardas}</Text>
+      <Image source={{ uri: user.avatarUrl }} style={styles.image} />
+      <Text style={styles.name}>{user.displayName}</Text>
     </Pressable>
   );
 };

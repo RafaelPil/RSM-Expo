@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { LikedPeople } from "./PostInfo";
+import { useUserData } from "@nhost/react";
 
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ const PostDetailsHeader = ({ post }) => {
   return (
     <View style={{ width: "100%", height: 373 }}>
       <Image
-        source={{ uri: postData.img }}
+        source={{ uri: postData.image }}
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       />
@@ -63,8 +64,8 @@ const PostDetailsHeader = ({ post }) => {
 
 const PostDetails = ({ post }) => {
   const [postData, setPostData] = useState(post);
-  const id = postData.id;
-  console.log(postData);
+  //const id = postData.id;
+  console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
 
   return (
@@ -91,7 +92,7 @@ const PostDetails = ({ post }) => {
           minWidth={170}
           fontSize={SIZES.large}
           {...SHADOWS.dark}
-          tel={postData.telefonas}
+          tel={`+370 ${postData.user.metadata.phone}`}
         />
         <ChatButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark} />
       </View>
@@ -107,9 +108,9 @@ const PostDetails = ({ post }) => {
 
       <View style={{ padding: SIZES.font }}>
         <PostTitle
-          title={postData.aprasymas}
-          price={postData.kaina}
-          city={postData.miestas}
+          title={postData.title}
+          price={postData.price}
+          city={postData.city}
         />
       </View>
 
@@ -131,7 +132,7 @@ const PostDetails = ({ post }) => {
             lineHeight: SIZES.large,
           }}
         >
-          {postData.detalusAprasymas}
+          {postData.description}
         </Text>
       </View>
     </SafeAreaView>

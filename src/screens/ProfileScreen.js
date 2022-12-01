@@ -1,7 +1,16 @@
 import React from "react";
-import { StyleSheet, Image, Pressable, View, Text } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Pressable,
+  View,
+  Text,
+  SafeAreaView,
+} from "react-native";
 
 import { useUserData, useSignOut } from "@nhost/react";
+import HeaderComponent from "../components/HeaderComponent";
+import { COLORS } from "../constants";
 
 //const user = users[0];
 
@@ -17,23 +26,27 @@ export default function TabTwoScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
-      <Text style={styles.name}>{user?.displayName}</Text>
-      <View style={{ marginTop: "auto" }}>
-        <Pressable onPress={logout}>
-          <Text>Atsijungti</Text>
-        </Pressable>
+    <SafeAreaView style={{ flex: 1 }}>
+      <HeaderComponent headerTitle={"Profilis"} />
+      <View style={styles.container}>
+        <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
+        <Text style={styles.name}>{user?.displayName}</Text>
+        <View style={{ marginTop: "auto" }}>
+          <Pressable onPress={logout}>
+            <Text>Atsijungti</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 10,
     alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
   avatar: {
     width: 100,
@@ -44,6 +57,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 22,
     marginVertical: 15,
-    color: "dimgray",
+    color: "#000",
   },
 });

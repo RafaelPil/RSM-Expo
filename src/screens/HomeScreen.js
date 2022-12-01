@@ -5,25 +5,48 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import React, {useState} from 'react';
-import {FocusedStatusBar, HomeHeader, PostCard} from '../components';
-import {COLORS, dummyPosts, SHADOWS, SIZES} from '../constants';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {useNavigation} from '@react-navigation/native';
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import React, { useState } from "react";
+import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
+import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
+import Entypo from "react-native-vector-icons/Entypo";
+import { useNavigation } from "@react-navigation/native";
+import { gql, useQuery } from "@apollo/client";
+
+const GetPosts = gql`
+  query getPosts {
+    Post {
+      city
+      date
+      id
+      image
+      title
+      userId
+      price
+      LikedPost {
+        postId
+        userId
+        id
+      }
+    }
+  }
+`;
 
 const HomeScreen = () => {
-  const [data, setData] = useState(dummyPosts);
+  const { data, loading, error } = useQuery(GetPosts);
+  //const [data, setData] = useState(dummyPosts);
 
   const navigation = useNavigation();
 
-  const handleSearch = value => {
+  const handleSearch = (value) => {
     if (!value.length) {
       return setData(dummyPosts);
     }
 
-    const filteredData = data.filter(item =>
-      item.aprasymas.toLowerCase().includes(value.toLowerCase()),
+    const filteredData = data.filter((item) =>
+      item.aprasymas.toLowerCase().includes(value.toLowerCase())
     );
 
     if (filteredData.length) {
@@ -33,16 +56,26 @@ const HomeScreen = () => {
     }
   };
 
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    Alert.alert("Problema su serveriu", error.message);
+  }
+
+  //console.log(data.Post);
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
 
-      <View style={{flex: 1}}>
-        <View style={{zIndex: 0}}>
+      <View style={{ flex: 1 }}>
+        <View style={{ zIndex: 0 }}>
           <FlatList
-            data={data}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => <PostCard data={item} />}
+            data={data.Post}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
           />
@@ -50,8 +83,9 @@ const HomeScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('Messages')}
-        style={styles.chatContainer}>
+        onPress={() => navigation.navigate("Messages")}
+        style={styles.chatContainer}
+      >
         <View style={styles.chatInContainer}>
           <Entypo name="chat" size={24} color={COLORS.white} />
         </View>
@@ -65,10 +99,10 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     backgroundColor: COLORS.white,
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     ...SHADOWS.light,
     right: 10,
     bottom: 10,
@@ -80,8 +114,8 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     ...SHADOWS.light,
   },
 });

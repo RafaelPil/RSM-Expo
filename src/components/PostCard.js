@@ -35,6 +35,8 @@ const PostCard = (props) => {
     navigation.navigate("Details", { postId: data.id });
   };
 
+  //console.log(data);
+
   return (
     <View
       style={{
@@ -47,7 +49,7 @@ const PostCard = (props) => {
     >
       <Pressable onPress={toDetails} style={{ width: "100%", height: 250 }}>
         <Image
-          source={{ uri: data.img }}
+          source={{ uri: data.image }}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -84,11 +86,7 @@ const PostCard = (props) => {
       </TouchableOpacity>
 
       <View style={{ width: "100%", padding: SIZES.font }}>
-        <PostTitle
-          title={data.aprasymas}
-          price={data.kaina}
-          city={data.miestas}
-        />
+        <PostTitle title={data.title} price={data.price} city={data.city} />
       </View>
     </View>
   );

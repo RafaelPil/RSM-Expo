@@ -1,30 +1,52 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Image,
-  StatusBar,
-  FlatList,
-} from 'react-native';
-import React from 'react';
+import React from "react";
 
-import {COLORS, SHADOWS, SIZES, assets} from '../constants';
-import {
-  CircleButton,
-  PostCity,
-  PostPrice,
-  PostTitle,
-  FocusedStatusBar,
-  RectButton,
-  PostDetails,
-} from '../components';
-import {useRoute} from '@react-navigation/native';
-import {dummyPosts} from '../constants';
+import { PostDetails } from "../components";
+import { useRoute } from "@react-navigation/native";
+import { gql, useQuery } from "@apollo/client";
+import { ActivityIndicator, Alert } from "react-native";
 
-const DetailsScreen = ({data}) => {
+const GetPostById = gql`
+  query getPost($id: uuid!) {
+    Post_by_pk(id: $id) {
+      city
+      date
+      id
+      title
+      image
+      price
+      LikedPost {
+        id
+        postId
+        userId
+      }
+      user {
+        metadata
+      }
+    }
+  }
+`;
+
+const DetailsScreen = () => {
   const route = useRoute();
+  const id = route?.params?.postId;
   //console.log(route.params);
-  const post = dummyPosts.find(p => p.id === route.params.postId);
+  //const post = dummyPosts.find((p) => p.id === route.params.postId);
+
+  const { data, loading, error } = useQuery(GetPostById, {
+    variables: { id: id },
+  });
+
+  const post = data?.Post_by_pk;
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    Alert.alert("Serverio klaida", error.message);
+  }
+
+  // console.log(post.user);
 
   return (
     <>

@@ -7,62 +7,62 @@ import {
   StyleSheet,
   useWindowDimensions,
   Alert,
-} from 'react-native';
-import React, {useState} from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {COLORS, SIZES} from '../constants';
-import {useNavigation} from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
-import CustomInput from '../components/CustomInput';
-import CustomInputPhone from '../components/CustomInputPhone';
-import {useSignUpEmailPassword} from '@nhost/react';
+} from "react-native";
+import React, { useState } from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { COLORS, SIZES } from "../constants";
+import { useNavigation } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
+import CustomInput from "../components/CustomInput";
+import CustomInputPhone from "../components/CustomInputPhone";
+import { useSignUpEmailPassword } from "@nhost/react";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const RegisterScreen = () => {
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const navigation = useNavigation();
 
-  const {control, handleSubmit, watch} = useForm();
-  const pwd = watch('password');
+  const { control, handleSubmit, watch } = useForm();
+  const pwd = watch("password");
 
-  const {signUpEmailPassword, isLoading} = useSignUpEmailPassword();
+  const { signUpEmailPassword, isLoading } = useSignUpEmailPassword();
 
   const moveBack = () => {
     navigation.goBack();
   };
 
-  const onRegisterPressed = async data => {
+  const onRegisterPressed = async (data) => {
     if (isLoading) {
       return;
     }
 
-    const {name, email, password, phone} = data;
+    const { name, email, password, phone } = data;
     // sign up
-    const {error, isSuccess, needsEmailVerification} =
+    const { error, isSuccess, needsEmailVerification } =
       await signUpEmailPassword(email, password, {
         displayName: name.trim(),
-        metadata: {name, phone},
+        metadata: { name, phone },
       });
 
     if (error) {
-      Alert.alert('Atsiprašome', error.message);
+      Alert.alert("Atsiprašome", error.message);
     }
 
     if (needsEmailVerification) {
-      Alert.alert('Patvirtink savo el. pašta', error.message);
+      Alert.alert("Patvirtink savo el. pašta", error.message);
     }
 
     if (isSuccess) {
-      navigation.navigate('SignIn');
+      navigation.navigate("SignIn");
     }
   };
 
   return (
-    <SafeAreaView style={{marginTop: 5}}>
-      <Pressable onPress={moveBack} style={{padding: 10}}>
+    <SafeAreaView style={{ marginTop: 5 }}>
+      <Pressable onPress={moveBack} style={{ padding: 10 }}>
         <Ionicons name="arrow-back-sharp" size={24} color={COLORS.primary} />
       </Pressable>
 
@@ -72,14 +72,14 @@ const RegisterScreen = () => {
         placeholder=""
         control={control}
         rules={{
-          required: 'Įveskite varda',
+          required: "Įveskite varda",
           minLength: {
             value: 3,
-            message: 'Vardas turi būti ne mažiau kaip 3 simboliai',
+            message: "Vardas turi būti ne mažiau kaip 3 simboliai",
           },
           maxLength: {
             value: 24,
-            message: 'Vardas turi būti ne daugiau kaip 24 simboliai',
+            message: "Vardas turi būti ne daugiau kaip 24 simboliai",
           },
         }}
       />
@@ -91,14 +91,14 @@ const RegisterScreen = () => {
         control={control}
         keyboardType="numeric"
         rules={{
-          required: 'Įveskite telefono nr.',
+          required: "Įveskite telefono nr.",
           minLength: {
             value: 8,
-            message: 'Tokio numerio nera',
+            message: "Tokio numerio nera",
           },
           maxLength: {
             value: 8,
-            message: 'Tokio numerio nera',
+            message: "Tokio numerio nera",
           },
         }}
       />
@@ -110,8 +110,8 @@ const RegisterScreen = () => {
         control={control}
         keyboardType="email-address"
         rules={{
-          required: 'Įveskite el. pašta',
-          pattern: {value: EMAIL_REGEX, message: 'Neteisingas el. paštas'},
+          required: "Įveskite el. pašta",
+          pattern: { value: EMAIL_REGEX, message: "Neteisingas el. paštas" },
         }}
       />
 
@@ -122,10 +122,10 @@ const RegisterScreen = () => {
         control={control}
         secureTextEntry
         rules={{
-          required: 'Įveskite slaptažodi',
+          required: "Įveskite slaptažodi",
           minLength: {
             value: 8,
-            message: 'Slaptažodis turi būti ne mažiau kaip 8 simboliai',
+            message: "Slaptažodis turi būti ne mažiau kaip 8 simboliai",
           },
         }}
       />
@@ -137,17 +137,18 @@ const RegisterScreen = () => {
         control={control}
         secureTextEntry
         rules={{
-          required: 'Įveskite pakartotina slaptažodi',
-          validate: value => value === pwd || 'Slaptažodis neatitinka',
+          required: "Įveskite pakartotina slaptažodi",
+          validate: (value) => value === pwd || "Slaptažodis neatitinka",
         }}
       />
 
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: "center" }}>
         <Pressable
-          style={[styles.btnContainer, {width: width - 250}]}
-          onPress={handleSubmit(onRegisterPressed)}>
-          <Text style={{fontSize: 14}}>
-            {isLoading ? 'Registruojama...' : 'Registruotis'}
+          style={[styles.btnContainer, { width: width - 250 }]}
+          onPress={handleSubmit(onRegisterPressed)}
+        >
+          <Text style={{ fontSize: 14 }}>
+            {isLoading ? "Registruojama..." : "Registruotis"}
           </Text>
         </Pressable>
       </View>
@@ -160,10 +161,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     color: COLORS.primary,
     fontSize: SIZES.medium,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   textInpt: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 40,
     marginLeft: 12,
     marginTop: 8,
@@ -174,8 +175,8 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     backgroundColor: COLORS.gray_button,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 40,
     borderRadius: 20,
     marginTop: 50,
