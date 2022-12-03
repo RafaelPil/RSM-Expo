@@ -12,6 +12,45 @@ import {
   LikedPeople,
 } from "./PostInfo";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { gql, useMutation } from "@apollo/client";
+import { useUserId } from "@nhost/react";
+
+const LikePostMutation = gql`
+  mutation PutLikeToPost($postId: uuid!, $userId: uuid!) {
+    insert_LikedPost(objects: [{ postId: $postId, userId: $userId }]) {
+      returning {
+        id
+        postId
+        userId
+        Post {
+          id
+          LikedPost {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
+const RemoveLikedPostMutation = gql`
+  mutation removeLike($userId: uuid!, $postId: uuid!) {
+    delete_LikedPost(
+      where: { userId: { _eq: $userId }, _and: { postId: { _eq: $postId } } }
+    ) {
+      returning {
+        id
+        postId
+        userId
+        Post {
+          user {
+            displayName
+          }
+        }
+      }
+    }
+  }
+`;
 
 const PostCard = (props) => {
   const navigation = useNavigation();

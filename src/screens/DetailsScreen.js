@@ -20,6 +20,8 @@ const GetPostById = gql`
         userId
       }
       user {
+        id
+        displayName
         metadata
       }
     }
