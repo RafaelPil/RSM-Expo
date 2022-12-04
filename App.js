@@ -8,7 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import { NhostApolloProvider } from "@nhost/react-apollo";
 
 const nhost = new NhostClient({
-  subdomain: "zeffilurptqhgdwygtvd",
+  subdomain: "cqdfqhvzqoncuuocckvj",
   region: "eu-central-1",
   clientStorageType: "expo-secure-storage",
   clientStorage: SecureStore,

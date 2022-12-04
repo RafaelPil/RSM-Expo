@@ -55,9 +55,9 @@ const RegisterScreen = () => {
       Alert.alert("Patvirtink savo el. pašta", error.message);
     }
 
-    if (isSuccess) {
-      navigation.navigate("SignIn");
-    }
+    // if (isSuccess) {
+    //   Alert.alert("pavyko");
+    // }
   };
 
   return (

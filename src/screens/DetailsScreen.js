@@ -14,14 +14,8 @@ const GetPostById = gql`
       title
       image
       price
-      LikedPost {
-        id
-        postId
-        userId
-      }
+      description
       user {
-        id
-        displayName
         metadata
       }
     }
@@ -31,7 +25,7 @@ const GetPostById = gql`
 const DetailsScreen = () => {
   const route = useRoute();
   const id = route?.params?.postId;
-  //console.log(route.params);
+  // console.log(id);
   //const post = dummyPosts.find((p) => p.id === route.params.postId);
 
   const { data, loading, error } = useQuery(GetPostById, {
@@ -39,6 +33,7 @@ const DetailsScreen = () => {
   });
 
   const post = data?.Post_by_pk;
+  console.log(data);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -50,11 +45,7 @@ const DetailsScreen = () => {
 
   // console.log(post.user);
 
-  return (
-    <>
-      <PostDetails post={post} />
-    </>
-  );
+  return <PostDetails post={post} />;
 };
 
 export default DetailsScreen;

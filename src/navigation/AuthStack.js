@@ -27,34 +27,32 @@ const AuthStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SignIn"
-          component={LoginScreen}
+          name="SignUp"
+          component={RegisterScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SignUp"
-          component={RegisterScreen}
+          name="SignIn"
+          component={LoginScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
     );
   }
 
-  if (isAuthenticated) {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={DrawerStack} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="UsersModal" component={UsersModal} />
-        {/* <Stack.Screen name="Messages" component={MessagesScreen} /> */}
-        {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
-      </Stack.Navigator>
-    );
-  }
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Home" component={DrawerStack} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="UsersModal" component={UsersModal} />
+      {/* <Stack.Screen name="Messages" component={MessagesScreen} /> */}
+      {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
+    </Stack.Navigator>
+  );
 };
 
 export default AuthStack;

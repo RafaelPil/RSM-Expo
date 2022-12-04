@@ -22,7 +22,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { LikedPeople } from "./PostInfo";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
@@ -62,40 +62,29 @@ const RemoveLikedPostMutation = gql`
   }
 `;
 
-const LikedPostQuery = gql`
-  query likedPostsQuery {
-    LikedPost {
-      id
-      postId
-      userId
-    }
-  }
-`;
+// const LikedPostQuery = gql`
+//   query likedPostsQuery {
+//     LikedPost {
+//       id
+//       postId
+//       userId
+//       likeState
+//     }
+//   }
+// `;
 
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
   const [postData, setPostData] = useState(post);
-  const [isLiked, setIsLiked] = useState([data?.LikedPost]);
+  const [isLiked, setIsLiked] = useState([]);
   const [likeState, setLikeState] = useState(false);
 
-  const id = postData.id;
+  const id = postData?.id;
   const userId = useUserId();
+  console.log(postData);
 
   const [doJoinLike] = useMutation(LikePostMutation);
   const [removeJoinedLike] = useMutation(RemoveLikedPostMutation);
-  const { data, loading, error } = useQuery(LikedPostQuery);
-  //console.log(data?.LikedPost?.postId);
-  // console.log(data?.LikedPost.filter((p) => p.id));
-
-  // const onLikePress = () => {
-  //   if (isLiked.includes(id) && likeState === true) {
-  //     setIsLiked((prev) => prev.filter((_id) => _id !== id));
-  //     setLikeState(false);
-  //   } else {
-  //     setIsLiked((prev) => [...prev, id]);
-  //     setLikeState(true);
-  //   }
-  // };
 
   const onLikePressed = async () => {
     try {
@@ -117,7 +106,7 @@ const PostDetailsHeader = ({ post }) => {
   return (
     <View style={{ width: "100%", height: 373 }}>
       <Image
-        source={{ uri: postData.image }}
+        source={{ uri: postData?.image }}
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       />
@@ -178,7 +167,7 @@ const PostDetails = ({ post }) => {
           minWidth={170}
           fontSize={SIZES.large}
           {...SHADOWS.dark}
-          tel={`+370 ${postData.user.metadata.phone}`}
+          tel={`+370 ${postData?.user?.metadata.phone}`}
         />
         <ChatButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark} />
       </View>
@@ -194,9 +183,9 @@ const PostDetails = ({ post }) => {
 
       <View style={{ padding: SIZES.font }}>
         <PostTitle
-          title={postData.title}
-          price={postData.price}
-          city={postData.city}
+          title={postData?.title}
+          price={postData?.price}
+          city={postData?.city}
         />
       </View>
 
@@ -218,7 +207,7 @@ const PostDetails = ({ post }) => {
             lineHeight: SIZES.large,
           }}
         >
-          {postData.description}
+          {postData?.description}
         </Text>
       </View>
     </SafeAreaView>
