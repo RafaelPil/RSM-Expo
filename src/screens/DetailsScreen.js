@@ -18,6 +18,12 @@ const GetPostById = gql`
       user {
         metadata
       }
+      LikedPost {
+        id
+        postId
+        userId
+        liked
+      }
     }
   }
 `;
@@ -33,7 +39,6 @@ const DetailsScreen = () => {
   });
 
   const post = data?.Post_by_pk;
-  console.log(data);
 
   if (loading) {
     return <ActivityIndicator />;

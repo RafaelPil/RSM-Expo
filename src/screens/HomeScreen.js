@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -36,7 +36,9 @@ const GetPosts = gql`
 
 const HomeScreen = () => {
   const { data, loading, error } = useQuery(GetPosts);
-  //const [data, setData] = useState(dummyPosts);
+  const [dataFetch, setData] = useState(data);
+
+  useEffect(() => {}, [dataFetch]);
 
   const navigation = useNavigation();
 

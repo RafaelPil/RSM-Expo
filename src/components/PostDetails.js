@@ -8,8 +8,9 @@ import {
   StyleSheet,
   Pressable,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { COLORS, SHADOWS, SIZES, assets } from "../constants";
 import {
@@ -26,19 +27,39 @@ import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
-  mutation PutLikeToPost($postId: uuid!, $userId: uuid!) {
-    insert_LikedPost(objects: [{ postId: $postId, userId: $userId }]) {
+  mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
+    insert_LikedPost(
+      objects: [{ postId: $postId, userId: $userId, liked: $liked }]
+    ) {
       returning {
         id
         postId
         userId
+        liked
         Post {
           id
-          LikedPost {
-            id
-          }
         }
       }
+    }
+  }
+`;
+
+const UPDATE_LIKE_STATE = gql`
+  mutation CHANGE_LIKE_STATE(
+    $id: uuid!
+    $postId: uuid!
+    $userId: uuid!
+    $liked: Boolean!
+  ) {
+    update_LikedPost_by_pk(
+      pk_columns: { id: $id }
+      _set: { liked: $liked, userId: $userId, postId: $postId }
+    ) {
+      id
+      liked
+      postId
+      liked
+      userId
     }
   }
 `;
@@ -62,41 +83,55 @@ const RemoveLikedPostMutation = gql`
   }
 `;
 
-// const LikedPostQuery = gql`
-//   query likedPostsQuery {
-//     LikedPost {
-//       id
-//       postId
-//       userId
-//       likeState
-//     }
-//   }
-// `;
-
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
   const [postData, setPostData] = useState(post);
   const [isLiked, setIsLiked] = useState([]);
-  const [likeState, setLikeState] = useState(false);
+  const [likeState, setLikeState] = useState(postData?.LikedPost?.liked);
 
   const id = postData?.id;
   const userId = useUserId();
-  console.log(postData);
+  const likedPostId = post.LikedPost.id;
+  console.log(post.LikedPost.id);
 
   const [doJoinLike] = useMutation(LikePostMutation);
   const [removeJoinedLike] = useMutation(RemoveLikedPostMutation);
+  const [CHANGE_LIKE_STATE] = useMutation(UPDATE_LIKE_STATE);
 
   const onLikePressed = async () => {
     try {
-      if (isLiked.includes(id) && likeState === true) {
-        setIsLiked((prev) => prev.filter((_id) => _id !== id));
-        setLikeState(false);
-        //await doJoinLike({ variables: { userId: userId, postId: id } });
-        await removeJoinedLike({ variables: { userId: userId, postId: id } });
-      } else {
-        setIsLiked((prev) => [...prev, id]);
-        setLikeState(true);
-        await doJoinLike({ variables: { userId: userId, postId: id } });
+      if (
+        postData?.LikedPost?.userId !== userId &&
+        postData?.LikedPost?.postId !== id
+      ) {
+        await doJoinLike({
+          variables: { userId: userId, postId: id, liked: true },
+        });
+        // await CHANGE_LIKE_STATE({
+        //   variables: {
+        //     id: likedPostId,
+        //     userId: userId,
+        //     postId: id,
+        //     liked: true,
+        //   },
+        // });
+      }
+      if (
+        postData?.LikedPost?.userId === userId &&
+        postData?.LikedPost?.postId === id &&
+        postData?.LikedPost?.liked === true
+      ) {
+        await CHANGE_LIKE_STATE({
+          variables: {
+            id: likedPostId,
+            userId: userId,
+            postId: id,
+            liked: false,
+          },
+        });
+        // await removeJoinedLike({
+        //   variables: { userId: userId, postId: id },
+        // });
       }
     } catch (e) {
       Alert.alert("Klaida", e.message);
@@ -132,7 +167,11 @@ const PostDetailsHeader = ({ post }) => {
           right: 10,
         }}
       >
-        <AntDesign name="hearto" size={24} color={likeState ? "red" : "gray"} />
+        <AntDesign
+          name="hearto"
+          size={24}
+          color={postData?.LikedPost?.liked === true ? "red" : "gray"}
+        />
       </TouchableOpacity>
     </View>
   );
