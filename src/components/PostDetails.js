@@ -91,8 +91,8 @@ const PostDetailsHeader = ({ post }) => {
 
   const id = postData?.id;
   const userId = useUserId();
-  const likedPostId = post.LikedPost.id;
-  console.log(post.LikedPost.id);
+  const likedPostId = post?.LikedPost?.id;
+  console.log(postData?.LikedPost?.userId !== userId);
 
   const [doJoinLike] = useMutation(LikePostMutation);
   const [removeJoinedLike] = useMutation(RemoveLikedPostMutation);
@@ -100,10 +100,7 @@ const PostDetailsHeader = ({ post }) => {
 
   const onLikePressed = async () => {
     try {
-      if (
-        postData?.LikedPost?.userId !== userId &&
-        postData?.LikedPost?.postId !== id
-      ) {
+      if (postData?.LikedPost?.userId !== userId) {
         await doJoinLike({
           variables: { userId: userId, postId: id, liked: true },
         });
@@ -115,12 +112,7 @@ const PostDetailsHeader = ({ post }) => {
         //     liked: true,
         //   },
         // });
-      }
-      if (
-        postData?.LikedPost?.userId === userId &&
-        postData?.LikedPost?.postId === id &&
-        postData?.LikedPost?.liked === true
-      ) {
+      } else {
         await CHANGE_LIKE_STATE({
           variables: {
             id: likedPostId,
