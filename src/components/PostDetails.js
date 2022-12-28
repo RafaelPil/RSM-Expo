@@ -23,7 +23,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { LikedPeople } from "./PostInfo";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
@@ -46,13 +46,13 @@ const LikePostMutation = gql`
 
 const UPDATE_LIKE_STATE = gql`
   mutation CHANGE_LIKE_STATE(
-    $id: uuid!
+    $likePost: uuid!
     $postId: uuid!
     $userId: uuid!
     $liked: Boolean!
   ) {
     update_LikedPost_by_pk(
-      pk_columns: { id: $id }
+      pk_columns: { id: $likePost }
       _set: { liked: $liked, userId: $userId, postId: $postId }
     ) {
       id
@@ -86,48 +86,38 @@ const RemoveLikedPostMutation = gql`
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
   const [postData, setPostData] = useState(post);
-  const [isLiked, setIsLiked] = useState([]);
-  const [likeState, setLikeState] = useState(postData?.LikedPost?.liked);
+  // const [likeState, setLikeState] = useState(postData?.LikedPost?.liked);
+  const [liked, setLiked] = useState(false);
 
   const id = postData?.id;
   const userId = useUserId();
   const likedPostId = post?.LikedPost?.id;
-  console.log(postData?.LikedPost?.userId !== userId);
+  //console.log(postData);
 
-  const [doJoinLike] = useMutation(LikePostMutation);
-  const [removeJoinedLike] = useMutation(RemoveLikedPostMutation);
+  const [likePost] = useMutation(LikePostMutation);
+  const [deleteLike] = useMutation(RemoveLikedPostMutation);
   const [CHANGE_LIKE_STATE] = useMutation(UPDATE_LIKE_STATE);
 
-  const onLikePressed = async () => {
-    try {
-      if (postData?.LikedPost?.userId !== userId) {
-        await doJoinLike({
-          variables: { userId: userId, postId: id, liked: true },
-        });
-        // await CHANGE_LIKE_STATE({
-        //   variables: {
-        //     id: likedPostId,
-        //     userId: userId,
-        //     postId: id,
-        //     liked: true,
-        //   },
-        // });
-      } else {
-        await CHANGE_LIKE_STATE({
-          variables: {
-            id: likedPostId,
-            userId: userId,
-            postId: id,
-            liked: false,
-          },
-        });
-        // await removeJoinedLike({
-        //   variables: { userId: userId, postId: id },
-        // });
-      }
-    } catch (e) {
-      Alert.alert("Klaida", e.message);
+  //console.log(post?.LikedPost?.userId.toString().includes(userId));
+  console.log(post?.LikedPost?.liked);
+
+  useEffect(() => {
+    async function checkIfLiked() {
+      setLiked(post?.LikedPost?.userId.toString().includes(userId));
     }
+    checkIfLiked();
+  }, [likePost]);
+
+  const onLikePressed = async () => {
+    console.warn("paspaudziau like");
+    if (!liked) {
+      await likePost({
+        variables: { postId: id, userId: userId, liked: true },
+      });
+    } else {
+      await deleteLike({ variables: { userId: userId, postId: id } });
+    }
+    setLiked(!liked);
   };
 
   return (
@@ -159,11 +149,7 @@ const PostDetailsHeader = ({ post }) => {
           right: 10,
         }}
       >
-        <AntDesign
-          name="hearto"
-          size={24}
-          color={postData?.LikedPost?.liked === true ? "red" : "gray"}
-        />
+        <AntDesign name="hearto" size={24} color={liked ? "red" : "gray"} />
       </TouchableOpacity>
     </View>
   );

@@ -29,6 +29,7 @@ const GetPosts = gql`
         postId
         userId
         id
+        liked
       }
     }
   }
