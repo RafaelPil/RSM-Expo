@@ -37,9 +37,15 @@ const GetPosts = gql`
 
 const HomeScreen = () => {
   const { data, loading, error } = useQuery(GetPosts);
-  const [dataFetch, setData] = useState(data);
+  const [dataFetch, setData] = useState([]);
 
-  useEffect(() => {}, [dataFetch]);
+  useEffect(() => {
+    const fethcPosts = async () => {
+      setData(data);
+    };
+
+    fethcPosts();
+  }, []);
 
   const navigation = useNavigation();
 

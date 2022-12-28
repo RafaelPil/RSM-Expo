@@ -102,11 +102,17 @@ const PostDetailsHeader = ({ post }) => {
   console.log(post?.LikedPost?.liked);
 
   useEffect(() => {
+    if (post) {
+      setLiked(post?.LikedPost?.liked);
+    }
+  }, [post]);
+
+  useEffect(() => {
     async function checkIfLiked() {
       setLiked(post?.LikedPost?.userId.toString().includes(userId));
     }
     checkIfLiked();
-  }, [likePost]);
+  }, []);
 
   const onLikePressed = async () => {
     console.warn("paspaudziau like");

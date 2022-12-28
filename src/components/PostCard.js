@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SHADOWS, SIZES, assets } from "../constants";
@@ -16,17 +16,17 @@ import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
-  mutation PutLikeToPost($postId: uuid!, $userId: uuid!) {
-    insert_LikedPost(objects: [{ postId: $postId, userId: $userId }]) {
+  mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
+    insert_LikedPost(
+      objects: [{ postId: $postId, userId: $userId, liked: $liked }]
+    ) {
       returning {
         id
         postId
         userId
+        liked
         Post {
           id
-          LikedPost {
-            id
-          }
         }
       }
     }
@@ -56,18 +56,36 @@ const PostCard = (props) => {
   const navigation = useNavigation();
 
   const [data, setData] = useState(props.data);
-  const [isLiked, setIsLiked] = useState([]);
-  const [likeState, setLikeState] = useState(false);
-  const id = data.id;
+  const [liked, setLiked] = useState(false);
+  const id = data?.id;
+  const userId = useUserId();
 
-  const onLikePress = () => {
-    if (isLiked.includes(id) && likeState === true) {
-      setIsLiked((prev) => prev.filter((_id) => _id !== id));
-      setLikeState(false);
-    } else {
-      setIsLiked((prev) => [...prev, id]);
-      setLikeState(true);
+  const [likePost] = useMutation(LikePostMutation);
+  const [deleteLike] = useMutation(RemoveLikedPostMutation);
+
+  useEffect(() => {
+    if (data) {
+      setLiked(data?.LikedPost?.liked);
     }
+  }, [data]);
+
+  useEffect(() => {
+    async function checkIfLiked() {
+      setLiked(data?.LikedPost?.userId.toString().includes(userId));
+    }
+    checkIfLiked();
+  }, []);
+
+  const onLikePressed = async () => {
+    console.warn("paspaudziau like");
+    if (!liked) {
+      await likePost({
+        variables: { postId: id, userId: userId, liked: true },
+      });
+    } else {
+      await deleteLike({ variables: { userId: userId, postId: id } });
+    }
+    setLiked(!liked);
   };
 
   const toDetails = () => {
@@ -107,7 +125,7 @@ const PostCard = (props) => {
       </Pressable>
 
       <TouchableOpacity
-        onPress={onLikePress}
+        onPress={onLikePressed}
         style={{
           width: 40,
           height: 40,
@@ -121,7 +139,7 @@ const PostCard = (props) => {
           right: 10,
         }}
       >
-        <AntDesign name="hearto" size={24} color={likeState ? "red" : "grey"} />
+        <AntDesign name="hearto" size={24} color={liked ? "red" : "grey"} />
       </TouchableOpacity>
 
       <View style={{ width: "100%", padding: SIZES.font }}>
