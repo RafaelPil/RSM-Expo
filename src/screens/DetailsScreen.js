@@ -1,6 +1,6 @@
 import React from "react";
 
-import { PostDetails } from "../components";
+import PostDetails from "../components/PostDetails";
 import { useRoute } from "@react-navigation/native";
 import { gql, useQuery } from "@apollo/client";
 import { ActivityIndicator, Alert } from "react-native";

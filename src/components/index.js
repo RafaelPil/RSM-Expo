@@ -1,9 +1,8 @@
-import FocusedStatusBar from './FocusedStatusBar';
-import HomeHeader from './HomeHeader';
-import PostCard from './PostCard';
-import {CircleButton, RectButton, ChatButton} from './Button';
-import {PostTitle, PostCity, PostPrice} from './PostInfo';
-import PostDetails from './PostDetails';
+import FocusedStatusBar from "./FocusedStatusBar";
+import HomeHeader from "./HomeHeader";
+import PostCard from "./PostCard";
+import { CircleButton, RectButton, ChatButton } from "./Button";
+import { PostTitle, PostCity, PostPrice } from "./PostInfo";
 
 export {
   FocusedStatusBar,
@@ -14,6 +13,5 @@ export {
   PostPrice,
   PostTitle,
   RectButton,
-  PostDetails,
   ChatButton,
 };
