@@ -7,38 +7,98 @@ import {
   useWindowDimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { COLORS, SHADOWS, SIZES } from "../constants";
+import { gql, useMutation } from "@apollo/client";
+import { useUserId } from "@nhost/react";
+
+const LikePostMutation = gql`
+  mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
+    insert_LikedPost(
+      objects: [{ postId: $postId, userId: $userId, liked: $liked }]
+    ) {
+      returning {
+        id
+        postId
+        userId
+        liked
+        Post {
+          id
+        }
+      }
+    }
+  }
+`;
+
+const RemoveLikedPostMutation = gql`
+  mutation removeLike($userId: uuid!, $postId: uuid!) {
+    delete_LikedPost(
+      where: { userId: { _eq: $userId }, _and: { postId: { _eq: $postId } } }
+    ) {
+      returning {
+        id
+        postId
+        userId
+        Post {
+          user {
+            displayName
+          }
+        }
+      }
+    }
+  }
+`;
 
 const SavedPostComponent = ({ data }) => {
   const navigation = useNavigation();
   const width = useWindowDimensions().width;
 
-  const [isLiked, setIsLiked] = useState([]);
-  const [likeState, setLikeState] = useState(false);
-  const id = data.id;
+  const [postData, setPostData] = useState(data);
+  const [liked, setLiked] = useState(false);
+  const id = data?.Post?.id;
+  const userId = useUserId();
 
-  const onLikePress = () => {
-    if (isLiked.includes(id) && likeState === true) {
-      setIsLiked((prev) => prev.filter((_id) => _id !== id));
-      setLikeState(false);
-    } else {
-      setIsLiked((prev) => [...prev, id]);
-      setLikeState(true);
+  const [likePost] = useMutation(LikePostMutation);
+  const [deleteLike] = useMutation(RemoveLikedPostMutation);
+
+  console.log(data.Post);
+
+  useEffect(() => {
+    if (data) {
+      setLiked(data?.LikedPost?.liked);
     }
+  }, [data]);
+
+  useEffect(() => {
+    async function checkIfLiked() {
+      setLiked(data?.userId.toString().includes(userId));
+    }
+    checkIfLiked();
+  }, []);
+
+  const onLikePressed = async () => {
+    console.warn("paspaudziau like");
+    if (!liked) {
+      await likePost({
+        variables: { postId: id, userId: userId, liked: true },
+      });
+    } else {
+      await deleteLike({ variables: { userId: userId, postId: id } });
+    }
+    setLiked(!liked);
   };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: data.id });
+    navigation.navigate("Details", { postId: data?.Post?.id });
   };
 
   return (
     <View style={[styles.container, { width: width }]}>
       <View style={styles.innerContainer}>
         <TouchableOpacity
-          onPress={onLikePress}
+          onPress={onLikePressed}
           style={{
             width: 40,
             height: 40,
@@ -52,27 +112,23 @@ const SavedPostComponent = ({ data }) => {
             right: 10,
           }}
         >
-          <AntDesign
-            name="hearto"
-            size={24}
-            color={likeState ? "red" : "grey"}
-          />
+          <AntDesign name="hearto" size={24} color={liked ? "red" : "grey"} />
         </TouchableOpacity>
         {/* Image */}
         <Pressable onPress={toDetails}>
-          <Image style={styles.image} source={{ uri: data.img }} />
+          <Image style={styles.image} source={{ uri: data?.Post?.image }} />
         </Pressable>
 
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{data.aprasymas}</Text>
+          <Text style={styles.bedrooms}>{data?.Post?.description}</Text>
 
           {/* Type & Description */}
           <Text style={styles.description} numberOfLines={2}>
-            {data.miestas}
+            {data?.Post?.city}
           </Text>
 
-          <Text style={styles.newPrice}>€{data.kaina}</Text>
+          <Text style={styles.newPrice}>€{data?.Post?.price}</Text>
         </View>
       </View>
     </View>

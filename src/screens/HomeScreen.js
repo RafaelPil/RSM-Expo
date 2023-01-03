@@ -36,16 +36,24 @@ const GetPosts = gql`
 `;
 
 const HomeScreen = () => {
-  const { data, loading, error } = useQuery(GetPosts);
-  const [dataFetch, setData] = useState([]);
+  const { data, loading, error, refetch } = useQuery(GetPosts);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const fethcPosts = async () => {
-      setData(data);
+    if (data) {
+      setPosts(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      await refetch();
     };
 
-    fethcPosts();
+    fetchPosts();
   }, []);
+
+  // console.log(posts);
 
   const navigation = useNavigation();
 
@@ -82,7 +90,7 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={data.Post}
+            data={posts?.Post}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}

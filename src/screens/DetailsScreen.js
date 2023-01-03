@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import PostDetails from "../components/PostDetails";
 import { useRoute } from "@react-navigation/native";
@@ -37,6 +37,10 @@ const DetailsScreen = () => {
   const { data, loading, error } = useQuery(GetPostById, {
     variables: { id: id },
   });
+
+  useEffect(() => {
+    
+  }, [data, loading, error]);
 
   const post = data?.Post_by_pk;
 

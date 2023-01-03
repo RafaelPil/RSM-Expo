@@ -117,12 +117,12 @@ const PostCard = (props) => {
         />
       </Pressable>
 
-      <Pressable
+      {/* <Pressable
         style={{ marginTop: -30 }}
         onPress={() => navigation.navigate("UsersModal", { id: data.id })}
       >
         <LikedPeople />
-      </Pressable>
+      </Pressable> */}
 
       <TouchableOpacity
         onPress={onLikePressed}

@@ -84,20 +84,13 @@ const RemoveLikedPostMutation = gql`
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
   const [postData, setPostData] = useState(post);
-  // const [likeState, setLikeState] = useState(postData?.LikedPost?.liked);
   const [liked, setLiked] = useState(false);
 
   const id = postData?.id;
   const userId = useUserId();
-  const likedPostId = post?.LikedPost?.id;
-  //console.log(postData);
 
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
-  const [CHANGE_LIKE_STATE] = useMutation(UPDATE_LIKE_STATE);
-
-  //console.log(post?.LikedPost?.userId.toString().includes(userId));
-  console.log(post?.LikedPost?.liked);
 
   useEffect(() => {
     if (post) {
@@ -112,17 +105,17 @@ const PostDetailsHeader = ({ post }) => {
     checkIfLiked();
   }, []);
 
-  const onLikePressed = async () => {
-    console.warn("paspaudziau like");
-    if (!liked) {
-      await likePost({
-        variables: { postId: id, userId: userId, liked: true },
-      });
-    } else {
-      await deleteLike({ variables: { userId: userId, postId: id } });
-    }
-    setLiked(!liked);
-  };
+  // const onLikePressed = async () => {
+  //   console.warn("paspaudziau like");
+  //   if (!liked) {
+  //     await likePost({
+  //       variables: { postId: id, userId: userId, liked: true },
+  //     });
+  //   } else {
+  //     await deleteLike({ variables: { userId: userId, postId: id } });
+  //   }
+  //   setLiked(!liked);
+  // };
 
   return (
     <View style={{ width: "100%", height: 373 }}>
@@ -138,7 +131,7 @@ const PostDetailsHeader = ({ post }) => {
         top={StatusBar.currentHeight + 10}
       />
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={onLikePressed}
         style={{
           width: 40,
@@ -154,7 +147,7 @@ const PostDetailsHeader = ({ post }) => {
         }}
       >
         <AntDesign name="hearto" size={24} color={liked ? "red" : "gray"} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -195,12 +188,12 @@ const PostDetails = ({ post }) => {
 
       <PostDetailsHeader post={postData} />
 
-      <Pressable
+      {/* <Pressable
         style={{ marginTop: -30 }}
         onPress={() => navigation.navigate("UsersModal", { id: postData.id })}
       >
         <LikedPeople />
-      </Pressable>
+      </Pressable> */}
 
       <View style={{ padding: SIZES.font }}>
         <PostTitle
