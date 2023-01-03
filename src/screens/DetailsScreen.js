@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 
 import PostDetails from "../components/PostDetails";
 import { useRoute } from "@react-navigation/native";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { ActivityIndicator, Alert } from "react-native";
 
 const GetPostById = gql`
-  query getPost($id: uuid!) {
+  subscription getPost($id: uuid!) {
     Post_by_pk(id: $id) {
       city
       date
@@ -34,13 +34,11 @@ const DetailsScreen = () => {
   // console.log(id);
   //const post = dummyPosts.find((p) => p.id === route.params.postId);
 
-  const { data, loading, error } = useQuery(GetPostById, {
+  const { data, loading, error } = useSubscription(GetPostById, {
     variables: { id: id },
   });
 
-  useEffect(() => {
-    
-  }, [data, loading, error]);
+  useEffect(() => {}, [data, loading, error]);
 
   const post = data?.Post_by_pk;
 

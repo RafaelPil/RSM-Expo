@@ -1,13 +1,13 @@
 import { FlatList, SafeAreaView } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dummyPosts } from "../constants";
 import SavedPostComponent from "../components/SavedPostComponent";
 import HeaderComponent from "../components/HeaderComponent";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const GET_ALL_POSTS_INFO = gql`
-  query getPostByUserId($userId: uuid!) {
+  subscription getPostByUserId($userId: uuid!) {
     LikedPost(where: { userId: { _eq: $userId } }) {
       id
       postId
@@ -29,9 +29,11 @@ const GET_ALL_POSTS_INFO = gql`
 
 const SavedPostScreen = ({ isLiked }) => {
   const userId = useUserId();
-  const { data, loading, error } = useQuery(GET_ALL_POSTS_INFO, {
+  const { data, loading, error } = useSubscription(GET_ALL_POSTS_INFO, {
     variables: { userId: userId },
   });
+
+  useEffect(() => {}, [data]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

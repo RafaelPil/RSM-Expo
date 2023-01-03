@@ -13,10 +13,10 @@ import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 
 const GetPosts = gql`
-  query getPosts {
+  subscription getPosts {
     Post {
       city
       date
@@ -36,7 +36,7 @@ const GetPosts = gql`
 `;
 
 const HomeScreen = () => {
-  const { data, loading, error, refetch } = useQuery(GetPosts);
+  const { data, loading, error, refetch } = useSubscription(GetPosts);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {

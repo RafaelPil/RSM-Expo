@@ -57,41 +57,34 @@ const SavedPostComponent = ({ data }) => {
 
   const [postData, setPostData] = useState(data);
   const [liked, setLiked] = useState(false);
-  const id = data?.Post?.id;
+  const id = postData?.Post?.id;
   const userId = useUserId();
 
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
 
-  console.log(data.Post);
+  console.log(postData?.Post?.id);
 
   useEffect(() => {
-    if (data) {
-      setLiked(data?.LikedPost?.liked);
+    if (postData) {
+      setLiked(postData?.LikedPost?.liked);
     }
-  }, [data]);
+  }, [postData]);
 
   useEffect(() => {
     async function checkIfLiked() {
-      setLiked(data?.userId.toString().includes(userId));
+      setLiked(postData?.LikedPost?.userId.toString().includes(userId));
     }
     checkIfLiked();
   }, []);
 
   const onLikePressed = async () => {
     console.warn("paspaudziau like");
-    if (!liked) {
-      await likePost({
-        variables: { postId: id, userId: userId, liked: true },
-      });
-    } else {
-      await deleteLike({ variables: { userId: userId, postId: id } });
-    }
-    setLiked(!liked);
+    await deleteLike({ variables: { userId: userId, postId: id } });
   };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: data?.Post?.id });
+    navigation.navigate("Details", { postId: postData?.Post?.id });
   };
 
   return (
@@ -112,23 +105,23 @@ const SavedPostComponent = ({ data }) => {
             right: 10,
           }}
         >
-          <AntDesign name="hearto" size={24} color={liked ? "red" : "grey"} />
+          <AntDesign name="hearto" size={24} color={!liked ? "red" : "grey"} />
         </TouchableOpacity>
         {/* Image */}
         <Pressable onPress={toDetails}>
-          <Image style={styles.image} source={{ uri: data?.Post?.image }} />
+          <Image style={styles.image} source={{ uri: postData?.Post?.image }} />
         </Pressable>
 
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{data?.Post?.description}</Text>
+          <Text style={styles.bedrooms}>{postData?.Post?.description}</Text>
 
           {/* Type & Description */}
           <Text style={styles.description} numberOfLines={2}>
-            {data?.Post?.city}
+            {postData?.Post?.city}
           </Text>
 
-          <Text style={styles.newPrice}>€{data?.Post?.price}</Text>
+          <Text style={styles.newPrice}>€{postData?.Post?.price}</Text>
         </View>
       </View>
     </View>
