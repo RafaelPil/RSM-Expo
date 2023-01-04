@@ -38,8 +38,6 @@ const DetailsScreen = () => {
     variables: { id: id },
   });
 
-  useEffect(() => {}, [data, loading, error]);
-
   const post = data?.Post_by_pk;
 
   if (loading) {

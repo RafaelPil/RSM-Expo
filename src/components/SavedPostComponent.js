@@ -14,24 +14,6 @@ import { COLORS, SHADOWS, SIZES } from "../constants";
 import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
-const LikePostMutation = gql`
-  mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
-    insert_LikedPost(
-      objects: [{ postId: $postId, userId: $userId, liked: $liked }]
-    ) {
-      returning {
-        id
-        postId
-        userId
-        liked
-        Post {
-          id
-        }
-      }
-    }
-  }
-`;
-
 const RemoveLikedPostMutation = gql`
   mutation removeLike($userId: uuid!, $postId: uuid!) {
     delete_LikedPost(
@@ -60,13 +42,12 @@ const SavedPostComponent = ({ data }) => {
   const id = postData?.Post?.id;
   const userId = useUserId();
 
-  const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
 
-  console.log(postData?.Post?.id);
+  // console.log(postData?.Post?.id);
 
   useEffect(() => {
-    if (postData) {
+    if (postData?.LikedPost?.userId === userId) {
       setLiked(postData?.LikedPost?.liked);
     }
   }, [postData]);
@@ -79,7 +60,7 @@ const SavedPostComponent = ({ data }) => {
   }, []);
 
   const onLikePressed = async () => {
-    console.warn("paspaudziau like");
+    // console.warn("paspaudziau like");
     await deleteLike({ variables: { userId: userId, postId: id } });
   };
 

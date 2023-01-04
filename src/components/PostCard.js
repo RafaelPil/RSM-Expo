@@ -1,18 +1,11 @@
-import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
+import { View, Image, Pressable, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SHADOWS, SIZES, assets } from "../constants";
-import {
-  PostCity,
-  PostTitle,
-  PostImg,
-  PostPrice,
-  ImageProfileLiked,
-  LikedPeople,
-} from "./PostInfo";
+import { PostTitle } from "./PostInfo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
@@ -53,11 +46,12 @@ const RemoveLikedPostMutation = gql`
 `;
 
 const PostCard = (props) => {
-  const navigation = useNavigation();
-
-  const [data, setData] = useState(props.data);
+  const data = props.data;
+  const [postData, setPostData] = useState([]);
   const [liked, setLiked] = useState(false);
-  const id = data?.id;
+
+  const navigation = useNavigation();
+  const id = postData?.id;
   const userId = useUserId();
 
   const [likePost] = useMutation(LikePostMutation);
@@ -65,19 +59,27 @@ const PostCard = (props) => {
 
   useEffect(() => {
     if (data) {
-      setLiked(data?.LikedPost?.liked);
+      setPostData(data);
     }
   }, [data]);
 
+  console.log(postData?.LikedPost?.userId);
+
+  useEffect(() => {
+    if (postData?.LikedPost?.userId === userId) {
+      setLiked(postData?.LikedPost?.liked === true);
+    }
+  }, [postData]);
+
   useEffect(() => {
     async function checkIfLiked() {
-      setLiked(data?.LikedPost?.userId.toString().includes(userId));
+      setLiked(postData?.LikedPost?.userId.toString().includes(userId));
     }
     checkIfLiked();
   }, []);
 
   const onLikePressed = async () => {
-    console.warn("paspaudziau like");
+    // console.warn("paspaudziau like");
     if (!liked) {
       await likePost({
         variables: { postId: id, userId: userId, liked: true },
@@ -89,7 +91,7 @@ const PostCard = (props) => {
   };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: data.id });
+    navigation.navigate("Details", { postId: postData.id });
   };
 
   //console.log(data);
@@ -106,7 +108,7 @@ const PostCard = (props) => {
     >
       <Pressable onPress={toDetails} style={{ width: "100%", height: 250 }}>
         <Image
-          source={{ uri: data.image }}
+          source={{ uri: postData.image }}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -143,7 +145,11 @@ const PostCard = (props) => {
       </TouchableOpacity>
 
       <View style={{ width: "100%", padding: SIZES.font }}>
-        <PostTitle title={data.title} price={data.price} city={data.city} />
+        <PostTitle
+          title={postData.title}
+          price={postData.price}
+          city={postData.city}
+        />
       </View>
     </View>
   );

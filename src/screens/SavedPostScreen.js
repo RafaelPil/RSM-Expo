@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView } from "react-native";
+import { ActivityIndicator, FlatList, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { dummyPosts } from "../constants";
 import SavedPostComponent from "../components/SavedPostComponent";
@@ -33,7 +33,15 @@ const SavedPostScreen = ({ isLiked }) => {
     variables: { userId: userId },
   });
 
-  useEffect(() => {}, [data]);
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    Alert.alert("Serverio klaida", error.message);
+  }
+
+  // useEffect(() => {}, [data]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

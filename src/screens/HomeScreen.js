@@ -13,22 +13,22 @@ import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useSubscription } from "@apollo/client";
 
 const GetPosts = gql`
-  subscription getPosts {
+  subscription getAllPostsInfo {
     Post {
       city
       date
       id
-      image
       title
-      userId
+      image
       price
+      description
       LikedPost {
+        id
         postId
         userId
-        id
         liked
       }
     }
@@ -36,24 +36,16 @@ const GetPosts = gql`
 `;
 
 const HomeScreen = () => {
-  const { data, loading, error, refetch } = useSubscription(GetPosts);
+  const { data, loading, error } = useSubscription(GetPosts);
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    if (data) {
-      setPosts(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setPosts(data);
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      await refetch();
-    };
-
-    fetchPosts();
-  }, []);
-
-  // console.log(posts);
+  // console.log(posts?.Post);
 
   const navigation = useNavigation();
 
@@ -90,7 +82,7 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={posts?.Post}
+            data={data?.Post}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
