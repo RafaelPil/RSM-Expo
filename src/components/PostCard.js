@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { COLORS, SHADOWS, SIZES, assets } from "../constants";
 import { PostTitle } from "./PostInfo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { gql, useMutation, useSubscription } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
@@ -63,20 +63,25 @@ const PostCard = (props) => {
     }
   }, [data]);
 
-  console.log(postData?.LikedPost?.userId);
+  // console.log(postData?.LikedPost?.userId);
 
   useEffect(() => {
-    if (postData?.LikedPost?.userId === userId) {
-      setLiked(postData?.LikedPost?.liked === true);
+    if (
+      postData &&
+      postData?.LikedPost &&
+      postData?.LikedPost?.userId.toString().includes(userId)
+    ) {
+      setLiked(postData.LikedPost.liked === true);
     }
-  }, [postData]);
+  }, [postData, userId]);
 
   useEffect(() => {
     async function checkIfLiked() {
       setLiked(postData?.LikedPost?.userId.toString().includes(userId));
     }
+
     checkIfLiked();
-  }, []);
+  }, [postData, userId]);
 
   const onLikePressed = async () => {
     // console.warn("paspaudziau like");

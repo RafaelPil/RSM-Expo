@@ -46,16 +46,17 @@ const SavedPostComponent = ({ data }) => {
 
   // console.log(postData?.Post?.id);
 
-  useEffect(() => {
-    if (postData?.LikedPost?.userId === userId) {
-      setLiked(postData?.LikedPost?.liked);
-    }
-  }, [postData]);
+  // useEffect(() => {
+  //   if (postData?.LikedPost?.userId.toString().includes(userId)) {
+  //     setLiked(postData?.LikedPost?.liked);
+  //   }
+  // }, [postData]);
 
   useEffect(() => {
     async function checkIfLiked() {
       setLiked(postData?.LikedPost?.userId.toString().includes(userId));
     }
+
     checkIfLiked();
   }, []);
 
