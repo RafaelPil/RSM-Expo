@@ -38,8 +38,9 @@ const RegisterScreen = () => {
     if (isLoading) {
       return;
     }
-    const { name, email, password, isSuccess } = data;
-    const { error } = await signUpEmailPassword(email, password, {
+    const { name, email, password } = data;
+    // sign up
+    const { error, isSuccess } = await signUpEmailPassword(email, password, {
       displayName: name.trim(),
       metadata: { name },
     });

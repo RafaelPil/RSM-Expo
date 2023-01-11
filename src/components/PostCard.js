@@ -57,31 +57,31 @@ const PostCard = (props) => {
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
 
-  useEffect(() => {
-    if (data) {
-      setPostData(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setPostData(data);
+  //   }
+  // }, [data]);
 
   // console.log(postData?.LikedPost?.userId);
 
   useEffect(() => {
     if (
-      postData &&
-      postData?.LikedPost &&
-      postData?.LikedPost?.userId.toString().includes(userId)
+      data &&
+      data?.LikedPost &&
+      data?.LikedPost?.userId.toString().includes(userId)
     ) {
-      setLiked(postData.LikedPost.liked === true);
+      setLiked(data?.LikedPost?.liked === true);
     }
-  }, [postData, userId]);
+  }, [data, userId]);
 
   useEffect(() => {
     async function checkIfLiked() {
-      setLiked(postData?.LikedPost?.userId.toString().includes(userId));
+      setLiked(data?.LikedPost?.userId.toString().includes(userId));
     }
 
     checkIfLiked();
-  }, [postData, userId]);
+  }, [data, userId]);
 
   const onLikePressed = async () => {
     // console.warn("paspaudziau like");
@@ -96,7 +96,7 @@ const PostCard = (props) => {
   };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: postData.id });
+    navigation.navigate("Details", { postId: data?.id });
   };
 
   //console.log(data);
@@ -113,7 +113,7 @@ const PostCard = (props) => {
     >
       <Pressable onPress={toDetails} style={{ width: "100%", height: 250 }}>
         <Image
-          source={{ uri: postData.image }}
+          source={{ uri: data?.image }}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -150,11 +150,7 @@ const PostCard = (props) => {
       </TouchableOpacity>
 
       <View style={{ width: "100%", padding: SIZES.font }}>
-        <PostTitle
-          title={postData.title}
-          price={postData.price}
-          city={postData.city}
-        />
+        <PostTitle title={data?.title} price={data?.price} city={data?.city} />
       </View>
     </View>
   );

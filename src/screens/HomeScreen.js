@@ -16,7 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 
 const GET_ALL_POSTS_INFO = gql`
-  subscription getAllPostsInfo {
+  subscription {
     Post {
       city
       date
@@ -39,12 +39,15 @@ const HomeScreen = () => {
   const { data, loading, error } = useSubscription(GET_ALL_POSTS_INFO);
   const [posts, setPosts] = useState([]);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setPosts(data?.Post);
-  //   }
-  // }, [data, data?.Post]);
-  // console.log(data);
+  useEffect(() => {
+    if (data) {
+      setPosts(data?.Post);
+    }
+    if (!data) {
+      return;
+    }
+  }, [data, data?.Post]);
+  console.log(data);
 
   const navigation = useNavigation();
 
@@ -56,7 +59,7 @@ const HomeScreen = () => {
     Alert.alert("Problema su serveriu", error.message);
   }
 
-  console.log(data?.Post);
+  // console.log(data?.Post);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -65,7 +68,7 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={data?.Post}
+            data={posts}
             keyExtractor={(item) => item?.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}

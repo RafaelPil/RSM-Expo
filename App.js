@@ -1,11 +1,9 @@
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import AuthStack from "./src/navigation/AuthStack";
-
-import { NhostClient, NhostReactProvider } from "@nhost/react";
+import { NhostClient, NhostProvider, NhostReactProvider } from "@nhost/react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { NhostApolloProvider } from "@nhost/react-apollo";
+import Navigation from "./src/navigation/AuthStack";
 
 const nhost = new NhostClient({
   subdomain: "cqdfqhvzqoncuuocckvj",
@@ -14,22 +12,12 @@ const nhost = new NhostClient({
   clientStorage: SecureStore,
 });
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: "transparen",
-  },
-};
-
 export default function App() {
   return (
     <SafeAreaProvider>
       <NhostReactProvider nhost={nhost}>
         <NhostApolloProvider nhost={nhost}>
-          <NavigationContainer theme={theme}>
-            <AuthStack />
-          </NavigationContainer>
+          <Navigation />
         </NhostApolloProvider>
       </NhostReactProvider>
     </SafeAreaProvider>
