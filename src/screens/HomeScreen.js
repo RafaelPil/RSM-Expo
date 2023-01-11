@@ -13,9 +13,9 @@ import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
-import { gql, useSubscription } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 
-const GetPosts = gql`
+const GET_ALL_POSTS_INFO = gql`
   subscription getAllPostsInfo {
     Post {
       city
@@ -36,34 +36,17 @@ const GetPosts = gql`
 `;
 
 const HomeScreen = () => {
-  const { data, loading, error } = useSubscription(GetPosts);
+  const { data, loading, error } = useSubscription(GET_ALL_POSTS_INFO);
   const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
   //   if (data) {
-  //     setPosts(data);
+  //     setPosts(data?.Post);
   //   }
-  // }, [data]);
-
-  // console.log(posts?.Post);
+  // }, [data, data?.Post]);
+  // console.log(data);
 
   const navigation = useNavigation();
-
-  const handleSearch = (value) => {
-    if (!value.length) {
-      return setData(dummyPosts);
-    }
-
-    const filteredData = data.filter((item) =>
-      item.aprasymas.toLowerCase().includes(value.toLowerCase())
-    );
-
-    if (filteredData.length) {
-      setData(filteredData);
-    } else {
-      setData(dummyPosts);
-    }
-  };
 
   if (loading) {
     return <ActivityIndicator />;
@@ -73,7 +56,7 @@ const HomeScreen = () => {
     Alert.alert("Problema su serveriu", error.message);
   }
 
-  //console.log(data.Post);
+  console.log(data?.Post);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -83,10 +66,10 @@ const HomeScreen = () => {
         <View style={{ zIndex: 0 }}>
           <FlatList
             data={data?.Post}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
+            ListHeaderComponent={<HomeHeader />}
           />
         </View>
       </View>

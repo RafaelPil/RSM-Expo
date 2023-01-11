@@ -7,7 +7,7 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const GET_ALL_POSTS_INFO = gql`
-  subscription getPostByUserId($userId: uuid!) {
+  subscription getSavedPostByUserId($userId: uuid!) {
     LikedPost(where: { userId: { _eq: $userId } }) {
       id
       postId

@@ -6,13 +6,13 @@ import {
   StyleSheet,
   Pressable,
   Image,
-} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, SHADOWS, SIZES} from '../constants';
+} from "react-native";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { COLORS, SHADOWS, SIZES } from "../constants";
 
-const MyPostComponent = ({data}) => {
+const MyPostComponent = ({ data }) => {
   const navigation = useNavigation();
   const width = useWindowDimensions().width;
 
@@ -20,58 +20,59 @@ const MyPostComponent = ({data}) => {
   const [likeState, setLikeState] = useState(false);
   const id = data.id;
 
-  const onLikePress = () => {
-    if (isLiked.includes(id) && likeState === true) {
-      setIsLiked(prev => prev.filter(_id => _id !== id));
-      setLikeState(false);
-    } else {
-      setIsLiked(prev => [...prev, id]);
-      setLikeState(true);
-    }
-  };
+  // const onLikePress = () => {
+  //   if (isLiked.includes(id) && likeState === true) {
+  //     setIsLiked((prev) => prev.filter((_id) => _id !== id));
+  //     setLikeState(false);
+  //   } else {
+  //     setIsLiked((prev) => [...prev, id]);
+  //     setLikeState(true);
+  //   }
+  // };
 
   const toDetails = () => {
-    navigation.navigate('Details', {postId: data.id});
+    navigation.navigate("Details", { postId: data.id });
   };
 
   return (
-    <View style={[styles.container, {width: width}]}>
+    <View style={[styles.container, { width: width }]}>
       <View style={styles.innerContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={onLikePress}
           style={{
             width: 40,
             height: 40,
             backgroundColor: COLORS.white,
-            position: 'absolute',
+            position: "absolute",
             borderRadius: SIZES.extraLarge,
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
             ...SHADOWS.light,
             top: 10,
             right: 10,
-          }}>
+          }}
+        >
           <AntDesign
             name="hearto"
             size={24}
-            color={likeState ? 'red' : 'grey'}
+            color={likeState ? "red" : "grey"}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* Image */}
         <Pressable onPress={toDetails}>
-          <Image style={styles.image} source={{uri: data.img}} />
+          <Image style={styles.image} source={{ uri: data.image }} />
         </Pressable>
 
-        <View style={{flex: 1, marginHorizontal: 10}}>
+        <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{data.aprasymas}</Text>
+          <Text style={styles.bedrooms}>{data.description}</Text>
 
           {/* Type & Description */}
           <Text style={styles.description} numberOfLines={2}>
-            {data.miestas}
+            {data.city}
           </Text>
 
-          <Text style={styles.newPrice}>€{data.kaina}</Text>
+          <Text style={styles.newPrice}>€{data.price}</Text>
         </View>
       </View>
     </View>
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   innerContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    backgroundColor: "#fff",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
 
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -100,25 +101,25 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   image: {
-    height: '100%',
+    height: "100%",
     aspectRatio: 1,
-    resizeMode: 'cover',
+    resizeMode: "cover",
     borderRadius: 10,
   },
   bedrooms: {
     marginVertical: 10,
-    color: '#5b5b5b',
+    color: "#5b5b5b",
   },
   description: {
     fontSize: 15,
   },
   newPrice: {
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
   totalPrice: {
-    color: '#5b5b5b',
-    textDecorationLine: 'underline',
+    color: "#5b5b5b",
+    textDecorationLine: "underline",
   },
 });
 

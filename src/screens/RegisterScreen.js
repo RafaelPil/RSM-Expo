@@ -38,26 +38,17 @@ const RegisterScreen = () => {
     if (isLoading) {
       return;
     }
-
-    const { name, email, password, phone } = data;
-    // sign up
-    const { error, isSuccess, needsEmailVerification } =
-      await signUpEmailPassword(email, password, {
-        displayName: name.trim(),
-        metadata: { name, phone },
-      });
-
+    const { name, email, password, isSuccess } = data;
+    const { error } = await signUpEmailPassword(email, password, {
+      displayName: name.trim(),
+      metadata: { name },
+    });
     if (error) {
-      Alert.alert("Atsiprašome", error.message);
+      Alert.alert("Oops", error.message);
     }
-
-    if (needsEmailVerification) {
-      Alert.alert("Patvirtink savo el. pašta", error.message);
+    if (isSuccess) {
+      navigation.navigate("SignIn");
     }
-
-    // if (isSuccess) {
-    //   Alert.alert("pavyko");
-    // }
   };
 
   return (

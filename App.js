@@ -7,7 +7,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { NhostApolloProvider } from "@nhost/react-apollo";
 
-
 const nhost = new NhostClient({
   subdomain: "cqdfqhvzqoncuuocckvj",
   region: "eu-central-1",
