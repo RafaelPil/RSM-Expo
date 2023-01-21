@@ -29,14 +29,10 @@ export default function Navigation() {
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
-  const { isAuthenticated, isLoading, error } = useAuthenticationStatus();
+  const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
   if (isLoading) {
     return <ActivityIndicator />;
-  }
-
-  if (error) {
-    Alert.alert("Kazkas ne to Login");
   }
 
   if (!isAuthenticated) {

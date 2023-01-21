@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
-    "@nhost/react": "^0.15.1",
-    "@nhost/react-apollo": "^4.9.1",
+    "@nhost/react": "^0.17.0",
+    "@nhost/react-apollo": "^4.13.2",
     "@react-navigation/drawer": "^6.5.3",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",

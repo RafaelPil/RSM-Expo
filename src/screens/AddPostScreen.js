@@ -6,6 +6,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   Image,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
@@ -16,14 +17,63 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Animated from "react-native-reanimated";
 import { createRef } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { gql, useMutation } from "@apollo/client";
+import { useUserId } from "@nhost/react";
+
+const MUTATION_ADD_POST = gql`
+  mutation AddPost(
+    $userId: uuid!
+    $city: String!
+    $description: String!
+    $image: String!
+    $price: String!
+    $title: String!
+    $date: timestamptz!
+  ) {
+    insert_Post_one(
+      object: {
+        userId: $userId
+        city: $city
+        description: $description
+        image: $image
+        price: $price
+        title: $title
+        date: $date
+      }
+    ) {
+      city
+      description
+      id
+      image
+      price
+      title
+      userId
+      date
+    }
+  }
+`;
 
 const AddPost = () => {
   const navigation = useNavigation();
   const [data, setData] = useState(dummyPosts);
+  const userId = useUserId();
+
+  // setting timestampz time
+  const now = new Date();
+  const timestamp = now.toISOString();
+  // console.log(timestamp);
+
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [city, setCity] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUri, setImageUri] = useState("");
 
   const { height, width } = useWindowDimensions();
 
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+
+  const [mutation_addPost] = useMutation(MUTATION_ADD_POST);
 
   useEffect(() => {
     (async () => {
@@ -52,34 +102,52 @@ const AddPost = () => {
     return <Text>No access to Internal Storage</Text>;
   }
 
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [city, setCity] = useState("");
-  const [longDesc, setLongDesc] = useState("");
-  const [imageUri, setImageUri] = useState(
-    "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
-  );
-
-  const addPost = () => {
-    const newPost = {
-      id: Math.random(),
-      aprasymas: title,
-      detalusAprasymas: longDesc,
-      kaina: price,
-      miestas: city,
-    };
-    setData([...data, newPost]);
-    navigation.navigate("Pagrindinis");
-    setTitle("");
-    setPrice("");
-    setCity("");
-    setLongDesc("");
-    setImageUri(
-      "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
-    );
-    console.log("Success");
-    console.log(title);
+  const addNewPost = async () => {
+    try {
+      await mutation_addPost({
+        variables: {
+          userId: userId,
+          city: city,
+          description: description,
+          price: price,
+          image: imageUri,
+          title: title,
+          date: timestamp,
+        },
+      });
+      navigation.navigate("Pagrindinis");
+      setTitle("");
+      setPrice("");
+      setCity("");
+      setDescription("");
+      setImageUri(
+        "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
+      );
+    } catch (e) {
+      Alert.alert(e, "Serverio klaida");
+    }
   };
+
+  // const addPost = () => {
+  //   const newPost = {
+  //     id: Math.random(),
+  //     aprasymas: title,
+  //     detalusAprasymas: longDesc,
+  //     kaina: price,
+  //     miestas: city,
+  //   };
+  //   setData([...data, newPost]);
+  //   navigation.navigate("Pagrindinis");
+  //   setTitle("");
+  //   setPrice("");
+  //   setCity("");
+  //   setLongDesc("");
+  //   setImageUri(
+  //     "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
+  //   );
+  //   console.log("Success");
+  //   console.log(title);
+  // };
 
   return (
     <SafeAreaView>
@@ -88,7 +156,7 @@ const AddPost = () => {
         <View style={styles.container}>
           <TextInput
             placeholder="Aprasymas"
-            value={title}
+            value={title.toString()}
             onChangeText={(text) => setTitle(text)}
           />
         </View>
@@ -111,8 +179,8 @@ const AddPost = () => {
         <View style={styles.container}>
           <TextInput
             placeholder="Issamus aprasymas"
-            value={longDesc}
-            onChangeText={(text) => setLongDesc(text)}
+            value={description}
+            onChangeText={(text) => setDescription(text)}
           />
         </View>
 
@@ -159,7 +227,10 @@ const AddPost = () => {
           </Pressable>
         </View>
 
-        <Pressable style={[styles.btnContainer, { width: width - 40 }]}>
+        <Pressable
+          style={[styles.btnContainer, { width: width - 40 }]}
+          onPress={addNewPost}
+        >
           <Text style={{ fontSize: 14, color: COLORS.white }}>
             ĮDĖTI SKELBIMĄ
           </Text>

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
@@ -17,6 +18,26 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 
 const GET_ALL_POSTS_INFO = gql`
   subscription {
+    Post(order_by: { date: asc }) {
+      city
+      date
+      id
+      title
+      image
+      price
+      description
+      LikedPost {
+        id
+        postId
+        userId
+        liked
+      }
+    }
+  }
+`;
+
+const QUERY_ALL_POSTS_INFO = gql`
+  query {
     Post {
       city
       date
@@ -37,17 +58,18 @@ const GET_ALL_POSTS_INFO = gql`
 
 const HomeScreen = () => {
   const { data, loading, error } = useSubscription(GET_ALL_POSTS_INFO);
+  // const { data, loading, error } = useQuery(QUERY_ALL_POSTS_INFO);
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    if (data) {
-      setPosts(data?.Post);
-    }
-    if (!data) {
-      return;
-    }
-  }, [data, data?.Post]);
-  console.log(data);
+  // if (data) {
+  //   setPosts(data?.Post);
+  // }
+
+  // useEffect(() => {
+  //   if (!data) {
+  //     return data;
+  //   }
+  // }, [data, data?.Post]);
 
   const navigation = useNavigation();
 
@@ -68,8 +90,8 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={posts}
-            keyExtractor={(item) => item?.id}
+            data={data?.Post}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<HomeHeader />}

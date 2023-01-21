@@ -47,9 +47,9 @@ const RegisterScreen = () => {
     if (error) {
       Alert.alert("Oops", error.message);
     }
-    if (isSuccess) {
-      navigation.navigate("SignIn");
-    }
+    // if (isSuccess) {
+    //   navigation.navigate("SignIn");
+    // }
   };
 
   return (

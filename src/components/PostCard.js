@@ -51,11 +51,13 @@ const PostCard = (props) => {
   const [liked, setLiked] = useState(false);
 
   const navigation = useNavigation();
-  const id = postData?.id;
+  const id = data?.id;
   const userId = useUserId();
 
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
+
+  // console.log(id);
 
   // useEffect(() => {
   //   if (data) {
