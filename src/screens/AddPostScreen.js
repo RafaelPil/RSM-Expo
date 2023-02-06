@@ -18,7 +18,7 @@ import Animated from "react-native-reanimated";
 import { createRef } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { gql, useMutation } from "@apollo/client";
-import { useUserId } from "@nhost/react";
+import { useFileUpload, useUserId } from "@nhost/react";
 
 const MUTATION_ADD_POST = gql`
   mutation AddPost(
@@ -68,6 +68,20 @@ const AddPost = () => {
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
   const [imageUri, setImageUri] = useState("");
+  const [file, setFile] = useState(null);
+
+  const {
+    add,
+    upload,
+    cancel,
+    isUploaded,
+    isUploading,
+    isError,
+    progress,
+    id,
+    bucketId,
+    name,
+  } = useFileUpload();
 
   const { height, width } = useWindowDimensions();
 

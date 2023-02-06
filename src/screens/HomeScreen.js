@@ -18,7 +18,7 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 
 const GET_ALL_POSTS_INFO = gql`
   subscription {
-    Post(order_by: { date: asc }) {
+    Post(order_by: { date: desc }) {
       city
       date
       id
