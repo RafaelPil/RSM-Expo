@@ -7,12 +7,13 @@ export const ChatContext = createContext({});
 const ChatContectProvider = ({ children }) => {
   // component
   const [chatClient, setChatClient] = useState();
+  const [isConnected, setIsConnected] = useState(false);
 
   const user = useUserData();
 
   useEffect(() => {
     const initChat = async () => {
-      if (!user) {
+      if (!user || isConnected) {
         return;
       }
 
@@ -30,18 +31,23 @@ const ChatContectProvider = ({ children }) => {
       );
 
       setChatClient(client);
+      setIsConnected(true);
+
+      const globalChannel = client.channel("livestream", "global", {
+        name: "RSM",
+      });
+
+      await globalChannel.watch();
     };
 
     initChat();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     return () => {
-      if (chatClient) {
-        chatClient.disconnectUser();
-      }
+      chatClient?.disconnectUser();
     };
-  }, []);
+  }, [chatClient]);
 
   const value = { username: "Veikia.lt" };
 
