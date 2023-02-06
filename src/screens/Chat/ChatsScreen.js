@@ -1,14 +1,21 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { useChatContext } from "../../../context/ChatContext";
+import { ChannelList } from "stream-chat-expo";
+import { Channel } from "stream-chat";
+import { useNavigation } from "@react-navigation/native";
 
 const ChatsScreen = () => {
-  const { username } = useChatContext();
-  return (
-    <View>
-      <Text>{username}</Text>
-    </View>
-  );
+  const { setCurrentChannel } = useChatContext();
+
+  const navigation = useNavigation();
+
+  const onSelect = (channel) => {
+    setCurrentChannel(channel);
+    navigation.navigate("ChatRoom");
+  };
+
+  return <ChannelList onSelect={onSelect} />;
 };
 
 export default ChatsScreen;
