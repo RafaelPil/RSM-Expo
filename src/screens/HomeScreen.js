@@ -100,7 +100,7 @@ const HomeScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Messages")}
+        onPress={() => navigation.navigate("Chat")}
         style={styles.chatContainer}
       >
         <View style={styles.chatInContainer}>
