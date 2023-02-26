@@ -14,11 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponent from "../components/HeaderComponent";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Animated from "react-native-reanimated";
-import { createRef } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { gql, useMutation } from "@apollo/client";
-import { useFileUpload, useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/react";
 
 const MUTATION_ADD_POST = gql`
   mutation AddPost(
@@ -68,34 +66,12 @@ const AddPost = () => {
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
   const [imageUri, setImageUri] = useState("");
-  const [file, setFile] = useState(null);
-
-  const {
-    add,
-    upload,
-    cancel,
-    isUploaded,
-    isUploading,
-    isError,
-    progress,
-    id,
-    bucketId,
-    name,
-  } = useFileUpload();
 
   const { height, width } = useWindowDimensions();
 
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
 
   const [mutation_addPost] = useMutation(MUTATION_ADD_POST);
-
-  useEffect(() => {
-    (async () => {
-      const galleryStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === "granted");
-    })();
-  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

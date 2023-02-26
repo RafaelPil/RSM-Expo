@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import CustomInput from "../components/CustomInput";
 import { useSignInEmailPassword } from "@nhost/react";
+import { Alert } from "react-native";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -44,10 +45,8 @@ const LoginScreen = () => {
       return;
     }
     const { email, password } = data;
-    const { error, needsEmailVerification } = await signInEmailPassword(
-      email,
-      password
-    );
+    const { error, needsEmailVerification, isSuccess } =
+      await signInEmailPassword(email, password);
 
     if (error) {
       Alert.alert("Atsiprašome", error.message);
@@ -57,9 +56,9 @@ const LoginScreen = () => {
       Alert.alert("Patvirtink savo el. pašta", error.message);
     }
 
-    // if (isSuccess) {
-    //   navigation.navigate("Home");
-    // }
+    if (isSuccess) {
+      navigation.navigate("Home");
+    }
   };
 
   return (

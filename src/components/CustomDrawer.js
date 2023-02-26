@@ -8,11 +8,12 @@ import { assets, COLORS, SIZES } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { useSignOut } from "@nhost/react";
+import { useSignOut, useAuthenticated } from "@nhost/react";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const { signOut } = useSignOut();
+  const isAuthenticated = useAuthenticated();
 
   const logout = async () => {
     await signOut();

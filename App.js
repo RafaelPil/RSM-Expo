@@ -18,11 +18,11 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <NhostReactProvider nhost={nhost}>
+        <NhostProvider nhost={nhost}>
           <NhostApolloProvider nhost={nhost}>
             <Navigation />
           </NhostApolloProvider>
-        </NhostReactProvider>
+        </NhostProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

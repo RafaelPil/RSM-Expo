@@ -16,7 +16,7 @@ import { useState } from "react";
 import FIlterSearch from "../modals/FIlterSearch";
 import { useUserDisplayName } from "@nhost/react";
 
-const HomeHeader = ({ onSearch }) => {
+const HomeHeader = ({ onSearch, onRefresh }) => {
   const [openModal, setOpenModal] = useState(false);
   const navigation = useNavigation();
 
@@ -100,6 +100,9 @@ const HomeHeader = ({ onSearch }) => {
           <FIlterSearch openModal={openModal} setOpenModal={setOpenModal} />
         </View>
       </View>
+      {/* <TouchableOpacity onPress={onRefresh}>
+        <Text>Refresh</Text>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };

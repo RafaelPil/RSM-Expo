@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { COLORS, SHADOWS, SIZES, assets } from "../constants";
 import { PostTitle } from "./PostInfo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const LikePostMutation = gql`
@@ -45,6 +45,17 @@ const RemoveLikedPostMutation = gql`
   }
 `;
 
+const GET_LIKED_POST_SUBSCR = gql`
+  subscription ($postId: uuid!) {
+    LikedPost(where: { postId: { _eq: $postId } }) {
+      id
+      postId
+      userId
+      liked
+    }
+  }
+`;
+
 const PostCard = (props) => {
   const data = props.data;
   const [postData, setPostData] = useState([]);
@@ -56,26 +67,15 @@ const PostCard = (props) => {
 
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
-
-  // console.log(id);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setPostData(data);
-  //   }
-  // }, [data]);
-
-  // console.log(postData?.LikedPost?.userId);
+  const { data: subscriptionData } = useSubscription(GET_LIKED_POST_SUBSCR, {
+    variables: { postId: id },
+  });
 
   useEffect(() => {
-    if (
-      data &&
-      data?.LikedPost &&
-      data?.LikedPost?.userId.toString().includes(userId)
-    ) {
-      setLiked(data?.LikedPost?.liked === true);
-    }
-  }, [data, userId]);
+    setLiked(
+      subscriptionData?.LikedPost?.some((liked) => liked.userId === userId)
+    );
+  }, [subscriptionData, userId]);
 
   useEffect(() => {
     async function checkIfLiked() {
@@ -83,7 +83,7 @@ const PostCard = (props) => {
     }
 
     checkIfLiked();
-  }, [data, userId]);
+  }, [data]);
 
   const onLikePressed = async () => {
     // console.warn("paspaudziau like");

@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 
 const GET_ALL_POSTS_INFO = gql`
-  subscription {
+  query {
     Post(order_by: { date: desc }) {
       city
       date
@@ -36,40 +36,26 @@ const GET_ALL_POSTS_INFO = gql`
   }
 `;
 
-const QUERY_ALL_POSTS_INFO = gql`
-  query {
-    Post {
-      city
-      date
-      id
-      title
-      image
-      price
-      description
-      LikedPost {
-        id
-        postId
-        userId
-        liked
-      }
-    }
-  }
-`;
-
 const HomeScreen = () => {
-  const { data, loading, error } = useSubscription(GET_ALL_POSTS_INFO);
-  // const { data, loading, error } = useQuery(QUERY_ALL_POSTS_INFO);
+  const { data, loading, error, refetch } = useQuery(GET_ALL_POSTS_INFO);
   const [posts, setPosts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   // if (data) {
   //   setPosts(data?.Post);
   // }
 
-  // useEffect(() => {
-  //   if (!data) {
-  //     return data;
-  //   }
-  // }, [data, data?.Post]);
+  useEffect(() => {
+    if (data) {
+      setPosts(data);
+    }
+  }, [data]);
 
   const navigation = useNavigation();
 
@@ -90,10 +76,12 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={data?.Post}
+            data={posts?.Post}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             ListHeaderComponent={<HomeHeader />}
           />
         </View>

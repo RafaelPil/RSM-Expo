@@ -8,36 +8,40 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import { useUserData, useSignOut } from "@nhost/react";
+import { useUserData, useSignOut, useAuthenticated } from "@nhost/react";
 import HeaderComponent from "../components/HeaderComponent";
-import { COLORS } from "../constants";
-
-//const user = users[0];
 
 export default function TabTwoScreen() {
   const user = useUserData();
-  //console.log(JSON.stringify(user, null, 2));
   const { signOut } = useSignOut();
+  const isAuthenticated = useAuthenticated();
 
   console.log(user);
-
   const logout = async () => {
     await signOut();
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <HeaderComponent headerTitle={"Profilis"} />
-      <View style={styles.container}>
-        <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
-        <Text style={styles.name}>{user?.displayName}</Text>
-        <View style={{ marginTop: "auto" }}>
-          <Pressable onPress={logout}>
-            <Text>Atsijungti</Text>
-          </Pressable>
+  if (isAuthenticated) {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <HeaderComponent headerTitle={"Profilis"} />
+        <View style={styles.container}>
+          <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
+          <Text style={styles.name}>{user?.displayName}</Text>
+          <View style={{ marginTop: "auto" }}>
+            <Pressable onPress={() => signOut()}>
+              <Text>Atsijungti</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <View>
+      <Text>Ne Autorizuotas</Text>
+    </View>
   );
 }
 

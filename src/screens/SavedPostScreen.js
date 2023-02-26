@@ -5,6 +5,7 @@ import SavedPostComponent from "../components/SavedPostComponent";
 import HeaderComponent from "../components/HeaderComponent";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+import { Alert } from "react-native";
 
 const GET_ALL_POSTS_INFO = gql`
   subscription getSavedPostByUserId($userId: uuid!) {
@@ -40,6 +41,11 @@ const SavedPostScreen = ({ isLiked }) => {
   if (error) {
     Alert.alert("Serverio klaida", error.message);
   }
+
+  const handleRefresh = async () => {
+    console.warn("refetch");
+    await refetch();
+  };
 
   // useEffect(() => {}, [data]);
 
