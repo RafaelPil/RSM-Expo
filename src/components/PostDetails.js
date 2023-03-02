@@ -4,25 +4,19 @@ import {
   SafeAreaView,
   Image,
   StatusBar,
-  TouchableOpacity,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import { COLORS, SHADOWS, SIZES, assets } from "../constants";
-import {
-  FocusedStatusBar,
-  RectButton,
-  ChatButton,
-  CircleButton,
-} from "../components";
+import { COLORS, SIZES, assets } from "../constants";
+import { FocusedStatusBar, CircleButton } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { LikedPeople } from "./PostInfo";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+import { ChatContext, useChatContext } from "../../context/ChatContext";
 
 const LikePostMutation = gql`
   mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
@@ -157,6 +151,10 @@ const PostDetails = ({ post }) => {
   //console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
 
+  const postUserId = postData?.userId;
+  //console.log(postUserId);
+  const { startDMChatRoom } = useContext(ChatContext);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FocusedStatusBar
@@ -177,13 +175,18 @@ const PostDetails = ({ post }) => {
           alignItems: "center",
         }}
       >
-        <RectButton
+        {/* <RectButton
           minWidth={170}
           fontSize={SIZES.large}
           {...SHADOWS.dark}
           tel={`+370 ${postData?.user?.metadata.phone}`}
-        />
-        <ChatButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark} />
+        /> */}
+        <Pressable
+          style={styles.chatButton}
+          onPress={() => startDMChatRoom(postUserId)}
+        >
+          <Text style={styles.chatButtonText}>Pokalbis</Text>
+        </Pressable>
       </View>
 
       <PostDetailsHeader post={postData} />
@@ -257,6 +260,18 @@ const styles = StyleSheet.create({
     backgroundColor: "gainsboro",
     justifyContent: "center",
     alignItems: "center",
+  },
+  chatButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.extraLarge,
+    minWidth: 170,
+    padding: SIZES.small,
+  },
+  chatButtonText: {
+    fontSize: SIZES.large,
+    color: COLORS.white,
+    textAlign: "center",
+    fontWeight: "500",
   },
 });
 

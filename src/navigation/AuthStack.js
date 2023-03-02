@@ -10,6 +10,7 @@ import UsersModal from "../modals/UsersModal";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { SignedIn, useAuthenticationStatus } from "@nhost/react";
 import ChatStackNavigator from "./ChatStackNavigator";
+import ChatContectProvider from "../../context/ChatContext";
 
 const theme = {
   ...DefaultTheme,
@@ -51,17 +52,19 @@ function AuthStack() {
   }
 
   return (
-    <SignedIn>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={DrawerStack} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="UsersModal" component={UsersModal} />
-        <Stack.Screen name="Chat" component={ChatStackNavigator} />
-      </Stack.Navigator>
-    </SignedIn>
+    <ChatContectProvider>
+      <SignedIn>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Home" component={DrawerStack} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="UsersModal" component={UsersModal} />
+          <Stack.Screen name="Chat" component={ChatStackNavigator} />
+        </Stack.Navigator>
+      </SignedIn>
+    </ChatContectProvider>
   );
 }

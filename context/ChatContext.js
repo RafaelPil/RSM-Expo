@@ -1,4 +1,5 @@
 import { useUserData } from "@nhost/react";
+import { useNavigation } from "@react-navigation/native";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { StreamChat, Channel } from "stream-chat";
@@ -6,13 +7,14 @@ import { OverlayProvider, Chat } from "stream-chat-expo";
 
 export const ChatContext = createContext({});
 
-const ChatContectProvider = ({ children }) => {
+const ChatContextProvider = ({ children }) => {
   // component
   const [chatClient, setChatClient] = useState();
   const [currentChannel, setCurrentChannel] = useState();
   const [isConnected, setIsConnected] = useState(false);
 
   const user = useUserData();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const initChat = async () => {
@@ -54,11 +56,23 @@ const ChatContectProvider = ({ children }) => {
     };
   }, [chatClient]);
 
+  const startDMChatRoom = (id) => {
+    if (!chatClient) {
+      return;
+    }
+    console.warn("Starting a Private Chatroom");
+  };
+
   if (!chatClient) {
     return <ActivityIndicator />;
   }
 
-  const value = { currentChannel, setCurrentChannel, chatClient };
+  const value = {
+    currentChannel,
+    setCurrentChannel,
+    chatClient,
+    startDMChatRoom,
+  };
   return (
     <OverlayProvider>
       <Chat client={chatClient}>
@@ -70,4 +84,4 @@ const ChatContectProvider = ({ children }) => {
 
 export const useChatContext = () => useContext(ChatContext);
 
-export default ChatContectProvider;
+export default ChatContextProvider;

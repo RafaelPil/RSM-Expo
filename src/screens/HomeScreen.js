@@ -26,6 +26,7 @@ const GET_ALL_POSTS_INFO = gql`
       image
       price
       description
+      userId
       LikedPost {
         id
         postId
