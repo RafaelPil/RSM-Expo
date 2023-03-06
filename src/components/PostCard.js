@@ -72,6 +72,12 @@ const PostCard = (props) => {
   });
 
   useEffect(() => {
+    if (postData?.LikedPost?.userId === userId) {
+      setLiked(postData?.LikedPost?.liked === true);
+    }
+  }, [postData]);
+
+  useEffect(() => {
     setLiked(
       subscriptionData?.LikedPost?.some((liked) => liked.userId === userId)
     );

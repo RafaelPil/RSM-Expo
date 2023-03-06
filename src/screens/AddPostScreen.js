@@ -17,6 +17,17 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+import firebaseConfig from "../../firebaseConfig";
+import { initializeApp } from "firebase/app";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+
+initializeApp(firebaseConfig);
 
 const MUTATION_ADD_POST = gql`
   mutation AddPost(
@@ -84,7 +95,35 @@ const AddPost = () => {
     console.log(result);
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        "images/" + new Date().getTime() + ".jpg"
+      );
+      const response = await fetch(result.uri);
+      const blob = await response.blob();
+
+      // Upload the image to Firebase Storage
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+        (error) => {
+          console.log("Error uploading image:", error);
+        },
+        () => {
+          // Get the download URL of the uploaded image
+          getDownloadURL(storageRef).then((url) => {
+            console.log("Image URL:", url);
+            setImageUri(url);
+          });
+        }
+      );
     }
   };
 
@@ -117,27 +156,6 @@ const AddPost = () => {
       Alert.alert(e, "Serverio klaida");
     }
   };
-
-  // const addPost = () => {
-  //   const newPost = {
-  //     id: Math.random(),
-  //     aprasymas: title,
-  //     detalusAprasymas: longDesc,
-  //     kaina: price,
-  //     miestas: city,
-  //   };
-  //   setData([...data, newPost]);
-  //   navigation.navigate("Pagrindinis");
-  //   setTitle("");
-  //   setPrice("");
-  //   setCity("");
-  //   setLongDesc("");
-  //   setImageUri(
-  //     "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
-  //   );
-  //   console.log("Success");
-  //   console.log(title);
-  // };
 
   return (
     <SafeAreaView>
