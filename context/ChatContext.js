@@ -56,11 +56,19 @@ const ChatContextProvider = ({ children }) => {
     };
   }, [chatClient]);
 
-  const startDMChatRoom = (id) => {
+  const startDMChatRoom = async (postUserId) => {
     if (!chatClient) {
       return;
     }
-    console.warn("Starting a Private Chatroom");
+    // console.warn("Starting a Private Chatroom", postUserId);
+    const newPrivateChannel = chatClient.channel("messaging", {
+      members: [chatClient.userID, postUserId],
+    });
+
+    await newPrivateChannel.watch();
+    setCurrentChannel(newPrivateChannel);
+
+    navigation.replace("ChatRoom");
   };
 
   if (!chatClient) {

@@ -55,10 +55,6 @@ const LoginScreen = () => {
     if (needsEmailVerification) {
       Alert.alert("Patvirtink savo el. pašta", error.message);
     }
-
-    if (isSuccess) {
-      navigation.navigate("Home");
-    }
   };
 
   return (
