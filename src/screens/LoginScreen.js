@@ -58,7 +58,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ marginTop: 5 }}>
+    <SafeAreaView style={{ marginTop: 15 }}>
       <Pressable onPress={moveBack} style={{ padding: 10 }}>
         <Ionicons name="arrow-back-sharp" size={24} color={COLORS.primary} />
       </Pressable>

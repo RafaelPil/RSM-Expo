@@ -4,10 +4,10 @@ import {
   StyleSheet,
   TextInput,
   useWindowDimensions,
-} from 'react-native';
-import React from 'react';
-import {Controller} from 'react-hook-form';
-import {COLORS, SIZES} from '../constants';
+} from "react-native";
+import React from "react";
+import { Controller } from "react-hook-form";
+import { COLORS, SIZES } from "../constants";
 
 const CustomInput = ({
   control,
@@ -17,7 +17,7 @@ const CustomInput = ({
   secureTextEntry,
   keyboardType,
 }) => {
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   return (
     <View>
@@ -25,13 +25,17 @@ const CustomInput = ({
         name={name}
         control={control}
         rules={rules}
-        render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+        render={({
+          field: { value, onChange, onBlur },
+          fieldState: { error },
+        }) => (
           <>
             <View
               style={[
                 styles.container,
-                {borderColor: error ? 'red' : '#e8e8e8'},
-              ]}>
+                { borderColor: error ? "red" : "#e8e8e8" },
+              ]}
+            >
               <TextInput
                 value={value}
                 onChangeText={onChange}
@@ -44,8 +48,9 @@ const CustomInput = ({
             </View>
             {error && (
               <Text
-                style={{color: 'red', alignSelf: 'stretch', marginLeft: 15}}>
-                {error.message || 'Klaida'}
+                style={{ color: "red", alignSelf: "stretch", marginLeft: 15 }}
+              >
+                {error.message || "Klaida"}
               </Text>
             )}
           </>
@@ -57,9 +62,9 @@ const CustomInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
 
-    borderColor: '#e8e8e8',
+    borderColor: "#e8e8e8",
     borderWidth: 1,
     borderRadius: 10,
 
@@ -68,6 +73,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: 50,
     marginHorizontal: 10,
+    alignContent: "center",
+    justifyContent: "center",
   },
   input: {
     color: COLORS.gray,

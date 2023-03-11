@@ -53,7 +53,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ marginTop: 5 }}>
+    <SafeAreaView style={{ marginTop: 15 }}>
       <Pressable onPress={moveBack} style={{ padding: 10 }}>
         <Ionicons name="arrow-back-sharp" size={24} color={COLORS.primary} />
       </Pressable>
@@ -76,7 +76,7 @@ const RegisterScreen = () => {
         }}
       />
 
-      <Text style={styles.text}>Tel. nr</Text>
+      {/* <Text style={styles.text}>Tel. nr</Text>
       <CustomInputPhone
         name="phone"
         placeholder=""
@@ -93,7 +93,7 @@ const RegisterScreen = () => {
             message: "Tokio numerio nera",
           },
         }}
-      />
+      /> */}
 
       <Text style={styles.text}>El. paštas</Text>
       <CustomInput
@@ -140,7 +140,7 @@ const RegisterScreen = () => {
           onPress={handleSubmit(onRegisterPressed)}
         >
           <Text style={{ fontSize: 14 }}>
-            {isLoading ? "Registruojama..." : "Registruotis"}
+            {isLoading ? "Krauna..." : "Registruotis"}
           </Text>
         </Pressable>
       </View>

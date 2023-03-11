@@ -11,69 +11,89 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { COLORS, SHADOWS, SIZES } from "../constants";
+import { Entypo } from "@expo/vector-icons";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
+import { gql, useMutation } from "@apollo/client";
+import { useUserId } from "@nhost/react";
 
-const MyPostComponent = ({ data }) => {
+const MUTATION_DELETE_POST = gql`
+  mutation deletePost($postId: uuid!, $userId: uuid!) {
+    delete_Post(
+      where: { id: { _eq: $postId }, _and: { userId: { _eq: $userId } } }
+    ) {
+      returning {
+        id
+        userId
+      }
+    }
+  }
+`;
+
+const MyPostComponent = ({ postData }) => {
   const navigation = useNavigation();
   const width = useWindowDimensions().width;
+  const id = postData.id;
+  const userId = useUserId();
+  //console.log(id);
 
-  const [isLiked, setIsLiked] = useState([]);
-  const [likeState, setLikeState] = useState(false);
-  const id = data.id;
+  const [deletePost] = useMutation(MUTATION_DELETE_POST, {
+    variables: { postId: id, userId: userId },
+  });
 
-  // const onLikePress = () => {
-  //   if (isLiked.includes(id) && likeState === true) {
-  //     setIsLiked((prev) => prev.filter((_id) => _id !== id));
-  //     setLikeState(false);
-  //   } else {
-  //     setIsLiked((prev) => [...prev, id]);
-  //     setLikeState(true);
-  //   }
-  // };
+  const onDeletePost = async () => {
+    // console.warn("paspaudziau like");
+    await deletePost({ variables: { userId: userId, postId: id } });
+  };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: data.id });
+    navigation.navigate("Details", { postId: id });
   };
 
   return (
     <View style={[styles.container, { width: width }]}>
       <View style={styles.innerContainer}>
-        {/* <TouchableOpacity
-          onPress={onLikePress}
-          style={{
-            width: 40,
-            height: 40,
-            backgroundColor: COLORS.white,
-            position: "absolute",
-            borderRadius: SIZES.extraLarge,
-            alignItems: "center",
-            justifyContent: "center",
-            ...SHADOWS.light,
-            top: 10,
-            right: 10,
-          }}
-        >
-          <AntDesign
-            name="hearto"
-            size={24}
-            color={likeState ? "red" : "grey"}
-          />
-        </TouchableOpacity> */}
         {/* Image */}
         <Pressable onPress={toDetails}>
-          <Image style={styles.image} source={{ uri: data.image }} />
+          <Image style={styles.image} source={{ uri: postData.image }} />
         </Pressable>
 
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{data.description}</Text>
+          <Text style={styles.bedrooms}>{postData.description}</Text>
 
           {/* Type & Description */}
           <Text style={styles.description} numberOfLines={2}>
-            {data.city}
+            {postData.city}
           </Text>
 
-          <Text style={styles.newPrice}>€{data.price}</Text>
+          <Text style={styles.newPrice}>€{postData.price}</Text>
         </View>
+
+        {/* Menu */}
+        <Menu>
+          <MenuTrigger
+            style={{
+              borderRadius: SIZES.extraLarge,
+              width: 40,
+              height: 40,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Entypo name="dots-three-vertical" size={22} color="black" />
+          </MenuTrigger>
+          <MenuOptions>
+            <MenuOption onSelect={() => alert(`Save`)} text="Save" />
+            <MenuOption onSelect={onDeletePost}>
+              <Text style={{ color: "red" }}>Delete</Text>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
       </View>
     </View>
   );

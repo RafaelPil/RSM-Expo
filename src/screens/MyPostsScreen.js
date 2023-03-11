@@ -50,7 +50,7 @@ const MyPostsScreen = () => {
       <FlatList
         data={data?.Post}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MyPostComponent data={item} />}
+        renderItem={({ item }) => <MyPostComponent postData={item} />}
         ListHeaderComponent={<HeaderComponent headerTitle={"Mano skelbimai"} />}
       />
     </SafeAreaView>

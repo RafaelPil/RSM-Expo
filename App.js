@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { NhostApolloProvider } from "@nhost/react-apollo";
 import Navigation from "./src/navigation/AuthStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MenuProvider } from "react-native-popup-menu";
 
 const nhost = new NhostClient({
   subdomain: "cqdfqhvzqoncuuocckvj",
@@ -18,11 +19,13 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <NhostProvider nhost={nhost}>
-          <NhostApolloProvider nhost={nhost}>
-            <Navigation />
-          </NhostApolloProvider>
-        </NhostProvider>
+        <MenuProvider>
+          <NhostProvider nhost={nhost}>
+            <NhostApolloProvider nhost={nhost}>
+              <Navigation />
+            </NhostApolloProvider>
+          </NhostProvider>
+        </MenuProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
