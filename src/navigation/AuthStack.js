@@ -13,6 +13,7 @@ import ChatStackNavigator from "./ChatStackNavigator";
 import ChatContextProvider from "../../context/ChatContext";
 import ChatsScreen from "../screens/Chat/ChatsScreen";
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
+import EditPostScreen from "../screens/EditPostScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -65,38 +66,16 @@ function AuthStack() {
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="UsersModal" component={UsersModal} />
 
-          {/* <Stack.Screen name="Chat" component={ChatStackNavigator} /> */}
           <Stack.Screen
             name="Chats"
             component={ChatsScreen}
             options={{ headerShown: true }}
-            // options={({ navigation }) => ({
-            //   headerRight: () => (
-            //     <Pressable
-            //       onPress={() => navigation.navigate("Users")}
-            //       style={({ pressed }) => ({
-            //         opacity: pressed ? 0.5 : 1,
-            //       })}
-            //     >
-            //       <FontAwesome
-            //         name="users"
-            //         size={25}
-            //         color={"dimgray"}
-            //         style={{ marginRight: 15 }}
-            //       />
-            //     </Pressable>
-            //   ),
-            // })}
           />
           <Stack.Screen
             name="ChatRoom"
             component={ChatRoomScreen}
             options={{ headerShown: true }}
           />
-
-          {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen name="Users" component={UsersModal} />
-          </Stack.Group> */}
         </Stack.Navigator>
       </SignedIn>
     </ChatContextProvider>

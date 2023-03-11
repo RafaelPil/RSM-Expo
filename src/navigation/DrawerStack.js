@@ -11,8 +11,11 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { COLORS, SIZES } from "../constants";
 import ProfileScreen from "../screens/ProfileScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EditPostScreen from "../screens/EditPostScreen";
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 const DrawerStack = () => {
   return (
@@ -79,6 +82,11 @@ const DrawerStack = () => {
             <Entypo name="chat" size={22} color={color} />
           ),
         }}
+      />
+      <Drawer.Screen
+        name="EditPost"
+        component={EditPostScreen}
+        options={{  }}
       />
     </Drawer.Navigator>
   );

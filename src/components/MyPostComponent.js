@@ -34,19 +34,51 @@ const MUTATION_DELETE_POST = gql`
   }
 `;
 
+const MUTATION_EDIT_POST = gql`
+  mutation editPost(
+    $postId: uuid!
+    $userId: uuid!
+    $city: String!
+    $description: String!
+    $image: String!
+    $price: String!
+    $title: String!
+  ) {
+    update_Post(
+      _set: {
+        city: $city
+        description: $description
+        image: $image
+        price: $price
+        title: $title
+      }
+      where: { id: { _eq: $postId }, _and: { userId: { _eq: $userId } } }
+    ) {
+      returning {
+        id
+        city
+        date
+        description
+        image
+        price
+        userId
+        title
+      }
+    }
+  }
+`;
+
 const MyPostComponent = ({ postData }) => {
   const navigation = useNavigation();
   const width = useWindowDimensions().width;
   const id = postData.id;
   const userId = useUserId();
-  //console.log(id);
 
   const [deletePost] = useMutation(MUTATION_DELETE_POST, {
     variables: { postId: id, userId: userId },
   });
 
   const onDeletePost = async () => {
-    // console.warn("paspaudziau like");
     await deletePost({ variables: { userId: userId, postId: id } });
   };
 
@@ -88,9 +120,14 @@ const MyPostComponent = ({ postData }) => {
             <Entypo name="dots-three-vertical" size={22} color="black" />
           </MenuTrigger>
           <MenuOptions>
-            <MenuOption onSelect={() => alert(`Save`)} text="Save" />
+            <MenuOption
+              onSelect={() =>
+                navigation.navigate("EditPost", { postData: postData })
+              }
+              text="Redaguoti"
+            />
             <MenuOption onSelect={onDeletePost}>
-              <Text style={{ color: "red" }}>Delete</Text>
+              <Text style={{ color: "red" }}>Pašalinti</Text>
             </MenuOption>
           </MenuOptions>
         </Menu>
