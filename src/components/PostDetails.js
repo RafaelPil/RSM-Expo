@@ -151,7 +151,7 @@ const PostDetails = ({ post }) => {
   //console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
 
-  const postUserId = postData?.userId;
+  const postUserId = postData?.userId.toString();
   //console.log(postUserId);
   const { startDMChatRoom } = useContext(ChatContext);
 

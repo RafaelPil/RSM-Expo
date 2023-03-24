@@ -3,14 +3,15 @@ import { useNavigation } from "@react-navigation/native";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { StreamChat, Channel } from "stream-chat";
-import { OverlayProvider, Chat } from "stream-chat-expo";
+import { OverlayProvider, Chat, User } from "stream-chat-expo";
 
 export const ChatContext = createContext({});
 
 const ChatContextProvider = ({ children }) => {
+  const client = StreamChat.getInstance("z85nhupyxhkp");
   // component
-  const [chatClient, setChatClient] = useState();
-  const [currentChannel, setCurrentChannel] = useState();
+  const [chatClient, setChatClient] = useState(client);
+  const [currentChannel, setCurrentChannel] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
   const user = useUserData();
@@ -21,8 +22,6 @@ const ChatContextProvider = ({ children }) => {
       if (!user || isConnected) {
         return;
       }
-
-      const client = StreamChat.getInstance("hfuvrfq36x2z");
 
       // get information about the authenticated user
       // connect the user to stream chat
@@ -39,6 +38,7 @@ const ChatContextProvider = ({ children }) => {
       setIsConnected(true);
 
       const globalChannel = client.channel("livestream", "global", {
+        members: { $in: [chatClient.userID] },
         name: "RSM",
         image:
           "https://img.freepik.com/premium-photo/futuristic-cyber-cat-cyberpunk-style-digital-art-style-illustration-painting_743201-3266.jpg",
@@ -68,12 +68,33 @@ const ChatContextProvider = ({ children }) => {
     await newPrivateChannel.watch();
     setCurrentChannel(newPrivateChannel);
 
-    navigation.replace("ChatRoom");
+    navigation.navigate("ChatRoom");
   };
 
   if (!chatClient) {
     return <ActivityIndicator />;
   }
+
+  const queryChannels = async () => {
+    const filter = {
+      type: "messaging",
+      members: { $in: [chatClient.userID] },
+    };
+    const sort = [{ last_message_at: -1 }];
+
+    const channels = await chatClient.queryChannels(filter, sort, {
+      watch: true,
+      state: true,
+    });
+
+    channels.map((channel) => {
+      console.log(channel.data.name, channel.cid);
+    });
+  };
+
+  useEffect(() => {
+    queryChannels();
+  }, [chatClient]);
 
   const value = {
     currentChannel,
