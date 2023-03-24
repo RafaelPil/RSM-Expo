@@ -5,7 +5,7 @@ import { Channel, MessageList, MessageInput } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
 
 const ChatRoomScreen = () => {
-  const { currentChannel } = useChatContext();
+  const { currentChannel, chatClient } = useChatContext();
   const navigation = useNavigation();
 
   useEffect(() => {

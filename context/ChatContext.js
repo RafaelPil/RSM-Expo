@@ -38,7 +38,6 @@ const ChatContextProvider = ({ children }) => {
       setIsConnected(true);
 
       const globalChannel = client.channel("livestream", "global", {
-        members: { $in: [chatClient.userID] },
         name: "RSM",
         image:
           "https://img.freepik.com/premium-photo/futuristic-cyber-cat-cyberpunk-style-digital-art-style-illustration-painting_743201-3266.jpg",
@@ -74,27 +73,6 @@ const ChatContextProvider = ({ children }) => {
   if (!chatClient) {
     return <ActivityIndicator />;
   }
-
-  const queryChannels = async () => {
-    const filter = {
-      type: "messaging",
-      members: { $in: [chatClient.userID] },
-    };
-    const sort = [{ last_message_at: -1 }];
-
-    const channels = await chatClient.queryChannels(filter, sort, {
-      watch: true,
-      state: true,
-    });
-
-    channels.map((channel) => {
-      console.log(channel.data.name, channel.cid);
-    });
-  };
-
-  useEffect(() => {
-    queryChannels();
-  }, [chatClient]);
 
   const value = {
     currentChannel,
