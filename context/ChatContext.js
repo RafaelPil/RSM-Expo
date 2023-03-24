@@ -8,7 +8,7 @@ import { OverlayProvider, Chat, User } from "stream-chat-expo";
 export const ChatContext = createContext({});
 
 const ChatContextProvider = ({ children }) => {
-  const client = StreamChat.getInstance("z85nhupyxhkp");
+  const client = StreamChat.getInstance("99zujztm6rjx");
   // component
   const [chatClient, setChatClient] = useState(client);
   const [currentChannel, setCurrentChannel] = useState(null);
