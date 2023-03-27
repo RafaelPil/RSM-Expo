@@ -7,10 +7,11 @@ import { NhostApolloProvider } from "@nhost/react-apollo";
 import Navigation from "./src/navigation/AuthStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
+import { NHOST_SUBDOMAIN, NHOST_REGION } from "@env";
 
 const nhost = new NhostClient({
-  subdomain: "cqdfqhvzqoncuuocckvj",
-  region: "eu-central-1",
+  subdomain: NHOST_SUBDOMAIN,
+  region: NHOST_REGION,
   clientStorageType: "expo-secure-storage",
   clientStorage: SecureStore,
 });

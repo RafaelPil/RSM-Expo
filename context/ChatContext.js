@@ -4,11 +4,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { StreamChat, Channel } from "stream-chat";
 import { OverlayProvider, Chat, User } from "stream-chat-expo";
+import { STERAMCHAT_KEY } from "@env";
 
 export const ChatContext = createContext({});
 
 const ChatContextProvider = ({ children }) => {
-  const client = StreamChat.getInstance("99zujztm6rjx");
+  const client = StreamChat.getInstance(STERAMCHAT_KEY);
   // component
   const [chatClient, setChatClient] = useState(client);
   const [currentChannel, setCurrentChannel] = useState(null);

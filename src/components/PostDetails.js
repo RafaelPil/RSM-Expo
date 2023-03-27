@@ -7,16 +7,18 @@ import {
   StyleSheet,
   Pressable,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 
-import { COLORS, SIZES, assets } from "../constants";
+import { COLORS, SIZES, assets, SHADOWS } from "../constants";
 import { FocusedStatusBar, CircleButton } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 import { ChatContext, useChatContext } from "../../context/ChatContext";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const LikePostMutation = gql`
   mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
@@ -99,17 +101,16 @@ const PostDetailsHeader = ({ post }) => {
     checkIfLiked();
   }, []);
 
-  // const onLikePressed = async () => {
-  //   console.warn("paspaudziau like");
-  //   if (!liked) {
-  //     await likePost({
-  //       variables: { postId: id, userId: userId, liked: true },
-  //     });
-  //   } else {
-  //     await deleteLike({ variables: { userId: userId, postId: id } });
-  //   }
-  //   setLiked(!liked);
-  // };
+  const onLikePressed = async () => {
+    if (!liked) {
+      await likePost({
+        variables: { postId: id, userId: userId, liked: true },
+      });
+    } else {
+      await deleteLike({ variables: { userId: userId, postId: id } });
+    }
+    setLiked(!liked);
+  };
 
   return (
     <View style={{ width: "100%", height: 373 }}>
@@ -125,7 +126,7 @@ const PostDetailsHeader = ({ post }) => {
         top={StatusBar.currentHeight + 10}
       />
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={onLikePressed}
         style={{
           width: 40,
@@ -141,7 +142,7 @@ const PostDetailsHeader = ({ post }) => {
         }}
       >
         <AntDesign name="hearto" size={24} color={liked ? "red" : "gray"} />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };
