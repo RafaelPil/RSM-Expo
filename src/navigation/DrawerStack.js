@@ -13,6 +13,7 @@ import { COLORS, SIZES } from "../constants";
 import ProfileScreen from "../screens/ProfileScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditPostScreen from "../screens/EditPostScreen";
+import AgendaScreen from "../screens/AgendaScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,6 +75,15 @@ const DrawerStack = () => {
           ),
         }}
       /> */}
+      <Drawer.Screen
+        name="Dienotvarkė"
+        component={AgendaScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Entypo name="calendar" size={22} color={color} />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Profilis"
         component={ProfileScreen}

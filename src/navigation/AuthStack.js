@@ -15,6 +15,8 @@ import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import EditPostScreen from "../screens/EditPostScreen";
 import { COLORS } from "../constants";
+import BookingScreen from "../screens/BookingScreen";
+import AgendaScreen from "../screens/AgendaScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -77,6 +79,30 @@ function AuthStack() {
             name="ChatRoom"
             component={ChatRoomScreen}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="Agenda"
+            component={AgendaScreen}
+            options={{
+              headerShown: true,
+              title: "Dienotvarkė",
+              headerStyle: {
+                backgroundColor: COLORS.primary,
+              },
+              headerTintColor: "#fff",
+            }}
+          />
+          <Stack.Screen
+            name="Booking"
+            component={BookingScreen}
+            options={{
+              headerShown: true,
+              title: "Rezervuoti laika",
+              headerStyle: {
+                backgroundColor: COLORS.primary,
+              },
+              headerTintColor: "#fff",
+            }}
           />
           <Stack.Screen
             name="EditPost"

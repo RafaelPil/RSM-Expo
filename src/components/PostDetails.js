@@ -192,7 +192,7 @@ const PostDetails = ({ post }) => {
         </Pressable>
         <Pressable
           style={styles.chatButton}
-          onPress={() => console.warn("register")}
+          onPress={() => navigation.navigate("Booking")}
         >
           <Text style={styles.chatButtonText}>Registruotis</Text>
         </Pressable>
