@@ -9,11 +9,12 @@ import DetailsScreen from "../screens/DetailsScreen";
 import UsersModal from "../modals/UsersModal";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { SignedIn, useAuthenticationStatus } from "@nhost/react";
-import ChatStackNavigator from "./ChatStackNavigator";
 import ChatContextProvider from "../../context/ChatContext";
 import ChatsScreen from "../screens/Chat/ChatsScreen";
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import EditPostScreen from "../screens/EditPostScreen";
+import { COLORS } from "../constants";
 
 const theme = {
   ...DefaultTheme,
@@ -32,6 +33,7 @@ export default function Navigation() {
 }
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function AuthStack() {
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
@@ -75,6 +77,18 @@ function AuthStack() {
             name="ChatRoom"
             component={ChatRoomScreen}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="EditPost"
+            component={EditPostScreen}
+            options={{
+              headerShown: true,
+              title: "Redaguojamas skelbimas",
+              headerStyle: {
+                backgroundColor: COLORS.primary,
+              },
+              headerTintColor: "#fff",
+            }}
           />
         </Stack.Navigator>
       </SignedIn>

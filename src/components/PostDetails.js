@@ -187,6 +187,12 @@ const PostDetails = ({ post }) => {
         >
           <Text style={styles.chatButtonText}>Pokalbis</Text>
         </Pressable>
+        <Pressable
+          style={styles.chatButton}
+          onPress={() => console.warn("register")}
+        >
+          <Text style={styles.chatButtonText}>Registruotis</Text>
+        </Pressable>
       </View>
 
       <PostDetailsHeader post={postData} />

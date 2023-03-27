@@ -83,11 +83,6 @@ const DrawerStack = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="EditPost"
-        component={EditPostScreen}
-        options={{  }}
-      />
     </Drawer.Navigator>
   );
 };

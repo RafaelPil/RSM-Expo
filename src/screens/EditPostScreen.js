@@ -67,9 +67,7 @@ const EditPostScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const postData = route?.params?.postData;
-  const postImageUri = postData?.image.toString();
 
-  const [data, setData] = useState(dummyPosts);
   const userId = useUserId();
 
   // setting timestampz time
@@ -81,7 +79,7 @@ const EditPostScreen = () => {
   const [price, setPrice] = useState("");
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUri, setImageUri] = useState("");
+  const [imageUri, setImageUri] = useState(route.params?.postData.image);
 
   const { height, width } = useWindowDimensions();
 
@@ -165,7 +163,7 @@ const EditPostScreen = () => {
 
   return (
     <SafeAreaView>
-      <HeaderComponent headerTitle={"Redaguojamas skelbimas"} />
+      {/* <HeaderComponent headerTitle={"Redaguojamas skelbimas"} /> */}
       <View style={{ margin: 20 }}>
         <View style={styles.container}>
           <TextInput
@@ -245,9 +243,7 @@ const EditPostScreen = () => {
           style={[styles.btnContainer, { width: width - 40 }]}
           onPress={editPost}
         >
-          <Text style={{ fontSize: 14, color: COLORS.white }}>
-            ĮDĖTI SKELBIMĄ
-          </Text>
+          <Text style={{ fontSize: 14, color: COLORS.white }}>Skelbti</Text>
         </Pressable>
       </View>
     </SafeAreaView>
