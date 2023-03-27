@@ -15,9 +15,9 @@ import { COLORS, SIZES, assets, SHADOWS } from "../constants";
 import { FocusedStatusBar, CircleButton } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
-import { ChatContext, useChatContext } from "../../context/ChatContext";
+import { ChatContext } from "../../context/ChatContext";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 const LikePostMutation = gql`
@@ -34,26 +34,6 @@ const LikePostMutation = gql`
           id
         }
       }
-    }
-  }
-`;
-
-const UPDATE_LIKE_STATE = gql`
-  mutation CHANGE_LIKE_STATE(
-    $likePost: uuid!
-    $postId: uuid!
-    $userId: uuid!
-    $liked: Boolean!
-  ) {
-    update_LikedPost_by_pk(
-      pk_columns: { id: $likePost }
-      _set: { liked: $liked, userId: $userId, postId: $postId }
-    ) {
-      id
-      liked
-      postId
-      liked
-      userId
     }
   }
 `;
@@ -77,6 +57,17 @@ const RemoveLikedPostMutation = gql`
   }
 `;
 
+const GET_LIKED_POST_SUBSCR = gql`
+  subscription ($postId: uuid!) {
+    LikedPost(where: { postId: { _eq: $postId } }) {
+      id
+      postId
+      userId
+      liked
+    }
+  }
+`;
+
 const PostDetailsHeader = ({ post }) => {
   const navigation = useNavigation();
   const [postData, setPostData] = useState(post);
@@ -87,21 +78,32 @@ const PostDetailsHeader = ({ post }) => {
 
   const [likePost] = useMutation(LikePostMutation);
   const [deleteLike] = useMutation(RemoveLikedPostMutation);
+  const { data: subscriptionData } = useSubscription(GET_LIKED_POST_SUBSCR, {
+    variables: { postId: id },
+  });
 
   useEffect(() => {
-    if (post) {
-      setLiked(post?.LikedPost?.liked);
+    if (postData?.LikedPost?.userId === userId) {
+      setLiked(postData?.LikedPost?.liked === true);
     }
-  }, [post]);
+  }, [postData]);
+
+  useEffect(() => {
+    setLiked(
+      subscriptionData?.LikedPost?.some((liked) => liked.userId === userId)
+    );
+  }, [subscriptionData, userId]);
 
   useEffect(() => {
     async function checkIfLiked() {
-      setLiked(post?.LikedPost?.userId.toString().includes(userId));
+      setLiked(id?.LikedPost?.userId.toString().includes(userId));
     }
+
     checkIfLiked();
   }, []);
 
   const onLikePressed = async () => {
+    // console.warn("paspaudziau like");
     if (!liked) {
       await likePost({
         variables: { postId: id, userId: userId, liked: true },
