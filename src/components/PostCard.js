@@ -89,7 +89,7 @@ const PostCard = (props) => {
     }
 
     checkIfLiked();
-  }, [data]);
+  }, []);
 
   const onLikePressed = async () => {
     // console.warn("paspaudziau like");
