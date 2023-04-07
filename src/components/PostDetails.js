@@ -192,9 +192,11 @@ const PostDetails = ({ post }) => {
         </Pressable>
         <Pressable
           style={styles.chatButton}
-          onPress={() => navigation.navigate("Booking")}
+          onPress={() =>
+            navigation.navigate("Booking", { postUserId: postUserId })
+          }
         >
-          <Text style={styles.chatButtonText}>Registruotis</Text>
+          <Text style={styles.chatButtonText}>Rezevuoti</Text>
         </Pressable>
       </View>
 

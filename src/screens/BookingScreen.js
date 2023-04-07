@@ -9,27 +9,40 @@ import {
 import React, { useState } from "react";
 import HeaderComponent from "../components/HeaderComponent";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
-import { COLORS } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import timePicker from "../constants/timePicker";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRoute } from "@react-navigation/native";
+import { useUserId } from "@nhost/react";
+
+const times = [
+  "9:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
 
 const BookingScreen = () => {
+  const route = useRoute();
+  const userId = useUserId();
+
+  console.log(route.params?.postUserId);
+  console.log(userId);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
 
-  // const currentTime = new Date().toLocaleTimeString("en-US", {
-  //   hour: "numeric",
-  //   minute: "2-digit",
-  //   hour12: true,
-  // });
-  // console.log(currentTime); // e.g. "1:30 PM"
-
   const handleTimePress = (time) => {
-    setSelectedTime(time); // update the selected time state
+    setSelectedTime(time);
   };
 
   const formattedDate = selectedDate.toISOString().slice(0, 10);
-  console.log(formattedDate);
+  console.log(formattedDate + " data");
 
   return (
     <View>
@@ -53,7 +66,7 @@ const BookingScreen = () => {
       <View>
         <FlatList
           numColumns={3}
-          data={timePicker}
+          data={times}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[
@@ -81,6 +94,15 @@ const BookingScreen = () => {
           Pasirinkta data: {formattedDate}, laikas: {selectedTime}
         </Text>
       )}
+
+      <Pressable
+        style={styles.chatButton}
+        onPress={() =>
+          navigation.navigate("Booking", { postUserId: postUserId })
+        }
+      >
+        <Text style={styles.chatButtonText}>Rezevuoti</Text>
+      </Pressable>
     </View>
   );
 };
@@ -105,6 +127,21 @@ const styles = StyleSheet.create({
   },
   selectedTimeTitle: {
     color: "#fff",
+  },
+  chatButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.extraLarge,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginTop: 50,
+  },
+  chatButtonText: {
+    fontSize: SIZES.large,
+    color: COLORS.white,
+    textAlign: "center",
+    fontWeight: "500",
   },
 });
 
