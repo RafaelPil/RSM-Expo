@@ -5,6 +5,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { COLORS, SHADOWS } from "../constants";
 import HeaderComponent from "../components/HeaderComponent";
 import { gql, useQuery } from "@apollo/client";
+import { useUserId } from "@nhost/react";
 
 const GetEvents = gql`
   query getAllEvents {
@@ -22,14 +23,18 @@ const GetEvents = gql`
 const AgendaScreen = () => {
   const { data, loading, error } = useQuery(GetEvents);
   console.log(data?.Event);
+  const userID = useUserId();
 
   const [items, setItems] = useState({});
 
   useEffect(() => {
     if (data && data?.Event) {
       const eventsByDate = {};
+      const filteredEvents = data?.Event.filter(
+        (event) => event.userId === userID
+      );
 
-      data?.Event.forEach((event) => {
+      filteredEvents.forEach((event) => {
         const date = event.date;
         console.log(date);
 
@@ -46,7 +51,7 @@ const AgendaScreen = () => {
       setItems(eventsByDate);
     }
   }, [data]);
-  
+
   const renderItem = (item) => {
     return (
       <View style={styles.itemContainer}>
@@ -81,12 +86,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    height: 80,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
   },
   itemTitle: {
     fontSize: 16,
