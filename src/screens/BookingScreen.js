@@ -12,8 +12,40 @@ import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepic
 import { COLORS, SIZES } from "../constants";
 import timePicker from "../constants/timePicker";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserId } from "@nhost/react";
+import { gql, useMutation } from "@apollo/client";
+
+const ADD_NEW_EVENT_MUTATION = gql`
+  mutation addNewEvent(
+    $name: String!
+    $postUserId: uuid!
+    $time: String!
+    $userId: uuid!
+    $date: String!
+  ) {
+    insert_Event(
+      objects: [
+        {
+          name: $name
+          postUserId: $postUserId
+          time: $time
+          userId: $userId
+          date: $date
+        }
+      ]
+    ) {
+      returning {
+        id
+        name
+        postUserId
+        time
+        userId
+        date
+      }
+    }
+  }
+`;
 
 const times = [
   "9:00",
@@ -30,19 +62,41 @@ const times = [
 const BookingScreen = () => {
   const route = useRoute();
   const userId = useUserId();
+  const navigation = useNavigation();
 
-  console.log(route.params?.postUserId);
+  // console.log(route.params?.postUserId);
+  // console.log(userId);
+  const postTitle = route.params?.postTitle;
+  const postUserId = route.params?.postUserId;
+
+  console.log(postUserId);
   console.log(userId);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
+  const [isTimeSelected, setIsTimeSelected] = useState(false);
+  const [addNewEvent] = useMutation(ADD_NEW_EVENT_MUTATION);
 
   const handleTimePress = (time) => {
     setSelectedTime(time);
+    setIsTimeSelected(true);
   };
 
   const formattedDate = selectedDate.toISOString().slice(0, 10);
-  console.log(formattedDate + " data");
+  // console.log(formattedDate + " data");
+
+  const onRezervationEvent = async () => {
+    await addNewEvent({
+      variables: {
+        name: `Pamoka su ${postTitle}, ${selectedTime} val.`,
+        postUserId: postUserId,
+        time: selectedTime,
+        userId: userId,
+        date: formattedDate,
+      },
+    });
+    navigation.navigate("Dienotvarkė");
+  };
 
   return (
     <View>
@@ -95,14 +149,15 @@ const BookingScreen = () => {
         </Text>
       )}
 
-      <Pressable
-        style={styles.chatButton}
-        onPress={() =>
-          navigation.navigate("Booking", { postUserId: postUserId })
-        }
-      >
-        <Text style={styles.chatButtonText}>Rezevuoti</Text>
-      </Pressable>
+      {isTimeSelected ? (
+        <Pressable style={styles.chatButton} onPress={onRezervationEvent}>
+          <Text style={styles.chatButtonText}>Rezevuoti</Text>
+        </Pressable>
+      ) : (
+        <View style={styles.disabledButton}>
+          <Text style={styles.chatButtonText}>Pasirinkite laiką</Text>
+        </View>
+      )}
     </View>
   );
 };

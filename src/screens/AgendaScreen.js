@@ -22,7 +22,7 @@ const GetEvents = gql`
 
 const AgendaScreen = () => {
   const { data, loading, error } = useQuery(GetEvents);
-  console.log(data?.Event);
+  // console.log(data?.Event);
   const userID = useUserId();
 
   const [items, setItems] = useState({});
@@ -36,7 +36,7 @@ const AgendaScreen = () => {
 
       filteredEvents.forEach((event) => {
         const date = event.date;
-        console.log(date);
+        // console.log(date);
 
         if (!eventsByDate[date]) {
           eventsByDate[date] = [];

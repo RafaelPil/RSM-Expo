@@ -80,23 +80,23 @@ function AuthStack() {
             component={ChatRoomScreen}
             options={{ headerShown: true }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Agenda"
             component={AgendaScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Dienotvarkė",
               headerStyle: {
                 backgroundColor: COLORS.primary,
               },
               headerTintColor: "#fff",
             }}
-          />
+          /> */}
           <Stack.Screen
             name="Booking"
             component={BookingScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Rezervuoti laika",
               headerStyle: {
                 backgroundColor: COLORS.primary,

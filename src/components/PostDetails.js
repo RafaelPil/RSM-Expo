@@ -155,7 +155,8 @@ const PostDetails = ({ post }) => {
   const navigation = useNavigation();
 
   const postUserId = postData?.userId.toString();
-  //console.log(postUserId);
+  const postTitle = post?.title;
+  //console.log(post?.title);
   const { startDMChatRoom } = useContext(ChatContext);
 
   return (
@@ -193,7 +194,10 @@ const PostDetails = ({ post }) => {
         <Pressable
           style={styles.chatButton}
           onPress={() =>
-            navigation.navigate("Booking", { postUserId: postUserId })
+            navigation.navigate("Booking", {
+              postUserId: postUserId,
+              postTitle: postTitle,
+            })
           }
         >
           <Text style={styles.chatButtonText}>Rezevuoti</Text>
