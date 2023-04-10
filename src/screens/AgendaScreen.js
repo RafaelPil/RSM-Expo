@@ -1,14 +1,20 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { Agenda, AgendaEntry } from "react-native-calendars";
 import Entypo from "react-native-vector-icons/Entypo";
 import { COLORS, SHADOWS } from "../constants";
 import HeaderComponent from "../components/HeaderComponent";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 
 const GetEvents = gql`
-  query getAllEvents {
+  subscription getAllEvents {
     Event {
       id
       name
@@ -21,36 +27,29 @@ const GetEvents = gql`
 `;
 
 const AgendaScreen = () => {
-  const { data, loading, error } = useQuery(GetEvents);
-  // console.log(data?.Event);
   const userID = useUserId();
 
   const [items, setItems] = useState({});
+  const { data, loading, error } = useSubscription(GetEvents);
+
+  console.log(data);
 
   useEffect(() => {
-    if (data && data?.Event) {
-      const eventsByDate = {};
-      const filteredEvents = data?.Event.filter(
-        (event) => event.userId === userID
-      );
-
-      filteredEvents.forEach((event) => {
-        const date = event.date;
-        // console.log(date);
-
-        if (!eventsByDate[date]) {
-          eventsByDate[date] = [];
+    if (data) {
+      const newItems = {};
+      data?.Event?.forEach((event) => {
+        if (event.userId === userID || event.postUserId === userID) {
+          const date = event.date;
+          if (newItems[date]) {
+            newItems[date].push(event);
+          } else {
+            newItems[date] = [event];
+          }
         }
-
-        eventsByDate[date].push({
-          name: event.name,
-          time: event.time,
-        });
       });
-
-      setItems(eventsByDate);
+      setItems(newItems);
     }
-  }, [data]);
+  }, [data, userID]);
 
   const renderItem = (item) => {
     return (
@@ -67,6 +66,18 @@ const AgendaScreen = () => {
       </View>
     );
   };
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error on Agenda</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

@@ -96,7 +96,7 @@ function AuthStack() {
             name="Booking"
             component={BookingScreen}
             options={{
-              headerShown: false,
+              headerShown: true,
               title: "Rezervuoti laika",
               headerStyle: {
                 backgroundColor: COLORS.primary,

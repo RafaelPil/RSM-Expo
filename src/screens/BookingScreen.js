@@ -16,6 +16,19 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserId } from "@nhost/react";
 import { gql, useMutation } from "@apollo/client";
 
+const GET_ALL_EVENTS_INFO = gql`
+  query getAllEvents($date: String!, $time: String!) {
+    Event(where: { date: { _eq: $date }, time: { _eq: $time } }) {
+      id
+      name
+      postUserId
+      time
+      userId
+      date
+    }
+  }
+`;
+
 const ADD_NEW_EVENT_MUTATION = gql`
   mutation addNewEvent(
     $name: String!
