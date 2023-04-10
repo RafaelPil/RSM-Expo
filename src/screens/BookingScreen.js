@@ -13,7 +13,7 @@ import { COLORS, SIZES } from "../constants";
 import timePicker from "../constants/timePicker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useUserId } from "@nhost/react";
+import { useUserData, useUserId } from "@nhost/react";
 import { gql, useMutation } from "@apollo/client";
 
 const GET_ALL_EVENTS_INFO = gql`
@@ -76,14 +76,17 @@ const BookingScreen = () => {
   const route = useRoute();
   const userId = useUserId();
   const navigation = useNavigation();
+  const userData = useUserData();
 
   // console.log(route.params?.postUserId);
   // console.log(userId);
   const postTitle = route.params?.postTitle;
   const postUserId = route.params?.postUserId;
+  const userName = userData.displayName;
+  // console.log(userName);
 
-  console.log(postUserId);
-  console.log(userId);
+  // console.log(postUserId);
+  // console.log(userId);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
@@ -101,7 +104,7 @@ const BookingScreen = () => {
   const onRezervationEvent = async () => {
     await addNewEvent({
       variables: {
-        name: `Pamoka su ${postTitle}, ${selectedTime} val.`,
+        name: `Pamoka pas ${postTitle}, ${selectedTime} val. Mokinys ${userName}`,
         postUserId: postUserId,
         time: selectedTime,
         userId: userId,
