@@ -16,11 +16,12 @@ import { useState } from "react";
 import FIlterSearch from "../modals/FIlterSearch";
 import { useUserDisplayName } from "@nhost/react";
 
-const HomeHeader = ({ onSearch, onRefresh }) => {
+const HomeHeader = ({ onSearch }) => {
   const [openModal, setOpenModal] = useState(false);
   const navigation = useNavigation();
 
   const userName = useUserDisplayName();
+
 
   return (
     <SafeAreaView

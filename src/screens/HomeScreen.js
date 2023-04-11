@@ -41,6 +41,7 @@ const HomeScreen = () => {
   const { data, loading, error, refetch } = useQuery(GET_ALL_POSTS_INFO);
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -68,7 +69,15 @@ const HomeScreen = () => {
     Alert.alert("Problema su serveriu", error.message);
   }
 
-  // console.log(data?.Post);
+  // console.log(posts?.Post?.title);
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+  };
+
+  const filteredPosts = posts?.Post?.filter((post) =>
+    post.title.toLowerCase().includes(searchValue)
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -77,13 +86,13 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={posts?.Post}
+            data={filteredPosts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}
             refreshing={refreshing}
             onRefresh={onRefresh}
-            ListHeaderComponent={<HomeHeader />}
+            ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
           />
         </View>
       </View>
