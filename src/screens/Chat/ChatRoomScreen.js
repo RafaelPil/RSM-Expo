@@ -12,6 +12,8 @@ const ChatRoomScreen = () => {
     navigation.setOptions({ title: currentChannel?.data?.name || "Channel" });
   }, [currentChannel?.data?.name]);
 
+  console.log(currentChannel);
+
   return (
     <Channel channel={currentChannel}>
       <MessageList />

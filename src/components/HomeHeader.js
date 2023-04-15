@@ -22,7 +22,6 @@ const HomeHeader = ({ onSearch }) => {
 
   const userName = useUserDisplayName();
 
-
   return (
     <SafeAreaView
       style={{
@@ -69,6 +68,7 @@ const HomeHeader = ({ onSearch }) => {
             flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: SIZES.small,
+            paddingVertical: 6,
           }}
         >
           <AntDesign
@@ -86,7 +86,7 @@ const HomeHeader = ({ onSearch }) => {
             style={{ flex: 1 }}
             onChangeText={onSearch}
           />
-          <FontAwesome
+          {/* <FontAwesome
             name="sliders"
             size={20}
             color={COLORS.white}
@@ -96,7 +96,7 @@ const HomeHeader = ({ onSearch }) => {
               alignItems: "center",
             }}
             onPress={() => setOpenModal(true)}
-          />
+          /> */}
 
           <FIlterSearch openModal={openModal} setOpenModal={setOpenModal} />
         </View>

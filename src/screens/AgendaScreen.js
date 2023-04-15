@@ -6,12 +6,78 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Agenda, AgendaEntry } from "react-native-calendars";
+import { Agenda, AgendaEntry, LocaleConfig } from "react-native-calendars";
 import Entypo from "react-native-vector-icons/Entypo";
 import { COLORS, SHADOWS } from "../constants";
 import HeaderComponent from "../components/HeaderComponent";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+
+LocaleConfig.locales["ltu"] = {
+  monthNames: [
+    "Sausis",
+    "Vasaris",
+    "Kovas",
+    "Balandis",
+    "Gegužė",
+    "Birželis",
+    "Liepa",
+    "Rugpjūtis",
+    "Rugsėjis",
+    "Spalis",
+    "Lapkritis",
+    "Gruodis",
+  ],
+  monthNames: [
+    "Sausis",
+    "Vasaris",
+    "Kovas",
+    "Balandis",
+    "Gegužė",
+    "Birželis",
+    "Liepa",
+    "Rugpjūtis",
+    "Rugsėjis",
+    "Spalis",
+    "Lapkritis",
+    "Gruodis",
+  ],
+  monthNamesShort: [
+    "Sausis",
+    "Vasaris",
+    "Kovas",
+    "Balandis",
+    "Gegužė",
+    "Birželis",
+    "Liepa",
+    "Rugpjūtis",
+    "Rugsėjis",
+    "Spalis",
+    "Lapkritis",
+    "Gruodis",
+  ],
+  dayNames: [
+    "Sekmadienis",
+    "Pirmadienis",
+    "Antradienis",
+    "Trečiadienis",
+    "Ketvirtadienis",
+    "Penktadienis",
+    "Šeštadienis",
+  ],
+  dayNamesShort: [
+    "Pirm.",
+    "Antr.",
+    "Treč.",
+    "Ketv.",
+    "Penktd.",
+    "Šeštadn.",
+    "Sekm.",
+  ],
+  today: "Šiandien",
+};
+
+LocaleConfig.defaultLocale = "ltu";
 
 const GetEvents = gql`
   subscription getAllEvents {
@@ -30,6 +96,7 @@ const AgendaScreen = () => {
   const userID = useUserId();
 
   const [items, setItems] = useState({});
+  const [selected, setSelected] = useState("");
   const { data, loading, error } = useSubscription(GetEvents);
 
   console.log(data);
@@ -86,6 +153,16 @@ const AgendaScreen = () => {
         items={items}
         renderItem={renderItem}
         renderEmptyData={renderEmptyDate}
+        onDayPress={(day) => {
+          setSelected(day.dateString);
+        }}
+        markedDates={{
+          [selected]: {
+            selected: true,
+            disableTouchEvent: true,
+            selectedDotColor: "orange",
+          },
+        }}
       />
     </View>
   );
