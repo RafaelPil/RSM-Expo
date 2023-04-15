@@ -65,15 +65,7 @@ LocaleConfig.locales["ltu"] = {
     "Penktadienis",
     "Šeštadienis",
   ],
-  dayNamesShort: [
-    "Pirm.",
-    "Antr.",
-    "Treč.",
-    "Ketv.",
-    "Penktd.",
-    "Šeštadn.",
-    "Sekm.",
-  ],
+  dayNamesShort: ["Sek.", "Pirm.", "Antr.", "Treč.", "Ketv.", "Penk.", "Šešt."],
   today: "Šiandien",
 };
 
@@ -160,9 +152,15 @@ const AgendaScreen = () => {
           [selected]: {
             selected: true,
             disableTouchEvent: true,
-            selectedDotColor: "orange",
+            selectedColor: COLORS.primary,
+            selectedDotColor: "#fff",
           },
         }}
+        theme={{
+          todayTextColor: COLORS.primary,
+          // selectedDayBackgroundColor: COLORS.primary,
+        }}
+        scrollEnabled
       />
     </View>
   );

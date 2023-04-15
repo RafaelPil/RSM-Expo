@@ -15,6 +15,30 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserData, useUserId } from "@nhost/react";
 import { gql, useMutation } from "@apollo/client";
+import CalendarStrip from "react-native-calendar-strip";
+
+const locale = {
+  name: "ltu",
+  config: {
+    months:
+      "Sausis_Vasaris_Kovas_Balandis_Gegužė_Birželis_Liepa_Rugpjūtis_Rugsėjis_Spalis_Lapkritis_Gruodis".split(
+        "_"
+      ),
+    monthsShort:
+      "Sausis_Vasaris_Kovas_Balandis_Gegužė_Birželis_Liepa_Rugpjūtis_Rugsėjis_Spalis_Lapkritis_Gruodis".split(
+        "_"
+      ),
+    weekdays:
+      "Sekmadienis_Pirmadienis_Antradienis_Trečiadienis_Ketvirtadienis_Penktadienis_Šeštadienis".split(
+        "_"
+      ),
+    weekdaysShort: "Sekm._Pirm._Antr._Treč._Ketv._Penk._Šešt.".split("_"),
+    week: {
+      dow: 1, // Monday is the first day of the week.
+      doy: 4, // The week that contains Jan 4th is the first week of the year.
+    },
+  },
+};
 
 const GET_ALL_EVENTS_INFO = gql`
   query getAllEvents($date: String!, $time: String!) {
@@ -98,8 +122,13 @@ const BookingScreen = () => {
     setIsTimeSelected(true);
   };
 
+  const handleDateSelected = (date) => {
+    setSelectedDate(date);
+  };
+
   const formattedDate = selectedDate.toISOString().slice(0, 10);
   // console.log(formattedDate + " data");
+  // console.log(selectedTime);
 
   const onRezervationEvent = async () => {
     await addNewEvent({
@@ -115,8 +144,8 @@ const BookingScreen = () => {
   };
 
   return (
-    <View>
-      <HorizontalDatepicker
+    <View style={{ flex: 1, backgroundColor: "#eee" }}>
+      {/* <HorizontalDatepicker
         mode="gregorian"
         startDate={new Date()}
         endDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
@@ -131,9 +160,48 @@ const BookingScreen = () => {
         selectedItemBackgroundColor={COLORS.primary}
         unselectedItemBackgroundColor="#ececec"
         flatListContainerStyle={styles.flatListContainerStyle}
+      /> */}
+
+      <CalendarStrip
+        scrollable
+        style={{
+          height: 100,
+          paddingTop: 20,
+          paddingBottom: 10,
+          width: "120%",
+          backgroundColor: "#fff",
+          marginLeft: -35,
+          // position: "absolute",
+        }}
+        calendarColor={"#3343CE"}
+        calendarHeaderStyle={{ color: "#000" }}
+        dateNumberStyle={{ color: "#000" }}
+        dateNameStyle={{ color: "gray" }}
+        iconContainer={{ flex: 0.1 }}
+        locale={locale}
+        upperCaseDays={false}
+        responsiveSizingOffset={10}
+        calendarAnimation={{ type: "sequence", duration: 30 }}
+        daySelectionAnimation={{
+          type: "background",
+          duration: 200,
+          borderWidth: 1,
+          highlightColor: COLORS.primary,
+        }}
+        highlightDateNumberStyle={{ color: "#fff" }}
+        highlightDateNameStyle={{ color: "gray" }}
+        leftSelector={[]}
+        rightSelector={[]}
+        onDateSelected={handleDateSelected}
       />
 
-      <View>
+      <View
+        style={{
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
         <FlatList
           numColumns={3}
           data={times}
@@ -160,9 +228,11 @@ const BookingScreen = () => {
 
       {/* show the selected date and time */}
       {selectedTime && (
-        <Text>
-          Pasirinkta data: {formattedDate}, laikas: {selectedTime}
-        </Text>
+        <View style={styles.selectedDateTimeStyle}>
+          <Text>
+            Pasirinkta data: {formattedDate}, laikas: {selectedTime}
+          </Text>
+        </View>
       )}
 
       {isTimeSelected ? (
@@ -171,7 +241,7 @@ const BookingScreen = () => {
         </Pressable>
       ) : (
         <View style={styles.disabledButton}>
-          <Text style={styles.chatButtonText}>Pasirinkite laiką</Text>
+          <Text style={styles.chatButtonNotText}></Text>
         </View>
       )}
     </View>
@@ -180,12 +250,13 @@ const BookingScreen = () => {
 
 const styles = StyleSheet.create({
   clockContainer: {
-    borderColor: COLORS.primary,
+    // borderColor: COLORS.primary,
     width: 80,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 20,
     margin: 10,
     padding: 5,
+    backgroundColor: COLORS.white,
   },
   clockTitleStyle: {
     fontSize: 14,
@@ -206,13 +277,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 10,
-    marginTop: 50,
+    marginTop: "auto",
+    marginBottom: 10,
+  },
+  disabledButton: {
+    marginTop: 10,
   },
   chatButtonText: {
     fontSize: SIZES.large,
     color: COLORS.white,
     textAlign: "center",
     fontWeight: "500",
+  },
+  chatButtonNotText: {
+    fontSize: SIZES.large,
+    color: COLORS.primary,
+    textAlign: "center",
+    fontWeight: "500",
+  },
+  selectedDateTimeStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 
