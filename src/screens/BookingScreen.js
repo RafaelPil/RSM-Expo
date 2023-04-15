@@ -173,26 +173,23 @@ const BookingScreen = () => {
           marginLeft: -35,
           // position: "absolute",
         }}
-        calendarColor={"#3343CE"}
-        calendarHeaderStyle={{ color: "#000" }}
-        dateNumberStyle={{ color: "#000" }}
-        dateNameStyle={{ color: "gray" }}
-        iconContainer={{ flex: 0.1 }}
-        locale={locale}
-        upperCaseDays={false}
-        responsiveSizingOffset={10}
         calendarAnimation={{ type: "sequence", duration: 30 }}
         daySelectionAnimation={{
-          type: "background",
+          type: "border",
           duration: 200,
           borderWidth: 1,
-          highlightColor: COLORS.primary,
+          borderHighlightColor: "white",
         }}
-        highlightDateNumberStyle={{ color: "#fff" }}
-        highlightDateNameStyle={{ color: "gray" }}
+        highlightDateNumberStyle={{ color: COLORS.primary }}
+        highlightDateNameStyle={{ color: COLORS.secondary }}
+        calendarHeaderStyle={{ color: "#000" }}
+        dateNumberStyle={{ color: "#e2e2e2" }}
+        dateNameStyle={{ color: "gray" }}
+        iconContainer={{ flex: 0.1 }}
         leftSelector={[]}
         rightSelector={[]}
         onDateSelected={handleDateSelected}
+        selectedDate={selectedDate}
       />
 
       <View
