@@ -158,7 +158,7 @@ const AgendaScreen = () => {
         }}
         theme={{
           todayTextColor: COLORS.primary,
-          // selectedDayBackgroundColor: COLORS.primary,
+          selectedDayBackgroundColor: COLORS.primary,
         }}
         scrollEnabled
       />

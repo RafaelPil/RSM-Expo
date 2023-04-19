@@ -72,7 +72,7 @@ const HomeScreen = () => {
   // console.log(posts?.Post?.title);
 
   const handleSearch = (value) => {
-    setSearchValue(value);
+    setSearchValue(value.toLowerCase());
   };
 
   const filteredPosts = posts?.Post?.filter((post) =>
