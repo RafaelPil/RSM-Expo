@@ -167,7 +167,7 @@ const EditPostScreen = () => {
       <View style={{ margin: 20 }}>
         <View style={styles.container}>
           <TextInput
-            placeholder={postData.title}
+            placeholder={"Antraštė"}
             value={title}
             onChangeText={(text) => setTitle(text)}
           />
@@ -175,7 +175,7 @@ const EditPostScreen = () => {
 
         <View style={styles.container}>
           <TextInput
-            placeholder={postData.price}
+            placeholder={"Kaina"}
             value={price}
             onChangeText={(text) => setPrice(text)}
           />
@@ -183,14 +183,14 @@ const EditPostScreen = () => {
 
         <View style={styles.container}>
           <TextInput
-            placeholder={postData.city}
+            placeholder={"Miestas"}
             value={city}
             onChangeText={(text) => setCity(text)}
           />
         </View>
         <View style={styles.container}>
           <TextInput
-            placeholder={postData.description}
+            placeholder={"Aprašymas"}
             value={description}
             onChangeText={(text) => setDescription(text)}
           />

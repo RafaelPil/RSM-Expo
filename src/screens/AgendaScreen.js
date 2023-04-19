@@ -91,7 +91,7 @@ const AgendaScreen = () => {
   const [selected, setSelected] = useState("");
   const { data, loading, error } = useSubscription(GetEvents);
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -148,18 +148,18 @@ const AgendaScreen = () => {
         onDayPress={(day) => {
           setSelected(day.dateString);
         }}
-        markedDates={{
-          [selected]: {
-            selected: true,
-            disableTouchEvent: true,
-            selectedColor: COLORS.primary,
-            selectedDotColor: "#fff",
-          },
-        }}
-        theme={{
-          todayTextColor: COLORS.primary,
-          selectedDayBackgroundColor: COLORS.primary,
-        }}
+        // markedDates={{
+        //   [selected]: {
+        //     selected: true,
+        //     disableTouchEvent: true,
+        //     selectedColor: "red",
+        //     selectedDotColor: "red",
+        //   },
+        // }}
+        // theme={{
+        //   todayTextColor: COLORS.primary,
+        //   selectedDayBackgroundColor: COLORS.primary,
+        // }}
         scrollEnabled
       />
     </View>
