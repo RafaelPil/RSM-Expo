@@ -139,7 +139,7 @@ const MyPostComponent = ({ postData }) => {
 const styles = StyleSheet.create({
   container: {
     height: 120,
-    padding: 5,
+    padding: SIZES.small,
   },
   innerContainer: {
     flexDirection: "row",

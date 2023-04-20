@@ -13,7 +13,7 @@ const HeaderComponent = (props) => {
     <>
       <View
         style={{
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.white,
           padding: SIZES.font,
         }}
       >
@@ -25,13 +25,13 @@ const HeaderComponent = (props) => {
           }}
         >
           <Image
-            source={assets.logoexmpl}
+            source={require("../../assets/icons/logo.png")}
             resizeMode="contain"
-            style={{ width: 20, height: 20, tintColor: "white" }}
+            style={{ width: 45, height: 45 }}
           />
 
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Feather name="menu" size={26} color={COLORS.white} />
+            <Feather name="menu" size={26} color="#474747" />
           </TouchableOpacity>
         </View>
 
@@ -39,7 +39,7 @@ const HeaderComponent = (props) => {
           <Text
             style={{
               fontSize: SIZES.large,
-              color: COLORS.white,
+              color: "#474747",
               fontWeight: "bold",
             }}
           >

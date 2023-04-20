@@ -112,14 +112,14 @@ const PostCard = (props) => {
   return (
     <View
       style={{
-        backgroundColor: COLORS.white,
+        backgroundColor: "#fff",
         borderRadius: SIZES.font,
         marginBottom: SIZES.extraLarge,
-        margin: SIZES.base,
+        margin: SIZES.large,
         ...SHADOWS.dark,
       }}
     >
-      <Pressable onPress={toDetails} style={{ width: "100%", height: 250 }}>
+      <Pressable onPress={toDetails} style={{ width: "100%", height: 200 }}>
         <Image
           source={{ uri: data?.image }}
           resizeMode="cover"
@@ -142,8 +142,8 @@ const PostCard = (props) => {
       <TouchableOpacity
         onPress={onLikePressed}
         style={{
-          width: 40,
-          height: 40,
+          width: 35,
+          height: 35,
           backgroundColor: COLORS.white,
           position: "absolute",
           borderRadius: SIZES.extraLarge,
@@ -154,7 +154,11 @@ const PostCard = (props) => {
           right: 10,
         }}
       >
-        <AntDesign name="hearto" size={24} color={liked ? "red" : "grey"} />
+        <AntDesign
+          name={liked ? "heart" : "hearto"}
+          size={22}
+          color={liked ? "#00AEEF" : "grey"}
+        />
       </TouchableOpacity>
 
       <View style={{ width: "100%", padding: SIZES.font }}>

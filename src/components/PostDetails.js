@@ -143,7 +143,11 @@ const PostDetailsHeader = ({ post }) => {
           right: 10,
         }}
       >
-        <AntDesign name="hearto" size={24} color={liked ? "red" : "gray"} />
+        <AntDesign
+          name={liked ? "heart" : "hearto"}
+          size={24}
+          color={liked ? "#00AEEF" : "grey"}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -226,7 +230,7 @@ const PostDetails = ({ post }) => {
           style={{
             fontSize: SIZES.large,
             fontWeight: "bold",
-            color: COLORS.primary,
+            color: "#474747",
           }}
         >
           Aprašymas
@@ -235,7 +239,7 @@ const PostDetails = ({ post }) => {
         <Text
           style={{
             fontSize: SIZES.small,
-            color: COLORS.secondary,
+            color: "#474747",
             lineHeight: SIZES.large,
           }}
         >

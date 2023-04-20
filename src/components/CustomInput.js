@@ -66,19 +66,20 @@ const styles = StyleSheet.create({
 
     borderColor: "#e8e8e8",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 20,
 
     paddingHorizontal: 10,
     marginVertical: 5,
     marginBottom: 10,
-    height: 50,
-    marginHorizontal: 10,
+    height: 45,
+    marginHorizontal: 20,
     alignContent: "center",
     justifyContent: "center",
   },
   input: {
-    color: COLORS.gray,
+    color: "#474747",
     fontSize: SIZES.font,
+    textDecorationLine: "none",
   },
 });
 

@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React, { useEffect } from "react";
 import { useChatContext } from "../../../context/ChatContext";
 import { Channel, MessageList, MessageInput } from "stream-chat-expo";
@@ -10,11 +9,11 @@ const ChatRoomScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: currentChannel.data.created_by.name || "Channel",
+      title: currentChannel.data.name || "Channel",
     });
-  }, [currentChannel.data.created_by.name]);
+  }, [currentChannel.data.name]);
 
-  console.log(currentChannel.data);
+  // console.log(currentChannel);
 
   return (
     <Channel channel={currentChannel}>

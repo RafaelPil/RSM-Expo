@@ -8,12 +8,13 @@ import { assets, COLORS, SIZES } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { useSignOut, useAuthenticated } from "@nhost/react";
+import { useSignOut, useAuthenticated, useUserDisplayName } from "@nhost/react";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const { signOut } = useSignOut();
   const isAuthenticated = useAuthenticated();
+  const userName = useUserDisplayName();
 
   const logout = async () => {
     await signOut();
@@ -27,17 +28,17 @@ const CustomDrawer = (props) => {
       >
         <View style={{ padding: 20 }}>
           <Image
-            source={assets.logoexmpl}
+            source={require("../../assets/icons/logo.png")}
             resizeMode="contain"
             style={{
               width: 40,
               height: 40,
-              tintColor: "white",
+              // tintColor: "white",
               marginBottom: 10,
             }}
           />
           <Text style={{ color: COLORS.white, fontSize: SIZES.font }}>
-            Name
+            {userName}
           </Text>
         </View>
 

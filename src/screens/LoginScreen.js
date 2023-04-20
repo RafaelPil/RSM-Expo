@@ -9,8 +9,9 @@ import {
   Pressable,
   SafeAreaView,
 } from "react-native";
-import React, { useEffect, useState, createContext } from "react";
+import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
@@ -58,10 +59,22 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ marginTop: 15 }}>
-      <Pressable onPress={moveBack} style={{ padding: 10 }}>
-        <Ionicons name="arrow-back-sharp" size={24} color={COLORS.primary} />
-      </Pressable>
+    <SafeAreaView style={{ marginTop: 30 }}>
+      <View style={styles.rowContainer}>
+        <View style={styles.leftIconContainer}>
+          <Pressable onPress={moveBack} style={{ padding: 10 }}>
+            <AntDesign
+              name="left"
+              size={20}
+              color={COLORS.primary}
+              style={{ fontWeight: "bold" }}
+            />
+          </Pressable>
+        </View>
+        <View style={styles.rowCenterText}>
+          <Text style={styles.rowHeaderText}>Prisijungti</Text>
+        </View>
+      </View>
 
       <Text style={styles.text}>El. paštas</Text>
       <CustomInput
@@ -92,10 +105,10 @@ const LoginScreen = () => {
 
       <View style={{ alignItems: "center" }}>
         <Pressable
-          style={[styles.btnContainer, { width: width - 250 }]}
+          style={[styles.btnContainer, { width: width - 150 }]}
           onPress={handleSubmit(onSignInPressed)}
         >
-          <Text style={{ fontSize: 14 }}>
+          <Text style={{ fontSize: 14, color: "#fff" }}>
             {isLoading ? "Krauna..." : "Prisijungti"}
           </Text>
         </Pressable>
@@ -105,11 +118,30 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 10,
+    marginBottom: 30,
+  },
+  rowCenterText: {
+    alignItems: "center",
+    flex: 1,
+    marginRight: 50,
+  },
+  rowHeaderText: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 24,
+    color: "#474747",
+  },
   text: {
-    marginLeft: 15,
+    marginLeft: 20,
     color: COLORS.primary,
-    fontSize: SIZES.large,
-    fontWeight: "bold",
+    fontSize: 14,
+    fontWeight: "400",
   },
   textInpt: {
     justifyContent: "center",
@@ -122,10 +154,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   btnContainer: {
-    backgroundColor: COLORS.gray_button,
+    backgroundColor: "#00AEEF",
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
+    height: 45,
     borderRadius: 20,
     marginTop: 50,
   },

@@ -11,27 +11,28 @@ export const PostTitle = ({ title, price, city }) => {
       <Text
         style={{
           fontSize: SIZES.large,
-          color: COLORS.primary,
+          color: "#474747",
         }}
       >
         {title}
       </Text>
       <Text
         style={{
-          fontSize: SIZES.medium,
-          color: COLORS.primary,
-          fontWeight: "bold",
-        }}
-      >
-        {price}€/val
-      </Text>
-      <Text
-        style={{
           fontSize: SIZES.font,
-          color: COLORS.gray,
+          color: "#BEBEBE",
         }}
       >
         {city}
+      </Text>
+      <Text
+        style={{
+          fontSize: SIZES.medium,
+          color: "#00AEEF",
+          fontWeight: "bold",
+          marginTop: 15,
+        }}
+      >
+        {price}€/val
       </Text>
     </View>
   );

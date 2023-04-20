@@ -13,6 +13,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { NhostClient, useProviderLink } from "@nhost/react";
+import { SafeAreaView } from "react-native";
 
 const MainScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -25,25 +26,55 @@ const MainScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{ height: height, width: width }}>
+    <SafeAreaView style={styles.container}>
+      <View style={{ height: 430, width: width }}>
         <Image
-          source={require("../../assets/images/bg.jpg")}
-          style={{ width: width, height: height }}
+          source={require("../../assets/images/ft1.png")}
+          style={{ width: width, height: 400 }}
         />
       </View>
 
-      <View style={{ margin: 50, backgroundColor: "#fff" }}>
-        <Pressable
-          style={[styles.btnContainer, { width: width - 80 }]}
-          onPress={() => navigation.navigate("SignUp")}
-        >
-          <Text style={{ fontSize: SIZES.font, fontWeight: "bold" }}>
-            Registruotis
-          </Text>
-        </Pressable>
+      <View style={styles.btnsContainer}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../assets/icons/logo.png")}
+            style={{ width: 60, height: 60, resizeMode: "contain" }}
+          />
+        </View>
 
-        <Pressable
+        <View style={styles.textContainer}>
+          <Text
+            style={styles.homeText}
+          >{`Rask savo mokytoją. \nTavo sėkmės raktas.`}</Text>
+        </View>
+
+        <View style={{ marginTop: 45 }}>
+          <Pressable
+            style={[styles.signInContainer, { width: width - 50 }]}
+            onPress={() => navigation.navigate("SignIn")}
+          >
+            <Text style={styles.btnText}>Prisijungti</Text>
+          </Pressable>
+
+          <View
+            style={[
+              styles.btnContainer,
+              {
+                width: width - 50,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              },
+            ]}
+          >
+            <Text style={styles.regText}>Neturi paskyros? </Text>
+            <Pressable onPress={() => navigation.navigate("SignUp")}>
+              <Text style={styles.btnRegisterText}>Registruokis</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* <Pressable
           style={[
             styles.btnContainer,
             { width: width - 80, backgroundColor: "#4267B2" },
@@ -54,9 +85,9 @@ const MainScreen = () => {
 
             <Text style={styles.textFb}>Prisijungti su Facebook</Text>
           </View>
-        </Pressable>
+        </Pressable> */}
 
-        <Pressable
+        {/* <Pressable
           onPress={() => {}}
           style={[
             styles.btnContainer,
@@ -67,43 +98,21 @@ const MainScreen = () => {
             <AntDesign name="google" size={16} color={"#fff"} />
             <Text style={styles.textGoogle}>Prisijungti su Google</Text>
           </Pressable>
-        </Pressable>
-
-        <Pressable
-          style={{
-            width: width - 80,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => navigation.navigate("SignIn")}
-        >
-          <Text
-            style={{
-              fontSize: SIZES.font,
-              fontWeight: "bold",
-            }}
-          >
-            Prisijungti
-          </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: COLORS.white,
-    alignItems: "center",
-    justifyContent: "flex-end",
   },
   btnContainer: {
-    backgroundColor: "#e4e4e4",
     justifyContent: "center",
     alignItems: "center",
     height: 40,
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 10,
   },
   textFb: {
@@ -122,6 +131,47 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  signInContainer: {
+    backgroundColor: "#00AEEF",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 45,
+    borderRadius: 20,
+    marginBottom: 10,
+  },
+  btnText: {
+    fontSize: SIZES.font,
+
+    color: "#fff",
+  },
+  btnRegisterText: {
+    fontSize: SIZES.font,
+    textAlign: "center",
+    color: "#00AEEF",
+  },
+  regText: {
+    color: "#474747",
+  },
+  btnsContainer: {
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  logoContainer: {
+    height: 60,
+    width: 60,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  textContainer: {
+    marginTop: 12,
+  },
+  homeText: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#474747",
   },
 });
 

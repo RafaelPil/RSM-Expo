@@ -25,8 +25,7 @@ const HomeHeader = ({ onSearch }) => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: COLORS.primary,
-        padding: SIZES.font,
+        padding: SIZES.large,
       }}
     >
       <View
@@ -37,13 +36,13 @@ const HomeHeader = ({ onSearch }) => {
         }}
       >
         <Image
-          source={assets.logoexmpl}
+          source={require("../../assets/icons/logo.png")}
           resizeMode="contain"
-          style={{ width: 20, height: 20, tintColor: "white" }}
+          style={{ width: 45, height: 45 }}
         />
 
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Feather name="menu" size={26} color={COLORS.white} />
+          <Feather name="menu" size={26} color="#474747" />
         </TouchableOpacity>
       </View>
 
@@ -51,7 +50,7 @@ const HomeHeader = ({ onSearch }) => {
         <Text
           style={{
             fontSize: SIZES.large,
-            color: COLORS.white,
+            color: "#474747",
             fontWeight: "bold",
           }}
         >
@@ -59,22 +58,25 @@ const HomeHeader = ({ onSearch }) => {
         </Text>
       </View>
 
-      <View style={{ marginVertical: SIZES.font }}>
+      <View style={{ marginVertical: 10 }}>
         <View
           style={{
             width: "100%",
-            borderRadius: SIZES.font,
-            backgroundColor: COLORS.gray,
+            borderRadius: 20,
+            backgroundColor: "#fff",
             flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: SIZES.small,
             paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: "#F5F5F5",
+            height: 45,
           }}
         >
           <AntDesign
             name="search1"
             size={20}
-            color={COLORS.white}
+            color="#BEBEBE"
             style={{
               marginRight: SIZES.base,
               justifyContent: "center",
@@ -83,7 +85,12 @@ const HomeHeader = ({ onSearch }) => {
           />
           <TextInput
             placeholder="Rask savo mokytoja"
-            style={{ flex: 1 }}
+            placeholderTextColor="#BEBEBE"
+            style={{
+              color: "#474747",
+              fontSize: SIZES.font,
+              textDecorationLine: "none",
+            }}
             onChangeText={onSearch}
           />
           {/* <FontAwesome
@@ -98,7 +105,7 @@ const HomeHeader = ({ onSearch }) => {
             onPress={() => setOpenModal(true)}
           /> */}
 
-          <FIlterSearch openModal={openModal} setOpenModal={setOpenModal} />
+          {/* <FIlterSearch openModal={openModal} setOpenModal={setOpenModal} /> */}
         </View>
       </View>
       {/* <TouchableOpacity onPress={onRefresh}>
