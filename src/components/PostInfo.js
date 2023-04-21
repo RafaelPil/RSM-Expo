@@ -2,20 +2,26 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import { COLORS, dummyData, SIZES, assets, dummyPosts } from "../constants";
 import { FONTS } from "../constants/theme";
+import { useUserData } from "@nhost/react";
 
 const displayedUsers = (dummyPosts || []).slice(0, 5).map((attende) => attende);
 
 export const PostTitle = ({ title, price, city }) => {
+
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: SIZES.large,
-          color: "#474747",
-        }}
-      >
-        {title}
-      </Text>
+    <View style={{ alignContent: "center" }}>
+      <View style={styles.row}>
+        <Text
+          style={{
+            fontSize: SIZES.large,
+            color: "#474747",
+            fontWeight: "700",
+          }}
+        >
+          {title}
+        </Text>
+      </View>
+
       <Text
         style={{
           fontSize: SIZES.font,
@@ -131,5 +137,28 @@ const styles = StyleSheet.create({
     backgroundColor: "gainsboro",
     justifyContent: "center",
     alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    alignContent: "center",
+  },
+  container: {
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  avatar: {
+    width: 100,
+    aspectRatio: 1,
+    borderRadius: 50,
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 22,
+    marginVertical: 15,
+    color: "#000",
   },
 });

@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { FocusedStatusBar, HomeHeader, PostCard } from "../components";
 import { COLORS, dummyPosts, SHADOWS, SIZES } from "../constants";
 import Entypo from "react-native-vector-icons/Entypo";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 
@@ -102,7 +103,11 @@ const HomeScreen = () => {
         style={styles.chatContainer}
       >
         <View style={styles.chatInContainer}>
-          <Entypo name="chat" size={24} color={COLORS.white} />
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={34}
+            color={COLORS.white}
+          />
         </View>
       </TouchableOpacity>
     </SafeAreaView>
@@ -113,22 +118,22 @@ const styles = StyleSheet.create({
   chatContainer: {
     width: 60,
     height: 60,
-    backgroundColor: COLORS.white,
+    // backgroundColor: "#00AEEF",
     position: "absolute",
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    ...SHADOWS.light,
+    // ...SHADOWS.light,
     right: 10,
     bottom: 10,
-    borderWidth: 3,
-    borderColor: COLORS.gray,
+    // borderWidth: 3,
+    // borderColor: "#00AEEF",
   },
   chatInContainer: {
-    backgroundColor: COLORS.primary,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: "#00AEEF",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     ...SHADOWS.light,

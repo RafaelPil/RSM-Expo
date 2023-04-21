@@ -16,9 +16,10 @@ import { FocusedStatusBar, CircleButton } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { PostTitle } from "../components";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
-import { useUserId } from "@nhost/react";
+import { useUserData, useUserId } from "@nhost/react";
 import { ChatContext } from "../../context/ChatContext";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { ScrollView } from "react-native";
 
 const LikePostMutation = gql`
   mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
@@ -157,6 +158,7 @@ const PostDetails = ({ post }) => {
   const [postData, setPostData] = useState(post);
   //console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
+  const user = useUserData();
 
   const postUserId = postData?.userId.toString();
   const postTitle = post?.title;
@@ -175,9 +177,9 @@ const PostDetails = ({ post }) => {
         style={{
           position: "absolute",
           bottom: 0,
-          paddingVertical: SIZES.font,
-          right: 10,
-          left: 10,
+          paddingVertical: SIZES.large,
+          right: 15,
+          left: 15,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -190,13 +192,7 @@ const PostDetails = ({ post }) => {
           tel={`+370 ${postData?.user?.metadata.phone}`}
         /> */}
         <Pressable
-          style={styles.chatButton}
-          onPress={() => startDMChatRoom(postUserId)}
-        >
-          <Text style={styles.chatButtonText}>Pokalbis</Text>
-        </Pressable>
-        <Pressable
-          style={styles.chatButton}
+          style={styles.rezervationButton}
           onPress={() =>
             navigation.navigate("Booking", {
               postUserId: postUserId,
@@ -204,7 +200,13 @@ const PostDetails = ({ post }) => {
             })
           }
         >
-          <Text style={styles.chatButtonText}>Rezevuoti</Text>
+          <Text style={styles.rezervationBtnText}>Rezervuoti</Text>
+        </Pressable>
+        <Pressable
+          style={styles.chatButton}
+          onPress={() => startDMChatRoom(postUserId)}
+        >
+          <Text style={styles.chatButtonText}>Pokalbis</Text>
         </Pressable>
       </View>
 
@@ -217,35 +219,71 @@ const PostDetails = ({ post }) => {
         <LikedPeople />
       </Pressable> */}
 
-      <View style={{ padding: SIZES.font }}>
-        <PostTitle
-          title={postData?.title}
-          price={postData?.price}
-          city={postData?.city}
-        />
-      </View>
+      <ScrollView>
+        <View style={{ padding: SIZES.large }}>
+          <View style={{ alignContent: "center" }}>
+            <View style={styles.row}>
+              <Text
+                style={{
+                  fontSize: SIZES.large,
+                  color: "#474747",
+                  fontWeight: "700",
+                }}
+              >
+                {postData?.title}
+              </Text>
 
-      <View style={{ padding: SIZES.font }}>
-        <Text
+              <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
+            </View>
+
+            <Text
+              style={{
+                fontSize: SIZES.font,
+                color: "#BEBEBE",
+              }}
+            >
+              {postData?.city}
+            </Text>
+            <Text
+              style={{
+                fontSize: SIZES.medium,
+                color: "#00AEEF",
+                fontWeight: "bold",
+                marginTop: 15,
+              }}
+            >
+              {postData?.price}€/val
+            </Text>
+          </View>
+        </View>
+
+        <View
           style={{
-            fontSize: SIZES.large,
-            fontWeight: "bold",
-            color: "#474747",
+            padding: SIZES.font,
           }}
         >
-          Aprašymas
-        </Text>
-        <View style={{ marginTop: SIZES.base }}></View>
-        <Text
-          style={{
-            fontSize: SIZES.small,
-            color: "#474747",
-            lineHeight: SIZES.large,
-          }}
-        >
-          {postData?.description}
-        </Text>
-      </View>
+          <Text
+            style={{
+              fontSize: SIZES.large,
+              fontWeight: "500",
+              color: "#474747",
+            }}
+          >
+            Aprašymas
+          </Text>
+          <View style={{ marginTop: SIZES.base }}></View>
+          <Text
+            style={{
+              fontSize: SIZES.small,
+              color: "#474747",
+              lineHeight: SIZES.small,
+              fontWeight: "400",
+            }}
+          >
+            {postData?.description}
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -281,16 +319,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   chatButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#fff",
     borderRadius: SIZES.extraLarge,
-    minWidth: 170,
+    minWidth: 150,
+    padding: SIZES.small,
+    borderWidth: 1,
+    borderColor: "#F5F5F5",
+  },
+  rezervationButton: {
+    backgroundColor: "#00AEEF",
+    borderRadius: SIZES.extraLarge,
+    minWidth: 150,
     padding: SIZES.small,
   },
   chatButtonText: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.font,
+    color: "#474747",
+    textAlign: "center",
+    fontWeight: "500",
+  },
+  rezervationBtnText: {
+    fontSize: SIZES.font,
     color: COLORS.white,
     textAlign: "center",
     fontWeight: "500",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "space-between",
+  },
+  avatarContainer: {
+    padding: 10,
+  },
+  avatar: {
+    width: 40,
+    aspectRatio: 1,
+    borderRadius: 50,
   },
 });
 
