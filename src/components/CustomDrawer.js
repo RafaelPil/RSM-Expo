@@ -8,13 +8,20 @@ import { assets, COLORS, SIZES } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { useSignOut, useAuthenticated, useUserDisplayName } from "@nhost/react";
+import {
+  useSignOut,
+  useAuthenticated,
+  useUserDisplayName,
+  useUserData,
+} from "@nhost/react";
+import { StyleSheet } from "react-native";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const { signOut } = useSignOut();
   const isAuthenticated = useAuthenticated();
   const userName = useUserDisplayName();
+  const user = useUserData();
 
   const logout = async () => {
     await signOut();
@@ -24,22 +31,11 @@ const CustomDrawer = (props) => {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{ backgroundColor: COLORS.primary }}
+        // contentContainerStyle={{ backgroundColor: COLORS.primary }}
       >
-        <View style={{ padding: 20 }}>
-          <Image
-            source={require("../../assets/icons/logo.png")}
-            resizeMode="contain"
-            style={{
-              width: 40,
-              height: 40,
-              // tintColor: "white",
-              marginBottom: 10,
-            }}
-          />
-          <Text style={{ color: COLORS.white, fontSize: SIZES.font }}>
-            {userName}
-          </Text>
+        <View style={styles.avatarContainer}>
+          <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
+          <Text style={styles.name}>{user?.displayName}</Text>
         </View>
 
         <View
@@ -62,5 +58,31 @@ const CustomDrawer = (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  avatarContainer: {
+    padding: 20,
+    justifyContent: "flex-start",
+    flex: 1,
+  },
+  avatar: {
+    width: 60,
+    aspectRatio: 1,
+    borderRadius: 50,
+  },
+  name: {
+    fontWeight: "700",
+    fontSize: 17,
+    marginVertical: 15,
+    color: "#474747",
+    lineHeight: 17,
+    marginHorizontal: 8,
+  },
+  avatarText: {
+    color: "#474747",
+    fontSize: SIZES.font,
+    textAlign: "left",
+  },
+});
 
 export default CustomDrawer;

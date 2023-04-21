@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SHADOWS, SIZES } from "../constants";
 import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+import { StatusBar } from "react-native";
 
 const RemoveLikedPostMutation = gql`
   mutation removeLike($userId: uuid!, $postId: uuid!) {
@@ -60,7 +61,7 @@ const SavedPostComponent = ({ data }) => {
     checkIfLiked();
   }, []);
 
-  const onLikePressed = async () => {
+  const onDislikePressed = async () => {
     // console.warn("paspaudziau like");
     await deleteLike({ variables: { userId: userId, postId: id } });
   };
@@ -73,7 +74,7 @@ const SavedPostComponent = ({ data }) => {
     <View style={[styles.container, { width: width }]}>
       <View style={styles.innerContainer}>
         <TouchableOpacity
-          onPress={onLikePressed}
+          onPress={onDislikePressed}
           style={{
             width: 40,
             height: 40,
@@ -87,23 +88,27 @@ const SavedPostComponent = ({ data }) => {
             right: 10,
           }}
         >
-          <AntDesign name="hearto" size={24} color={!liked ? "red" : "grey"} />
+          <AntDesign
+            name={liked ? "hearto" : "heart"}
+            size={24}
+            color={liked ? "gray" : "#00AEEF"}
+          />
         </TouchableOpacity>
         {/* Image */}
         <Pressable onPress={toDetails}>
           <Image style={styles.image} source={{ uri: postData?.Post?.image }} />
         </Pressable>
 
-        <View style={{ flex: 1, marginHorizontal: 10 }}>
+        <View style={{ marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{postData?.Post?.description}</Text>
+          <Text style={styles.title}>{postData?.Post?.title}</Text>
 
           {/* Type & Description */}
-          <Text style={styles.description} numberOfLines={2}>
+          <Text style={styles.city} numberOfLines={2}>
             {postData?.Post?.city}
           </Text>
 
-          <Text style={styles.newPrice}>€{postData?.Post?.price}</Text>
+          <Text style={styles.newPrice}>{postData?.Post?.price}eur/val</Text>
         </View>
       </View>
     </View>
@@ -137,16 +142,18 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 10,
   },
-  bedrooms: {
+  title: {
     marginVertical: 10,
-    color: "#5b5b5b",
+    color: "#474747",
+    fontWeight: "700",
   },
-  description: {
+  city: {
     fontSize: 15,
+    color: "#BEBEBE",
   },
   newPrice: {
-    fontWeight: "bold",
-    color: "black",
+    fontWeight: "500",
+    color: "#00AEEF",
   },
   totalPrice: {
     color: "#5b5b5b",

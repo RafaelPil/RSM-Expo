@@ -5,10 +5,10 @@ import SavedPostScreen from "../screens/SavedPostScreen";
 import MyPostsScreen from "../screens/MyPostsScreen";
 import AddPostScreen from "../screens/AddPostScreen";
 import CustomDrawer from "../components/CustomDrawer";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import ProfileScreen from "../screens/ProfileScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -26,8 +26,17 @@ const DrawerStack = () => {
         headerShown: false,
         drawerActiveBackgroundColor: "#00AEEF",
         drawerActiveTintColor: COLORS.white,
-        drawerInactiveTintColor: "#333",
-        drawerLabelStyle: { marginLeft: -25, fontSize: SIZES.font },
+        drawerInactiveTintColor: "#474747",
+        drawerLabelStyle: {
+          marginLeft: -25,
+          fontSize: SIZES.font,
+          fontWeight: "500",
+        },
+        drawerItemStyle: {
+          borderRadius: SIZES.extraLarge,
+          paddingHorizontal: 6,
+          marginHorizontal: 20,
+        },
       }}
     >
       <Drawer.Screen
@@ -35,7 +44,7 @@ const DrawerStack = () => {
         component={HomeScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <Entypo name="home" size={22} color={color} />
+            <AntDesign name="home" size={18} color={color} />
           ),
         }}
       />
@@ -44,7 +53,7 @@ const DrawerStack = () => {
         component={SavedPostScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <AntDesign name="hearto" size={22} color={color} />
+            <AntDesign name="hearto" size={18} color={color} />
           ),
         }}
       />
@@ -53,7 +62,11 @@ const DrawerStack = () => {
         component={MyPostsScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <MaterialCommunityIcons name="post" size={22} color={color} />
+            <MaterialCommunityIcons
+              name="post-outline"
+              size={18}
+              color={color}
+            />
           ),
         }}
       />
@@ -62,7 +75,7 @@ const DrawerStack = () => {
         component={AddPostScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <Ionicons name="add" size={22} color={color} />
+            <Ionicons name="add-circle-outline" size={19} color={color} />
           ),
         }}
       />
@@ -80,7 +93,11 @@ const DrawerStack = () => {
         component={AgendaScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <Entypo name="calendar" size={22} color={color} />
+            <MaterialCommunityIcons
+              name="calendar-check-outline"
+              size={18}
+              color={color}
+            />
           ),
         }}
       />
@@ -89,7 +106,7 @@ const DrawerStack = () => {
         component={ProfileScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <Entypo name="chat" size={22} color={color} />
+            <FontAwesome5 name="user-circle" size={18} color={color} />
           ),
         }}
       />

@@ -219,7 +219,7 @@ const PostDetails = ({ post }) => {
         <LikedPeople />
       </Pressable> */}
 
-      <ScrollView>
+      <View>
         <View style={{ padding: SIZES.large }}>
           <View style={{ alignContent: "center" }}>
             <View style={styles.row}>
@@ -283,7 +283,7 @@ const PostDetails = ({ post }) => {
             {postData?.description}
           </Text>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

@@ -156,7 +156,7 @@ const PostCard = (props) => {
       >
         <AntDesign
           name={liked ? "heart" : "hearto"}
-          size={22}
+          size={24}
           color={liked ? "#00AEEF" : "grey"}
         />
       </TouchableOpacity>

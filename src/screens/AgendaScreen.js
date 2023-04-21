@@ -65,7 +65,7 @@ LocaleConfig.locales["ltu"] = {
     "Penktadienis",
     "Šeštadienis",
   ],
-  dayNamesShort: ["Sek.", "Pirm.", "Antr.", "Treč.", "Ketv.", "Penk.", "Šešt."],
+  dayNamesShort: ["Sk", "Pr", "An", "Tr", "Kt", "Pn", "Št."],
   today: "Šiandien",
 };
 
@@ -113,7 +113,8 @@ const AgendaScreen = () => {
   const renderItem = (item) => {
     return (
       <View style={styles.itemContainer}>
-        <Text style={styles.itemTitle}>{item.name}</Text>
+        <Text style={styles.itemTitle}>Matematikos pamoka</Text>
+        <Text style={styles.itemTitleTime}>{item.name}</Text>
       </View>
     );
   };
@@ -156,10 +157,14 @@ const AgendaScreen = () => {
         //     selectedDotColor: "red",
         //   },
         // }}
-        // theme={{
-        //   todayTextColor: COLORS.primary,
-        //   selectedDayBackgroundColor: COLORS.primary,
-        // }}
+        theme={{
+          todayTextColor: "#EF00D7",
+          // selectedDayBackgroundColor: COLORS.primary,
+          selectedDayTextColor: "#00AEEF",
+          // textSectionTitleColor: "#00AEEF",
+          selectedDotColor: "#00AEEF",
+          selectedDayBackgroundColor: "none",
+        }}
         scrollEnabled
       />
     </View>
@@ -180,8 +185,16 @@ const styles = StyleSheet.create({
     marginTop: 17,
   },
   itemTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#474747",
+    lineHeight: 16,
+  },
+  itemTitleTime: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#474747",
+    lineHeight: 16,
   },
 });
 

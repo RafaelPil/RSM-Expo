@@ -96,12 +96,12 @@ function AuthStack() {
             name="Booking"
             component={BookingScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Rezervuoti laika",
               headerStyle: {
-                backgroundColor: COLORS.primary,
+                backgroundColor: COLORS.white,
               },
-              headerTintColor: "#fff",
+              // headerTintColor: "#474747",
             }}
           />
           <Stack.Screen

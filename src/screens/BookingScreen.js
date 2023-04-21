@@ -1,16 +1,7 @@
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  FlatList,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import React, { useState } from "react";
-import HeaderComponent from "../components/HeaderComponent";
-import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
 import { COLORS, SIZES } from "../constants";
-import timePicker from "../constants/timePicker";
+import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserData, useUserId } from "@nhost/react";
@@ -32,7 +23,7 @@ const locale = {
       "Sekmadienis_Pirmadienis_Antradienis_Trečiadienis_Ketvirtadienis_Penktadienis_Šeštadienis".split(
         "_"
       ),
-    weekdaysShort: "Sekm._Pirm._Antr._Treč._Ketv._Penk._Šešt.".split("_"),
+    weekdaysShort: "Sk_Pr_An_Tr_Kt_Pn_Št".split("_"),
     week: {
       dow: 1, // Monday is the first day of the week.
       doy: 4, // The week that contains Jan 4th is the first week of the year.
@@ -94,6 +85,9 @@ const times = [
   "15:00",
   "16:00",
   "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
 ];
 
 const BookingScreen = () => {
@@ -130,10 +124,14 @@ const BookingScreen = () => {
   // console.log(formattedDate + " data");
   // console.log(selectedTime);
 
+  const moveBack = () => {
+    navigation.goBack();
+  };
+
   const onRezervationEvent = async () => {
     await addNewEvent({
       variables: {
-        name: `Pamoka pas ${postTitle}, ${selectedTime} val. Mokinys ${userName}`,
+        name: `\n${userName} - ${selectedTime} val.`,
         postUserId: postUserId,
         time: selectedTime,
         userId: userId,
@@ -144,7 +142,22 @@ const BookingScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#eee" }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View style={styles.rowContainer}>
+        <View style={styles.leftIconContainer}>
+          <Pressable onPress={moveBack}>
+            <AntDesign
+              name="left"
+              size={20}
+              color={COLORS.primary}
+              style={{ fontWeight: "bold" }}
+            />
+          </Pressable>
+        </View>
+        <View style={styles.rowCenterText}>
+          <Text style={styles.rowHeaderText}>Laiko rezervacija</Text>
+        </View>
+      </View>
       {/* <HorizontalDatepicker
         mode="gregorian"
         startDate={new Date()}
@@ -180,25 +193,24 @@ const BookingScreen = () => {
           borderWidth: 1,
           borderHighlightColor: "white",
         }}
-        highlightDateNumberStyle={{ color: COLORS.primary }}
-        highlightDateNameStyle={{ color: COLORS.secondary }}
-        calendarHeaderStyle={{ color: "#000" }}
-        dateNumberStyle={{ color: "#e2e2e2" }}
-        dateNameStyle={{ color: "gray" }}
+        highlightDateNumberStyle={{ color: "#00AEEF" }}
+        highlightDateNameStyle={{ color: "#00AEEF" }}
+        calendarHeaderStyle={{
+          color: "#474747",
+          fontWeight: "400",
+          marginBottom: 20,
+        }}
+        dateNumberStyle={{ color: "#D4D4D4" }}
+        dateNameStyle={{ color: "#D4D4D4" }}
         iconContainer={{ flex: 0.1 }}
         leftSelector={[]}
         rightSelector={[]}
         onDateSelected={handleDateSelected}
         selectedDate={selectedDate}
+        locale={locale}
       />
 
-      <View
-        style={{
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.clockMainContainer}>
         <FlatList
           numColumns={3}
           data={times}
@@ -224,13 +236,13 @@ const BookingScreen = () => {
       </View>
 
       {/* show the selected date and time */}
-      {selectedTime && (
+      {/* {selectedTime && (
         <View style={styles.selectedDateTimeStyle}>
           <Text>
             Pasirinkta data: {formattedDate}, laikas: {selectedTime}
           </Text>
         </View>
-      )}
+      )} */}
 
       {isTimeSelected ? (
         <Pressable style={styles.chatButton} onPress={onRezervationEvent}>
@@ -246,34 +258,43 @@ const BookingScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  clockMainContainer: {
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
   clockContainer: {
-    // borderColor: COLORS.primary,
-    width: 80,
-    // borderWidth: 1,
+    borderColor: "#E8E8E8",
+    width: 110,
+    borderWidth: 1,
     borderRadius: 20,
-    margin: 10,
+    margin: 6,
     padding: 5,
     backgroundColor: COLORS.white,
   },
   clockTitleStyle: {
-    fontSize: 14,
-    color: COLORS.primary,
+    fontSize: 13,
+    color: "#474747",
     fontWeight: "500",
     textAlign: "center",
   },
   selectedTimeContainer: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#00AEEF",
   },
   selectedTimeTitle: {
     color: "#fff",
+    fontWeight: "500",
+    fontSize: 13,
+    textAlign: "center",
   },
   chatButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#00AEEF",
     borderRadius: SIZES.extraLarge,
-    height: 50,
+    padding: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 10,
+    marginHorizontal: 70,
     marginTop: "auto",
     marginBottom: 10,
   },
@@ -296,6 +317,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.white,
+    paddingTop: 20,
+    paddingHorizontal: 15,
+  },
+  rowCenterText: {
+    alignItems: "center",
+    flex: 1,
+    marginRight: 15,
+  },
+  rowHeaderText: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 24,
+    color: "#474747",
   },
 });
 

@@ -7,7 +7,6 @@ import { useUserData } from "@nhost/react";
 const displayedUsers = (dummyPosts || []).slice(0, 5).map((attende) => attende);
 
 export const PostTitle = ({ title, price, city }) => {
-
   return (
     <View style={{ alignContent: "center" }}>
       <View style={styles.row}>
@@ -38,7 +37,7 @@ export const PostTitle = ({ title, price, city }) => {
           marginTop: 15,
         }}
       >
-        {price}€/val
+        {price}eur/val
       </Text>
     </View>
   );
