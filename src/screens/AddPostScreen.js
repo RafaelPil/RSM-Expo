@@ -26,6 +26,7 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import { FocusedStatusBar } from "../components";
 
 initializeApp(firebaseConfig);
 
@@ -159,6 +160,11 @@ const AddPost = () => {
 
   return (
     <SafeAreaView>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <HeaderComponent headerTitle={"Įdėkite skelbimą"} />
       <View style={{ margin: 20 }}>
         <View style={styles.container}>

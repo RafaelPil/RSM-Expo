@@ -13,8 +13,9 @@ import HeaderComponent from "../components/HeaderComponent";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 import { Alert } from "react-native";
-import Entypo from "react-native-vector-icons/Entypo";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { FocusedStatusBar } from "../components";
 
 const GET_ALL_POSTS_INFO = gql`
   subscription getSavedPostByUserId($userId: uuid!) {
@@ -61,6 +62,11 @@ const SavedPostScreen = ({ isLiked }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <FlatList
         data={data?.LikedPost}
         keyExtractor={(item) => item.id}
@@ -75,7 +81,11 @@ const SavedPostScreen = ({ isLiked }) => {
         style={styles.chatContainer}
       >
         <View style={styles.chatInContainer}>
-          <Entypo name="chat" size={24} color={COLORS.white} />
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={34}
+            color={COLORS.white}
+          />
         </View>
       </TouchableOpacity>
     </SafeAreaView>
@@ -86,22 +96,22 @@ const styles = StyleSheet.create({
   chatContainer: {
     width: 60,
     height: 60,
-    backgroundColor: COLORS.white,
+    // backgroundColor: "#00AEEF",
     position: "absolute",
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    ...SHADOWS.light,
+    // ...SHADOWS.light,
     right: 10,
     bottom: 10,
-    borderWidth: 3,
-    borderColor: COLORS.gray,
+    // borderWidth: 3,
+    // borderColor: "#00AEEF",
   },
   chatInContainer: {
-    backgroundColor: COLORS.primary,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: "#00AEEF",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     ...SHADOWS.light,

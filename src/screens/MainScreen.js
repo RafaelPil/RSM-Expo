@@ -14,6 +14,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { NhostClient, useProviderLink } from "@nhost/react";
 import { SafeAreaView } from "react-native";
+import { FocusedStatusBar } from "../components";
 
 const MainScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -27,6 +28,11 @@ const MainScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <View style={{ height: 430, width: width }}>
         <Image
           source={require("../../assets/images/ft1.png")}

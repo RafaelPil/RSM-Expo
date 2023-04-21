@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useChatContext } from "../../../context/ChatContext";
 import { ChannelList } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
+import { FocusedStatusBar } from "../../components";
 
 const ChatsScreen = () => {
   const { setCurrentChannel, chatClient, currentChannel } = useChatContext();
@@ -23,12 +24,19 @@ const ChatsScreen = () => {
   const sort = { last_message_at: -1 };
 
   return (
-    <ChannelList
-      onSelect={onSelect}
-      filters={filters}
-      sort={sort}
-      options={[{ watch: true, state: true }]}
-    />
+    <>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
+      <ChannelList
+        onSelect={onSelect}
+        filters={filters}
+        sort={sort}
+        options={[{ watch: true, state: true }]}
+      />
+    </>
   );
 };
 

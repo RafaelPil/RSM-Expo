@@ -12,6 +12,7 @@ import { COLORS, SHADOWS } from "../constants";
 import HeaderComponent from "../components/HeaderComponent";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
+import { FocusedStatusBar } from "../components";
 
 LocaleConfig.locales["ltu"] = {
   monthNames: [
@@ -141,6 +142,11 @@ const AgendaScreen = () => {
 
   return (
     <View style={styles.container}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <HeaderComponent headerTitle={"Dienotvarkė"} />
       <Agenda
         items={items}

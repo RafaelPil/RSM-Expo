@@ -14,6 +14,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponent from "../components/HeaderComponent";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
@@ -26,6 +27,7 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import { FocusedStatusBar } from "../components";
 
 initializeApp(firebaseConfig);
 
@@ -86,6 +88,10 @@ const EditPostScreen = () => {
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
 
   const [mutation_EditPost] = useMutation(MUTATION_EDIT_POST);
+
+  const moveBack = () => {
+    navigation.goBack();
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -163,6 +169,26 @@ const EditPostScreen = () => {
 
   return (
     <SafeAreaView>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
+      <View style={styles.rowContainer}>
+        <View style={styles.leftIconContainer}>
+          <Pressable onPress={moveBack}>
+            <AntDesign
+              name="left"
+              size={20}
+              color="#474747"
+              style={{ fontWeight: "bold" }}
+            />
+          </Pressable>
+        </View>
+        <View style={styles.rowCenterText}>
+          <Text style={styles.rowHeaderText}>Redaguoti skelbimą</Text>
+        </View>
+      </View>
       {/* <HeaderComponent headerTitle={"Redaguojamas skelbimas"} /> */}
       <View style={{ margin: 20 }}>
         <View style={styles.container}>
@@ -318,6 +344,26 @@ const styles = StyleSheet.create({
     color: "white",
     justifyContent: "center",
     alignItems: "center",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.white,
+    paddingTop: 20,
+    paddingHorizontal: 15,
+  },
+  rowCenterText: {
+    alignItems: "center",
+    flex: 1,
+    marginRight: 15,
+  },
+  rowHeaderText: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 24,
+    color: "#474747",
   },
 });
 

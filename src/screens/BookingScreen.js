@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserData, useUserId } from "@nhost/react";
 import { gql, useMutation } from "@apollo/client";
 import CalendarStrip from "react-native-calendar-strip";
+import { FocusedStatusBar } from "../components";
 
 const locale = {
   name: "ltu",
@@ -143,13 +144,18 @@ const BookingScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <View style={styles.rowContainer}>
         <View style={styles.leftIconContainer}>
           <Pressable onPress={moveBack}>
             <AntDesign
               name="left"
               size={20}
-              color={COLORS.primary}
+              color="#474747"
               style={{ fontWeight: "bold" }}
             />
           </Pressable>
@@ -294,9 +300,9 @@ const styles = StyleSheet.create({
     padding: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 70,
+    marginHorizontal: 20,
     marginTop: "auto",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   disabledButton: {
     marginTop: 10,

@@ -1,8 +1,7 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
-import { COLORS, dummyData, SIZES, assets, dummyPosts } from "../constants";
-import { FONTS } from "../constants/theme";
-import { useUserData } from "@nhost/react";
+import { SIZES, dummyPosts } from "../constants";
+import FocusedStatusBar from "../components/FocusedStatusBar";
 
 const displayedUsers = (dummyPosts || []).slice(0, 5).map((attende) => attende);
 

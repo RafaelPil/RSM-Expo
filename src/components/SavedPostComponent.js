@@ -14,6 +14,7 @@ import { COLORS, SHADOWS, SIZES } from "../constants";
 import { gql, useMutation } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 import { StatusBar } from "react-native";
+import FocusedStatusBar from "./FocusedStatusBar";
 
 const RemoveLikedPostMutation = gql`
   mutation removeLike($userId: uuid!, $postId: uuid!) {

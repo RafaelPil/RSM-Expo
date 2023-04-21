@@ -10,6 +10,7 @@ import {
 
 import { useUserData, useSignOut, useAuthenticated } from "@nhost/react";
 import HeaderComponent from "../components/HeaderComponent";
+import { FocusedStatusBar } from "../components";
 
 export default function TabTwoScreen() {
   const user = useUserData();
@@ -24,6 +25,11 @@ export default function TabTwoScreen() {
   if (isAuthenticated) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <FocusedStatusBar
+          barStyle="dark-content"
+          backgroundColor="#00AEEF"
+          transLucent={true}
+        />
         <HeaderComponent headerTitle={"Profilis"} />
         <View style={styles.container}>
           <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />

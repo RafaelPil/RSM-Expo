@@ -117,6 +117,11 @@ const PostDetailsHeader = ({ post }) => {
 
   return (
     <View style={{ width: "100%", height: 373 }}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <Image
         source={{ uri: postData?.image }}
         resizeMode="cover"

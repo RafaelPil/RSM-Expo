@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "../screens/MainScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import { ActivityIndicator, Alert } from "react-native";
+import { ActivityIndicator } from "react-native";
 import DrawerStack from "./DrawerStack";
 import DetailsScreen from "../screens/DetailsScreen";
 import UsersModal from "../modals/UsersModal";
@@ -12,11 +12,9 @@ import { SignedIn, useAuthenticationStatus } from "@nhost/react";
 import ChatContextProvider from "../../context/ChatContext";
 import ChatsScreen from "../screens/Chat/ChatsScreen";
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import EditPostScreen from "../screens/EditPostScreen";
 import { COLORS } from "../constants";
 import BookingScreen from "../screens/BookingScreen";
-import AgendaScreen from "../screens/AgendaScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -35,7 +33,6 @@ export default function Navigation() {
 }
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
 
 function AuthStack() {
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
@@ -108,7 +105,7 @@ function AuthStack() {
             name="EditPost"
             component={EditPostScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Redaguojamas skelbimas",
               headerStyle: {
                 backgroundColor: COLORS.primary,
