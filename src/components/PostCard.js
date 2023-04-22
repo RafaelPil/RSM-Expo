@@ -104,7 +104,9 @@ const PostCard = (props) => {
   };
 
   const toDetails = () => {
-    navigation.navigate("Details", { postId: data?.id });
+    navigation.navigate("Details", {
+      postId: data?.id,
+    });
   };
 
   //console.log(data);

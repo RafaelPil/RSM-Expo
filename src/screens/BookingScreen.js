@@ -139,7 +139,7 @@ const BookingScreen = () => {
         date: formattedDate,
       },
     });
-    navigation.navigate("Dienotvarkė");
+    navigation.navigate("Kalendorius");
   };
 
   return (

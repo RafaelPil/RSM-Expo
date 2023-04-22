@@ -72,7 +72,7 @@ const SavedPostScreen = ({ isLiked }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <SavedPostComponent data={item} />}
         ListHeaderComponent={
-          <HeaderComponent headerTitle={"Įsiminti seklbimai"} />
+          <HeaderComponent headerTitle={"Įsimintos paslaugos"} />
         }
       />
 

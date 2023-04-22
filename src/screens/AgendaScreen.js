@@ -147,7 +147,7 @@ const AgendaScreen = () => {
         backgroundColor="#00AEEF"
         transLucent={true}
       />
-      <HeaderComponent headerTitle={"Dienotvarkė"} />
+      <HeaderComponent headerTitle={"Kalendorius"} />
       <Agenda
         items={items}
         renderItem={renderItem}

@@ -6,20 +6,19 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
-  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 
 import { COLORS, SIZES, assets, SHADOWS } from "../constants";
-import { FocusedStatusBar, CircleButton } from "../components";
+import { FocusedStatusBar } from "../components";
 import { useNavigation } from "@react-navigation/native";
-import { PostTitle } from "../components";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { useUserData, useUserId } from "@nhost/react";
 import { ChatContext } from "../../context/ChatContext";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { AntDesign } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
+import { ActivityIndicator } from "react-native";
 
 const LikePostMutation = gql`
   mutation PutLikeToPost($postId: uuid!, $userId: uuid!, $liked: Boolean!) {
@@ -65,6 +64,17 @@ const GET_LIKED_POST_SUBSCR = gql`
       postId
       userId
       liked
+    }
+  }
+`;
+
+const GET_POST_BY_ID = gql`
+  query GetPostById($postId: uuid!) {
+    Post(where: { id: { _eq: $postId } }) {
+      id
+      user {
+        avatarUrl
+      }
     }
   }
 `;
@@ -115,6 +125,10 @@ const PostDetailsHeader = ({ post }) => {
     setLiked(!liked);
   };
 
+  const moveBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={{ width: "100%", height: 373 }}>
       <FocusedStatusBar
@@ -127,12 +141,33 @@ const PostDetailsHeader = ({ post }) => {
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       />
-      <CircleButton
+      {/* <CircleButton
         imgUrl={assets.left}
         handlePress={() => navigation.goBack()}
         left={15}
         top={StatusBar.currentHeight + 10}
-      />
+      /> */}
+
+      <Pressable
+        onPress={moveBack}
+        style={{
+          width: 40,
+          height: 40,
+          position: "absolute",
+          borderRadius: SIZES.extraLarge,
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: StatusBar.currentHeight + 10,
+          left: 5,
+        }}
+      >
+        <AntDesign
+          name="left"
+          size={24}
+          color={COLORS.white}
+          style={{ fontWeight: "bold" }}
+        />
+      </Pressable>
 
       <TouchableOpacity
         onPress={onLikePressed}
@@ -146,7 +181,7 @@ const PostDetailsHeader = ({ post }) => {
           justifyContent: "center",
           ...SHADOWS.light,
           top: StatusBar.currentHeight + 10,
-          right: 10,
+          right: 15,
         }}
       >
         <AntDesign
@@ -164,6 +199,16 @@ const PostDetails = ({ post }) => {
   //console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
   const user = useUserData();
+  const PostOwnerName = post?.user?.metadata?.name;
+
+  const { loading, error, data } = useQuery(GET_POST_BY_ID, {
+    variables: { postId: postData?.id },
+  });
+
+  const postById = data?.Post[0];
+  const avatarUrl = postById?.user?.avatarUrl;
+
+  console.log(avatarUrl);
 
   const postUserId = postData?.userId.toString();
   const postTitle = post?.title;
@@ -182,12 +227,13 @@ const PostDetails = ({ post }) => {
         style={{
           position: "absolute",
           bottom: 0,
-          paddingVertical: SIZES.large,
+          paddingVertical: SIZES.small,
           right: 15,
           left: 15,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          zIndex: 1,
         }}
       >
         {/* <RectButton
@@ -224,7 +270,7 @@ const PostDetails = ({ post }) => {
         <LikedPeople />
       </Pressable> */}
 
-      <View>
+      <ScrollView style={styles.detailsInfoContainer}>
         <View style={{ padding: SIZES.large }}>
           <View style={{ alignContent: "center" }}>
             <View style={styles.row}>
@@ -238,7 +284,10 @@ const PostDetails = ({ post }) => {
                 {postData?.title}
               </Text>
 
-              <Image source={{ uri: user?.avatarUrl }} style={styles.avatar} />
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+                <Text style={styles.avatarTextName}>{PostOwnerName}</Text>
+              </View>
             </View>
 
             <Text
@@ -257,7 +306,7 @@ const PostDetails = ({ post }) => {
                 marginTop: 15,
               }}
             >
-              {postData?.price}€/val
+              {postData?.price}eur/val
             </Text>
           </View>
         </View>
@@ -270,7 +319,7 @@ const PostDetails = ({ post }) => {
           <Text
             style={{
               fontSize: SIZES.large,
-              fontWeight: "500",
+              fontWeight: "400",
               color: "#474747",
             }}
           >
@@ -288,7 +337,7 @@ const PostDetails = ({ post }) => {
             {postData?.description}
           </Text>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -297,6 +346,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+  },
+  detailsInfoContainer: {
+    marginBottom: 70,
   },
   title: {
     fontSize: 24,
@@ -362,6 +414,11 @@ const styles = StyleSheet.create({
     width: 40,
     aspectRatio: 1,
     borderRadius: 50,
+  },
+  avatarTextName: {
+    textAlign: "center",
+    fontSize: SIZES.small,
+    color: "#474747",
   },
 });
 

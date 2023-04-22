@@ -77,21 +77,21 @@ const SavedPostComponent = ({ data }) => {
         <TouchableOpacity
           onPress={onDislikePressed}
           style={{
-            width: 40,
-            height: 40,
-            backgroundColor: COLORS.white,
+            width: 30,
+            height: 30,
+            // backgroundColor: COLORS.white,
             position: "absolute",
             borderRadius: SIZES.extraLarge,
             alignItems: "center",
             justifyContent: "center",
-            ...SHADOWS.light,
+            // ...SHADOWS.light,
             top: 10,
             right: 10,
           }}
         >
           <AntDesign
             name={liked ? "hearto" : "heart"}
-            size={24}
+            size={22}
             color={liked ? "gray" : "#00AEEF"}
           />
         </TouchableOpacity>

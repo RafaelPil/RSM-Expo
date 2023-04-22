@@ -66,7 +66,7 @@ const LoginScreen = () => {
             <AntDesign
               name="left"
               size={20}
-              color={COLORS.primary}
+              color="#474747"
               style={{ fontWeight: "bold" }}
             />
           </Pressable>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 20,
-    color: COLORS.primary,
+    color: "#474747",
     fontSize: 14,
     fontWeight: "400",
   },

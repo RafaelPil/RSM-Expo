@@ -61,7 +61,7 @@ const RegisterScreen = () => {
             <AntDesign
               name="left"
               size={20}
-              color={COLORS.primary}
+              color="#474747"
               style={{ fontWeight: "bold" }}
             />
           </Pressable>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 20,
-    color: COLORS.primary,
+    color: "#474747",
     fontSize: SIZES.medium,
     fontWeight: "400",
   },

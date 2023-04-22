@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { COLORS, SHADOWS, SIZES } from "../constants";
 import { Entypo } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import {
   Menu,
   MenuOptions,
@@ -96,10 +97,10 @@ const MyPostComponent = ({ postData }) => {
 
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.bedrooms}>{postData.description}</Text>
+          <Text style={styles.title}>{postData.title}</Text>
 
           {/* Type & Description */}
-          <Text style={styles.description} numberOfLines={2}>
+          <Text style={styles.city} numberOfLines={2}>
             {postData.city}
           </Text>
 
@@ -117,7 +118,7 @@ const MyPostComponent = ({ postData }) => {
               justifyContent: "center",
             }}
           >
-            <Entypo name="dots-three-vertical" size={22} color="black" />
+            <Feather name="edit" size={22} color="black" />
           </MenuTrigger>
           <MenuOptions>
             <MenuOption
@@ -163,16 +164,18 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 10,
   },
-  bedrooms: {
+  title: {
     marginVertical: 10,
-    color: "#5b5b5b",
+    color: "#474747",
+    fontWeight: "700",
   },
-  description: {
+  city: {
     fontSize: 15,
+    color: "#BEBEBE",
   },
   newPrice: {
-    fontWeight: "bold",
-    color: "black",
+    fontWeight: "500",
+    color: "#00AEEF",
   },
   totalPrice: {
     color: "#5b5b5b",

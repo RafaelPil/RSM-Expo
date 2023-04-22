@@ -49,7 +49,7 @@ const DrawerStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Įsiminti skelbimai"
+        name="Įsimintos paslaugos"
         component={SavedPostScreen}
         options={{
           drawerIcon: ({ color }) => (
@@ -71,7 +71,7 @@ const DrawerStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Įdėkite skelbimą"
+        name="Pridėti paslaugą"
         component={AddPostScreen}
         options={{
           drawerIcon: ({ color }) => (
@@ -89,7 +89,7 @@ const DrawerStack = () => {
         }}
       /> */}
       <Drawer.Screen
-        name="Dienotvarkė"
+        name="Kalendorius"
         component={AgendaScreen}
         options={{
           drawerIcon: ({ color }) => (

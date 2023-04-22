@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { Controller } from "react-hook-form";
 import { COLORS, SIZES } from "../constants";
+import { useState } from "react";
 
 const CustomInput = ({
   control,
@@ -16,8 +17,11 @@ const CustomInput = ({
   placeholder,
   secureTextEntry,
   keyboardType,
+  heightInput,
+  multilineInput,
 }) => {
   const { height, width } = useWindowDimensions();
+  const [secureEntry, setSecureEntry] = useState(false);
 
   return (
     <View>
@@ -34,6 +38,7 @@ const CustomInput = ({
               style={[
                 styles.container,
                 { borderColor: error ? "red" : "#e8e8e8" },
+                { height: heightInput ? heightInput : 45 },
               ]}
             >
               <TextInput
@@ -41,17 +46,14 @@ const CustomInput = ({
                 onChangeText={onChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
-                style={styles.input}
+                style={[styles.input]}
                 secureTextEntry={secureTextEntry}
                 keyboardType={keyboardType}
+                multiline={multilineInput}
               />
             </View>
             {error && (
-              <Text
-                style={{ color: "red", alignSelf: "stretch", marginLeft: 15 }}
-              >
-                {error.message || "Klaida"}
-              </Text>
+              <Text style={styles.text}>{error.message || "Klaida"}</Text>
             )}
           </>
         )}
@@ -63,14 +65,11 @@ const CustomInput = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-
     borderColor: "#e8e8e8",
     borderWidth: 1,
     borderRadius: 20,
-
     paddingHorizontal: 10,
     marginVertical: 5,
-    marginBottom: 10,
     height: 45,
     marginHorizontal: 20,
     alignContent: "center",
@@ -80,6 +79,13 @@ const styles = StyleSheet.create({
     color: "#474747",
     fontSize: SIZES.font,
     textDecorationLine: "none",
+  },
+  text: {
+    color: "red",
+    alignSelf: "stretch",
+    marginLeft: 20,
+    fontSize: SIZES.small,
+    marginBottom: 10,
   },
 });
 

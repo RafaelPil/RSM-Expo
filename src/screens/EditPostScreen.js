@@ -28,6 +28,9 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { FocusedStatusBar } from "../components";
+import { useForm } from "react-hook-form";
+import CustomInput from "../components/CustomInput";
+import { ScrollView } from "react-native";
 
 initializeApp(firebaseConfig);
 
@@ -71,6 +74,8 @@ const EditPostScreen = () => {
   const postData = route?.params?.postData;
 
   const userId = useUserId();
+
+  const { control, handleSubmit, watch } = useForm();
 
   // setting timestampz time
   const now = new Date();
@@ -140,7 +145,8 @@ const EditPostScreen = () => {
     return <Text>No access to Internal Storage</Text>;
   }
 
-  const editPost = async () => {
+  const editPost = async (data) => {
+    const { description, city, price, title } = data;
     try {
       await mutation_EditPost({
         variables: {
@@ -168,7 +174,7 @@ const EditPostScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <ScrollView>
       <FocusedStatusBar
         barStyle="dark-content"
         backgroundColor="#00AEEF"
@@ -190,48 +196,91 @@ const EditPostScreen = () => {
         </View>
       </View>
       {/* <HeaderComponent headerTitle={"Redaguojamas skelbimas"} /> */}
-      <View style={{ margin: 20 }}>
-        <View style={styles.container}>
-          <TextInput
-            placeholder={"Antraštė"}
-            value={title}
-            onChangeText={(text) => setTitle(text)}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <TextInput
-            placeholder={"Kaina"}
-            value={price}
-            onChangeText={(text) => setPrice(text)}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <TextInput
-            placeholder={"Miestas"}
-            value={city}
-            onChangeText={(text) => setCity(text)}
-          />
-        </View>
-        <View style={styles.container}>
-          <TextInput
-            placeholder={"Aprašymas"}
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-          />
-        </View>
-
-        <View
-          style={{
-            backgroundColor: "#eee",
-            borderRadius: SIZES.font,
-            margin: SIZES.base,
-            ...SHADOWS.dark,
+      <View style={{ marginTop: 20 }}>
+        <Text style={styles.text}>Pavadinimas</Text>
+        <CustomInput
+          name="title"
+          placeholder=""
+          control={control}
+          multilineInput={true}
+          rules={{
+            required: "Įveskite pavadinima",
+            minLength: {
+              value: 3,
+              message: "Turi būti ne mažiau nei 3 raides",
+            },
+            maxLength: {
+              value: 24,
+              message: "Ne daugiau kaip 24 raidžiu",
+            },
           }}
-        >
+        />
+
+        <Text style={styles.text}>Kaina</Text>
+        <CustomInput
+          name="price"
+          placeholder=""
+          control={control}
+          keyboardType="numeric"
+          rules={{
+            required: "Įveskite kaina",
+            minLength: {
+              value: 1,
+              message: "Nurodykite kaina",
+            },
+            maxLength: {
+              value: 7,
+              message: "Nurodykite kaina",
+            },
+          }}
+        />
+
+        <Text style={styles.text}>Miestas</Text>
+        <CustomInput
+          name="city"
+          placeholder=""
+          control={control}
+          rules={{
+            required: "Įveskite miesta",
+            minLength: {
+              value: 3,
+              message: "Nurodykite miesta",
+            },
+            maxLength: {
+              value: 24,
+              message: "Tokio nera",
+            },
+          }}
+        />
+
+        <Text style={styles.text}>Išsamus aprašymas</Text>
+        <CustomInput
+          name="description"
+          placeholder=""
+          control={control}
+          heightInput={80}
+          multilineInput={true}
+          rules={{
+            required: "Įveskite aprašyma",
+            minLength: {
+              value: 10,
+              message: "Turi būti ne mažiau nei 10 raidžiu",
+            },
+            maxLength: {
+              value: 1000,
+              message: "Ne daugiau kaip 1000 raidžiu",
+            },
+          }}
+        />
+
+        <Text style={styles.text}>Pridėti nuotrauką</Text>
+        <View style={styles.imageContainer}>
           <View
-            style={{ width: "100%", height: 250, borderRadius: SIZES.font }}
+            style={{
+              width: "100%",
+              height: 190,
+              borderRadius: SIZES.font,
+            }}
           >
             {imageUri && (
               <Image
@@ -261,18 +310,21 @@ const EditPostScreen = () => {
               borderRadius: SIZES.font,
             }}
           >
-            <MaterialIcons name="add-a-photo" size={50} color={COLORS.gray} />
+            <Image
+              source={require("../../assets/icons/addimg.png")}
+              style={{
+                width: 70,
+                height: 80,
+              }}
+            />
           </Pressable>
         </View>
 
-        <Pressable
-          style={[styles.btnContainer, { width: width - 40 }]}
-          onPress={editPost}
-        >
+        <Pressable style={styles.btnContainer} onPress={handleSubmit(editPost)}>
           <Text style={{ fontSize: 14, color: COLORS.white }}>Skelbti</Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -292,9 +344,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
-    borderRadius: 10,
-    marginTop: 20,
+    height: 45,
+    borderRadius: 20,
+    margin: 20,
+    marginBottom: 20,
   },
   headerModal: {},
   panelHeader: {
@@ -364,6 +417,25 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 24,
     color: "#474747",
+  },
+  text: {
+    marginLeft: 20,
+    color: "#474747",
+    fontSize: SIZES.font,
+    fontWeight: "400",
+    marginTop: 10,
+  },
+  imageContainer: {
+    backgroundColor: "#eee",
+    borderRadius: SIZES.font,
+    marginHorizontal: 20,
+    // ...SHADOWS.dark,
+    marginTop: 5,
+  },
+  btnText: {
+    fontSize: 14,
+    color: COLORS.white,
+    fontWeight: "500",
   },
 });
 
