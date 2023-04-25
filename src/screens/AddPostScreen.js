@@ -304,7 +304,7 @@ const AddPost = () => {
           style={styles.btnContainer}
           onPress={handleSubmit(addNewPost)}
         >
-          <Text style={styles.btnText}>ĮDĖTI SKELBIMĄ</Text>
+          <Text style={styles.btnText}>Pridėti paslaugą</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -399,6 +399,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.white,
     fontWeight: "500",
+    lineHeight: 17,
   },
 });
 

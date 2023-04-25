@@ -10,6 +10,7 @@ export const ChatContext = createContext({});
 
 const ChatContextProvider = ({ children }) => {
   const client = StreamChat.getInstance(STERAMCHAT_KEY);
+
   // component
   const [chatClient, setChatClient] = useState(client);
   const [currentChannel, setCurrentChannel] = useState(null);

@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import CustomInput from "../components/CustomInput";
 import { useSignInEmailPassword } from "@nhost/react";
 import { Alert } from "react-native";
+import { FocusedStatusBar } from "../components";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -60,6 +61,11 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={{ marginTop: 30 }}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <View style={styles.rowContainer}>
         <View style={styles.leftIconContainer}>
           <Pressable onPress={moveBack} style={{ padding: 10 }}>

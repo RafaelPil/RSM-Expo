@@ -82,7 +82,11 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <FocusedStatusBar backgroundColor={COLORS.primary} />
+      <FocusedStatusBar
+        backgroundColor={COLORS.primary}
+        transLucent={true}
+        barStyle="dark-content"
+      />
 
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>

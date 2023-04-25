@@ -70,12 +70,12 @@ function AuthStack() {
           <Stack.Screen
             name="Chats"
             component={ChatsScreen}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ChatRoom"
             component={ChatRoomScreen}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           {/* <Stack.Screen
             name="Agenda"

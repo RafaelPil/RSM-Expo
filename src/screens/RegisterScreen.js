@@ -17,6 +17,7 @@ import CustomInput from "../components/CustomInput";
 import CustomInputPhone from "../components/CustomInputPhone";
 import { AntDesign } from "@expo/vector-icons";
 import { useSignUpEmailPassword } from "@nhost/react";
+import { FocusedStatusBar } from "../components";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -55,6 +56,11 @@ const RegisterScreen = () => {
 
   return (
     <SafeAreaView style={{ marginTop: 30 }}>
+      <FocusedStatusBar
+        barStyle="dark-content"
+        backgroundColor="#00AEEF"
+        transLucent={true}
+      />
       <View style={styles.rowContainer}>
         <View style={styles.leftIconContainer}>
           <Pressable onPress={moveBack} style={{ padding: 10 }}>
