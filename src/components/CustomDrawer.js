@@ -15,7 +15,7 @@ import { ActivityIndicator } from "react-native";
 import { Alert } from "react-native";
 
 const GET_USER_INFO = gql`
-  subscription getUser($id: uuid!) {
+  query getUser($id: uuid!) {
     user(id: $id) {
       avatarUrl
       displayName
@@ -28,20 +28,11 @@ const CustomDrawer = (props) => {
   const user = useUserData();
   const userId = useUserId();
 
-  const { data, loading, error } = useSubscription(GET_USER_INFO, {
+  const { data, loading, error } = useQuery(GET_USER_INFO, {
     variables: { id: userId },
+    pollInterval: 1000, // refetch the query every second
   });
-  console.log(data?.user?.displayName);
-
-  const [userAvatar, setUserAvatar] = useState(data?.user?.avatarUrl);
-  const [userName, setUserName] = useState(data?.user?.displayName);
-
-  console.log(data?.user);
-
-  useEffect(() => {
-    setUserAvatar(data?.user?.avatarUrl);
-    setUserName(data?.user?.displayName);
-  }, [data]);
+  //console.log(data?.user?.avatarUrl);
 
   const logout = async () => {
     await signOut();
@@ -62,8 +53,11 @@ const CustomDrawer = (props) => {
         // contentContainerStyle={{ backgroundColor: COLORS.primary }}
       >
         <View style={styles.avatarContainer}>
-          <Image source={{ uri: userAvatar }} style={styles.avatar} />
-          <Text style={styles.name}>{userName}</Text>
+          <Image
+            source={{ uri: data?.user?.avatarUrl }}
+            style={styles.avatar}
+          />
+          <Text style={styles.name}>{data?.user?.displayName}</Text>
         </View>
 
         <View
