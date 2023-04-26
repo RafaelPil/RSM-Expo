@@ -142,7 +142,11 @@ const BookingScreen = () => {
   // console.log(selectedTime);
   const getTimes = formattedDate == allDates ? allTimes : [];
 
-  console.log(getTimes);
+  // console.log(selectedTime);
+  // console.log(allTimes);
+  // const filteredTimes = allTimes.filter((time) => time !== selectedTime);
+
+  // console.log(filteredTimes);
 
   const moveBack = () => {
     navigation.goBack();
@@ -236,28 +240,34 @@ const BookingScreen = () => {
       />
 
       <View style={styles.clockMainContainer}>
-        <FlatList
-          numColumns={3}
-          data={getTimes}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={[
-                styles.clockContainer,
-                selectedTime === item && styles.selectedTimeContainer,
-              ]}
-              onPress={() => handleTimePress(item)}
-            >
-              <Text
+        {!getTimes.length ? (
+          <View>
+            <Text style={styles.text}>Nėra laisvu laiku</Text>
+          </View>
+        ) : (
+          <FlatList
+            numColumns={3}
+            data={getTimes}
+            renderItem={({ item }) => (
+              <TouchableOpacity
                 style={[
-                  styles.clockTitleStyle,
-                  selectedTime === item && styles.selectedTimeTitle,
+                  styles.clockContainer,
+                  selectedTime === item && styles.selectedTimeContainer,
                 ]}
+                onPress={() => handleTimePress(item)}
               >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
+                <Text
+                  style={[
+                    styles.clockTitleStyle,
+                    selectedTime === item && styles.selectedTimeTitle,
+                  ]}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
 
       {/* show the selected date and time */}
@@ -362,6 +372,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 24,
     color: "#474747",
+  },
+  text: {
+    color: "#474747",
+    textAlign: "center",
   },
 });
 
