@@ -108,7 +108,7 @@ const BookingScreen = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
   const [allTimes, setAllTimes] = useState(null);
-  const [allDates, setAllDates] = useState([]);
+  const [allDates, setAllDates] = useState(null);
   const [addNewEvent] = useMutation(ADD_NEW_EVENT_MUTATION);
   const { data, loading, error } = useQuery(GET_ALL_POSTS_DATE, {
     variables: {
@@ -116,20 +116,17 @@ const BookingScreen = () => {
     },
   });
 
-  const getTimes = () => {
-    const timesArray = data?.Post?.map((post) =>
-      post.timePicked.split(",")
-    ).flat();
-    setAllTimes(timesArray);
-  };
-
   useEffect(() => {
     if (data && data.Post) {
-      getTimes();
+      const datesArray = data.Post.map((post) => post.datePicked);
+      setAllDates(datesArray);
+
+      const timesArray = data.Post.map((post) =>
+        post.timePicked.split(",")
+      ).flat();
+      setAllTimes(timesArray);
     }
   }, [data]);
-
-  console.log(allTimes);
 
   const handleTimePress = (time) => {
     setSelectedTime(time);
@@ -143,6 +140,9 @@ const BookingScreen = () => {
   const formattedDate = selectedDate.toISOString().slice(0, 10);
   // console.log(formattedDate + " data");
   // console.log(selectedTime);
+  const getTimes = formattedDate == allDates ? allTimes : [];
+
+  console.log(getTimes);
 
   const moveBack = () => {
     navigation.goBack();
@@ -238,7 +238,7 @@ const BookingScreen = () => {
       <View style={styles.clockMainContainer}>
         <FlatList
           numColumns={3}
-          data={allTimes}
+          data={getTimes}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[
