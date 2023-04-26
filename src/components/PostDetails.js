@@ -248,6 +248,7 @@ const PostDetails = ({ post }) => {
             navigation.navigate("Booking", {
               postUserId: postUserId,
               postTitle: postTitle,
+              postById: postById
             })
           }
         >

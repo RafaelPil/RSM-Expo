@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { COLORS, SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserData, useUserId } from "@nhost/react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import CalendarStrip from "react-native-calendar-strip";
 import { FocusedStatusBar } from "../components";
 
@@ -32,15 +32,11 @@ const locale = {
   },
 };
 
-const GET_ALL_EVENTS_INFO = gql`
-  query getAllEvents($date: String!, $time: String!) {
-    Event(where: { date: { _eq: $date }, time: { _eq: $time } }) {
-      id
-      name
-      postUserId
-      time
-      userId
-      date
+const GET_ALL_POSTS_DATE = gql`
+  query getAllPosts($id: uuid!) {
+    Post(where: { id: { _eq: $id } }) {
+      timePicked
+      datePicked
     }
   }
 `;
@@ -101,8 +97,9 @@ const BookingScreen = () => {
   // console.log(userId);
   const postTitle = route.params?.postTitle;
   const postUserId = route.params?.postUserId;
+  const postById = route.params?.postById.id;
   const userName = userData.displayName;
-  // console.log(userName);
+  console.log(postById);
 
   // console.log(postUserId);
   // console.log(userId);
@@ -110,7 +107,29 @@ const BookingScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
+  const [allTimes, setAllTimes] = useState(null);
+  const [allDates, setAllDates] = useState([]);
   const [addNewEvent] = useMutation(ADD_NEW_EVENT_MUTATION);
+  const { data, loading, error } = useQuery(GET_ALL_POSTS_DATE, {
+    variables: {
+      id: postById,
+    },
+  });
+
+  const getTimes = () => {
+    const timesArray = data?.Post?.map((post) =>
+      post.timePicked.split(",")
+    ).flat();
+    setAllTimes(timesArray);
+  };
+
+  useEffect(() => {
+    if (data && data.Post) {
+      getTimes();
+    }
+  }, [data]);
+
+  console.log(allTimes);
 
   const handleTimePress = (time) => {
     setSelectedTime(time);
@@ -219,7 +238,7 @@ const BookingScreen = () => {
       <View style={styles.clockMainContainer}>
         <FlatList
           numColumns={3}
-          data={times}
+          data={allTimes}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[
