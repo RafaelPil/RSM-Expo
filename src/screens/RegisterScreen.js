@@ -47,7 +47,7 @@ const RegisterScreen = () => {
       metadata: { name },
     });
     if (error) {
-      Alert.alert("Oops", error.message);
+      Alert.alert("Toks el.paštas jau naudojamas");
     }
     // if (isSuccess) {
     //   navigation.navigate("SignIn");
@@ -77,7 +77,7 @@ const RegisterScreen = () => {
         </View>
       </View>
 
-      <Text style={styles.text}>Vardas</Text>
+      <Text style={styles.text}>Naudotojo vardas</Text>
       <CustomInput
         name="name"
         placeholder=""

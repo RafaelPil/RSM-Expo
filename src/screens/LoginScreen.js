@@ -51,7 +51,7 @@ const LoginScreen = () => {
       await signInEmailPassword(email, password);
 
     if (error) {
-      Alert.alert("Atsiprašome", error.message);
+      Alert.alert("Tokio naudotojo nėra");
     }
 
     if (needsEmailVerification) {

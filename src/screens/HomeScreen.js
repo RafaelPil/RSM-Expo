@@ -39,7 +39,9 @@ const GET_ALL_POSTS_INFO = gql`
 `;
 
 const HomeScreen = () => {
-  const { data, loading, error, refetch } = useQuery(GET_ALL_POSTS_INFO);
+  const { data, loading, error, refetch } = useQuery(GET_ALL_POSTS_INFO, {
+    pollInterval: 1000,
+  });
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [searchValue, setSearchValue] = useState("");

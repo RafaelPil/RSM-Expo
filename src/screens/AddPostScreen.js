@@ -139,27 +139,36 @@ const AddPost = () => {
 
   const addNewPost = async (data) => {
     const { description, city, price, title } = data;
-    try {
-      await mutation_addPost({
-        variables: {
-          userId: userId,
-          city: city,
-          description: description,
-          price: price,
-          image: imageUri,
-          title: title,
-          date: timestamp,
-        },
-      });
-      navigation.navigate("Pagrindinis");
-      setTitle("");
-      setPrice("");
-      setCity("");
-      setDescription("");
-      setImageUri("");
-    } catch (e) {
-      Alert.alert(e, "Serverio klaida");
-    }
+
+    navigation.navigate("ReservationDataTimeScreen", {
+      city: city,
+      description: description,
+      price: price,
+      imageUri: imageUri,
+      title: title,
+      timestamp: timestamp,
+    });
+    setTitle("");
+    setPrice("");
+    setCity("");
+    setDescription("");
+    setImageUri("");
+
+    // try {
+    //   await mutation_addPost({
+    //     variables: {
+    //       userId: userId,
+    //       city: city,
+    //       description: description,
+    //       price: price,
+    //       image: imageUri,
+    //       title: title,
+    //       date: timestamp,
+    //     },
+    //   });
+    // } catch (e) {
+    //   Alert.alert(e, "Serverio klaida");
+    // }
   };
 
   return (
@@ -189,8 +198,8 @@ const AddPost = () => {
               message: "Turi būti ne mažiau nei 3 raides",
             },
             maxLength: {
-              value: 24,
-              message: "Ne daugiau kaip 24 raidžiu",
+              value: 60,
+              message: "Ne daugiau kaip 60 raidžiu",
             },
           }}
         />
@@ -304,7 +313,7 @@ const AddPost = () => {
           style={styles.btnContainer}
           onPress={handleSubmit(addNewPost)}
         >
-          <Text style={styles.btnText}>Pridėti paslaugą</Text>
+          <Text style={styles.btnText}>Toliau</Text>
         </Pressable>
       </View>
     </ScrollView>

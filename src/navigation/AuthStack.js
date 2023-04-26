@@ -15,6 +15,7 @@ import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
 import EditPostScreen from "../screens/EditPostScreen";
 import { COLORS } from "../constants";
 import BookingScreen from "../screens/BookingScreen";
+import ReservationDataTimeScreen from "../screens/ReservationDateTimeScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -107,6 +108,18 @@ function AuthStack() {
             options={{
               headerShown: false,
               title: "Redaguojamas skelbimas",
+              headerStyle: {
+                backgroundColor: COLORS.primary,
+              },
+              headerTintColor: "#fff",
+            }}
+          />
+          <Stack.Screen
+            name="ReservationDataTimeScreen"
+            component={ReservationDataTimeScreen}
+            options={{
+              headerShown: false,
+              title: "Rezervuoti data ir laika",
               headerStyle: {
                 backgroundColor: COLORS.primary,
               },

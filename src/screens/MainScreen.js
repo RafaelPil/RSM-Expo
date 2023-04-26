@@ -35,7 +35,7 @@ const MainScreen = () => {
       />
       <View style={{ height: 430, width: width }}>
         <Image
-          source={require("../../assets/images/ft1.png")}
+          source={require("../../assets/images/mainImg.jpg")}
           style={{ width: width, height: 400 }}
         />
       </View>
