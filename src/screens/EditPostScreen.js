@@ -147,30 +147,30 @@ const EditPostScreen = () => {
 
   const editPost = async (data) => {
     const { description, city, price, title } = data;
-    try {
-      await mutation_EditPost({
-        variables: {
-          userId: userId,
-          city: city,
-          description: description,
-          price: price,
-          image: imageUri,
-          title: title,
-          date: timestamp,
-          postId: postData.id,
-        },
-      });
-      navigation.navigate("Pagrindinis");
-      setTitle("");
-      setPrice("");
-      setCity("");
-      setDescription("");
-      setImageUri(
-        "https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
-      );
-    } catch (e) {
-      Alert.alert(e, "Serverio klaida");
-    }
+
+    // await mutation_EditPost({
+    //   variables: {
+    //     userId: userId,
+    //     city: city,
+    //     description: description,
+    //     price: price,
+    //     image: imageUri,
+    //     title: title,
+    //     date: timestamp,
+    //     postId: postData.id,
+    //   },
+    // });
+    navigation.navigate("EditReservationDataTimeScreen", {
+      city: city,
+      description: description,
+      price: price,
+      imageUri: imageUri,
+      title: title,
+      timestamp: timestamp,
+      title: title,
+      date: timestamp,
+      postId: postData.id,
+    });
   };
 
   return (
@@ -321,7 +321,7 @@ const EditPostScreen = () => {
         </View>
 
         <Pressable style={styles.btnContainer} onPress={handleSubmit(editPost)}>
-          <Text style={{ fontSize: 14, color: COLORS.white }}>Skelbti</Text>
+          <Text style={{ fontSize: 14, color: COLORS.white }}>Toliau</Text>
         </Pressable>
       </View>
     </ScrollView>

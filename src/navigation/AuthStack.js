@@ -16,6 +16,7 @@ import EditPostScreen from "../screens/EditPostScreen";
 import { COLORS } from "../constants";
 import BookingScreen from "../screens/BookingScreen";
 import ReservationDataTimeScreen from "../screens/ReservationDateTimeScreen";
+import EditScreenReservationDateTimeScreen from "../screens/EditScreenReservationDateTimeScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -117,6 +118,18 @@ function AuthStack() {
           <Stack.Screen
             name="ReservationDataTimeScreen"
             component={ReservationDataTimeScreen}
+            options={{
+              headerShown: false,
+              title: "Rezervuoti data ir laika",
+              headerStyle: {
+                backgroundColor: COLORS.primary,
+              },
+              headerTintColor: "#fff",
+            }}
+          />
+          <Stack.Screen
+            name="EditReservationDataTimeScreen"
+            component={EditScreenReservationDateTimeScreen}
             options={{
               headerShown: false,
               title: "Rezervuoti data ir laika",

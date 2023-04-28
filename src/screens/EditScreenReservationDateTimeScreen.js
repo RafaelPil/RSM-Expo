@@ -1,11 +1,18 @@
-import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Pressable,
+  Alert,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { COLORS, SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUserData, useUserId } from "@nhost/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import CalendarStrip from "react-native-calendar-strip";
 import { FocusedStatusBar } from "../components";
 
@@ -32,59 +39,6 @@ const locale = {
   },
 };
 
-const GET_ALL_POSTS_DATE = gql`
-  query getAllPosts($id: uuid!) {
-    Post(where: { id: { _eq: $id } }) {
-      timePicked
-      datePicked
-    }
-  }
-`;
-
-const ADD_NEW_EVENT_MUTATION = gql`
-  mutation addNewEvent(
-    $name: String!
-    $postUserId: uuid!
-    $time: String!
-    $userId: uuid!
-    $date: String!
-  ) {
-    insert_Event(
-      objects: [
-        {
-          name: $name
-          postUserId: $postUserId
-          time: $time
-          userId: $userId
-          date: $date
-        }
-      ]
-    ) {
-      returning {
-        id
-        name
-        postUserId
-        time
-        userId
-        date
-      }
-    }
-  }
-`;
-
-const UPDATE_POST_TIME = gql`
-  mutation filterPostDateTime($id: uuid!, $timePicked: String!) {
-    update_Post(
-      _set: { timePicked: $timePicked }
-      where: { id: { _eq: $id } }
-    ) {
-      returning {
-        timePicked
-      }
-    }
-  }
-`;
-
 const times = [
   "9:00",
   "10:00",
@@ -100,7 +54,47 @@ const times = [
   "20:00",
 ];
 
-const BookingScreen = () => {
+const MUTATION_EDIT_POST = gql`
+  mutation mutationEditPost(
+    $postId: uuid!
+    $userId: uuid!
+    $city: String!
+    $description: String!
+    $image: String!
+    $price: String!
+    $title: String!
+    $timePicked: String!
+    $datePicked: String!
+  ) {
+    update_Post(
+      _set: {
+        city: $city
+        description: $description
+        image: $image
+        price: $price
+        title: $title
+        timePicked: $timePicked
+        datePicked: $datePicked
+      }
+      where: { id: { _eq: $postId }, _and: { userId: { _eq: $userId } } }
+    ) {
+      returning {
+        id
+        city
+        date
+        description
+        image
+        price
+        userId
+        title
+        timePicked
+        datePicked
+      }
+    }
+  }
+`;
+
+const EditScreenReservationDateTimeScreen = () => {
   const route = useRoute();
   const userId = useUserId();
   const navigation = useNavigation();
@@ -108,48 +102,43 @@ const BookingScreen = () => {
 
   // console.log(route.params?.postUserId);
   // console.log(userId);
-  const postTitle = route.params?.postTitle;
-  const postUserId = route.params?.postUserId;
-  const postById = route.params?.postById.id;
+  const city = route.params?.city;
+  const description = route.params?.description;
+  const price = route.params?.price;
+  const imageUri = route.params?.imageUri;
+  const title = route.params?.title;
+  const timestamp = route.params?.timestamp;
+  const postId = route.params?.postId;
+
   const userName = userData.displayName;
-  console.log(postById);
+  console.log(postId);
 
   // console.log(postUserId);
   // console.log(userId);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState([]);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
-  const [allTimes, setAllTimes] = useState(null);
-  const [allDates, setAllDates] = useState(null);
-  const [addNewEvent] = useMutation(ADD_NEW_EVENT_MUTATION);
-  const [filterPostDateTime] = useMutation(UPDATE_POST_TIME, {
+
+  const [mutationEditPost] = useMutation(MUTATION_EDIT_POST, {
     variables: {
-      id: postById,
+      userId: userId,
+      postId: postId,
     },
   });
-  const { data, loading, error } = useQuery(GET_ALL_POSTS_DATE, {
-    variables: {
-      id: postById,
-    },
-  });
-
-  useEffect(() => {
-    if (data && data.Post) {
-      const datesArray = data.Post.map((post) => post.datePicked);
-      setAllDates(datesArray);
-
-      const timesArray = data?.Post?.map((post) =>
-        post.timePicked.split(",")
-      ).flat();
-      setAllTimes(timesArray);
-    }
-  }, [data]);
 
   const handleTimePress = (time) => {
-    setSelectedTime(time);
-    setIsTimeSelected(true);
+    if (selectedTime.includes(time)) {
+      setSelectedTime(selectedTime.filter((t) => t !== time));
+    } else {
+      setSelectedTime([...selectedTime, time]);
+    }
   };
+
+  // check if at least one time is selected
+  useEffect(() => {
+    setIsTimeSelected(selectedTime.length > 0);
+  }, [selectedTime]);
 
   const handleDateSelected = (date) => {
     setSelectedDate(date);
@@ -158,35 +147,31 @@ const BookingScreen = () => {
   const formattedDate = selectedDate.toISOString().slice(0, 10);
   // console.log(formattedDate + " data");
   // console.log(selectedTime);
-  const getTimes = formattedDate == allDates ? allTimes : [];
-
-  // console.log(selectedTime);
-  // console.log(allTimes);
-  const filteredTimes =
-    allTimes !== null ? allTimes.filter((time) => time !== selectedTime) : [];
-  const timePicked = filteredTimes.join(",");
-  // console.log(filteredTimes);
 
   const moveBack = () => {
     navigation.goBack();
   };
 
   const onRezervationEvent = async () => {
-    await addNewEvent({
-      variables: {
-        name: `\n${userName} - ${selectedTime} val.`,
-        postUserId: postUserId,
-        time: selectedTime,
-        userId: userId,
-        date: formattedDate,
-      },
-    }),
-      await filterPostDateTime({
+    try {
+      await mutationEditPost({
         variables: {
-          timePicked: timePicked,
+          userId: userId,
+          city: city,
+          description: description,
+          price: price,
+          image: imageUri,
+          title: title,
+          date: timestamp,
+          datePicked: formattedDate,
+          timePicked: selectedTime.join(","),
         },
       });
-    navigation.navigate("Kalendorius");
+      navigation.navigate("Pagrindinis");
+    } catch (e) {
+      Alert.alert(e, "Serverio klaida");
+    }
+    //navigation.navigate("Kalendorius");
   };
 
   return (
@@ -208,26 +193,9 @@ const BookingScreen = () => {
           </Pressable>
         </View>
         <View style={styles.rowCenterText}>
-          <Text style={styles.rowHeaderText}>Laiko rezervacija</Text>
+          <Text style={styles.rowHeaderText}>Laiko valdymas</Text>
         </View>
       </View>
-      {/* <HorizontalDatepicker
-        mode="gregorian"
-        startDate={new Date()}
-        endDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
-        initialSelectedDate={selectedDate}
-        onSelectedDateChange={(date) => setSelectedDate(date)}
-        selectedItemWidth={170}
-        unselectedItemWidth={38}
-        itemHeight={38}
-        itemRadius={20}
-        selectedItemTextStyle={styles.selectedItemTextStyle}
-        unselectedItemTextStyle={styles.selectedItemTextStyle}
-        selectedItemBackgroundColor={COLORS.primary}
-        unselectedItemBackgroundColor="#ececec"
-        flatListContainerStyle={styles.flatListContainerStyle}
-      /> */}
-
       <CalendarStrip
         scrollable
         style={{
@@ -264,34 +232,28 @@ const BookingScreen = () => {
       />
 
       <View style={styles.clockMainContainer}>
-        {!getTimes.length ? (
-          <View>
-            <Text style={styles.text}>Nėra laisvu laiku</Text>
-          </View>
-        ) : (
-          <FlatList
-            numColumns={3}
-            data={getTimes}
-            renderItem={({ item }) => (
-              <TouchableOpacity
+        <FlatList
+          numColumns={3}
+          data={times}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[
+                styles.clockContainer,
+                selectedTime.includes(item) && styles.selectedTimeContainer,
+              ]}
+              onPress={() => handleTimePress(item)}
+            >
+              <Text
                 style={[
-                  styles.clockContainer,
-                  selectedTime === item && styles.selectedTimeContainer,
+                  styles.clockTitleStyle,
+                  selectedTime.includes(item) && styles.selectedTimeTitle,
                 ]}
-                onPress={() => handleTimePress(item)}
               >
-                <Text
-                  style={[
-                    styles.clockTitleStyle,
-                    selectedTime === item && styles.selectedTimeTitle,
-                  ]}
-                >
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            )}
-          />
-        )}
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
 
       {/* show the selected date and time */}
@@ -305,7 +267,7 @@ const BookingScreen = () => {
 
       {isTimeSelected ? (
         <Pressable style={styles.chatButton} onPress={onRezervationEvent}>
-          <Text style={styles.chatButtonText}>Rezevuoti</Text>
+          <Text style={styles.chatButtonText}>Išsaugoti paslaugą</Text>
         </Pressable>
       ) : (
         <View style={styles.disabledButton}>
@@ -397,10 +359,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: "#474747",
   },
-  text: {
-    color: "#474747",
-    textAlign: "center",
-  },
 });
 
-export default BookingScreen;
+export default EditScreenReservationDateTimeScreen;
