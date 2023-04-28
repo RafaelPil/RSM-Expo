@@ -72,6 +72,19 @@ const ADD_NEW_EVENT_MUTATION = gql`
   }
 `;
 
+const UPDATE_POST_TIME = gql`
+  mutation filterPostDateTime($id: uuid!, $timePicked: String!) {
+    update_Post(
+      _set: { timePicked: $timePicked }
+      where: { id: { _eq: $id } }
+    ) {
+      returning {
+        timePicked
+      }
+    }
+  }
+`;
+
 const times = [
   "9:00",
   "10:00",
@@ -110,6 +123,11 @@ const BookingScreen = () => {
   const [allTimes, setAllTimes] = useState(null);
   const [allDates, setAllDates] = useState(null);
   const [addNewEvent] = useMutation(ADD_NEW_EVENT_MUTATION);
+  const [filterPostDateTime] = useMutation(UPDATE_POST_TIME, {
+    variables: {
+      id: postById,
+    },
+  });
   const { data, loading, error } = useQuery(GET_ALL_POSTS_DATE, {
     variables: {
       id: postById,
@@ -121,7 +139,7 @@ const BookingScreen = () => {
       const datesArray = data.Post.map((post) => post.datePicked);
       setAllDates(datesArray);
 
-      const timesArray = data.Post.map((post) =>
+      const timesArray = data?.Post?.map((post) =>
         post.timePicked.split(",")
       ).flat();
       setAllTimes(timesArray);
@@ -142,11 +160,12 @@ const BookingScreen = () => {
   // console.log(selectedTime);
   const getTimes = formattedDate == allDates ? allTimes : [];
 
-  // console.log(selectedTime);
-  // console.log(allTimes);
-  // const filteredTimes = allTimes.filter((time) => time !== selectedTime);
-
-  // console.log(filteredTimes);
+  console.log(selectedTime);
+  console.log(allTimes);
+  const filteredTimes =
+    allTimes !== null ? allTimes.filter((time) => time !== selectedTime) : [];
+  const timePicked = filteredTimes.join(",");
+  console.log(filteredTimes);
 
   const moveBack = () => {
     navigation.goBack();
@@ -161,7 +180,12 @@ const BookingScreen = () => {
         userId: userId,
         date: formattedDate,
       },
-    });
+    }),
+      await filterPostDateTime({
+        variables: {
+          timePicked: timePicked,
+        },
+      });
     navigation.navigate("Kalendorius");
   };
 
