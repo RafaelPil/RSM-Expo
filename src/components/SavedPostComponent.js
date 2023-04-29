@@ -87,6 +87,7 @@ const SavedPostComponent = ({ data }) => {
             // ...SHADOWS.light,
             top: 10,
             right: 10,
+            zIndex: 1,
           }}
         >
           <AntDesign
@@ -100,16 +101,25 @@ const SavedPostComponent = ({ data }) => {
           <Image style={styles.image} source={{ uri: postData?.Post?.image }} />
         </Pressable>
 
-        <View style={{ marginHorizontal: 10 }}>
-          {/* Bed & Bedroom */}
-          <Text style={styles.title}>{postData?.Post?.title}</Text>
+        <View style={styles.rowContainer}>
+          <View
+            style={{
+              marginHorizontal: 10,
+              width: 200,
+            }}
+          >
+            {/* Bed & Bedroom */}
+            <Text style={styles.title} numberOfLines={2}>
+              {postData?.Post?.title}
+            </Text>
 
-          {/* Type & Description */}
-          <Text style={styles.city} numberOfLines={2}>
-            {postData?.Post?.city}
-          </Text>
+            {/* Type & Description */}
+            <Text style={styles.city} numberOfLines={2}>
+              {postData?.Post?.city}
+            </Text>
 
-          <Text style={styles.newPrice}>{postData?.Post?.price}eur/val</Text>
+            <Text style={styles.newPrice}>{postData?.Post?.price}eur/val</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -145,8 +155,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 10,
-    color: "#474747",
+    color: COLORS.dark_gray,
     fontWeight: "700",
+    fontSize: SIZES.small,
   },
   city: {
     fontSize: 15,
@@ -159,6 +170,11 @@ const styles = StyleSheet.create({
   totalPrice: {
     color: "#5b5b5b",
     textDecorationLine: "underline",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "space-between",
   },
 });
 

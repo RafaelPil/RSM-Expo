@@ -210,8 +210,8 @@ const EditPostScreen = () => {
               message: "Turi būti ne mažiau nei 3 raides",
             },
             maxLength: {
-              value: 24,
-              message: "Ne daugiau kaip 24 raidžiu",
+              value: 150,
+              message: "Ne daugiau kaip 150 raidžiu",
             },
           }}
         />
