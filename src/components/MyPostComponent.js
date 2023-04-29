@@ -97,7 +97,9 @@ const MyPostComponent = ({ postData }) => {
 
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           {/* Bed & Bedroom */}
-          <Text style={styles.title}>{postData.title}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {postData.title}
+          </Text>
 
           {/* Type & Description */}
           <Text style={styles.city} numberOfLines={2}>
@@ -168,6 +170,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     color: "#474747",
     fontWeight: "700",
+    fontSize: SIZES.small,
   },
   city: {
     fontSize: 15,

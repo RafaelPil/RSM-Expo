@@ -274,7 +274,12 @@ const PostDetails = ({ post }) => {
       </Pressable> */}
 
       <ScrollView style={styles.detailsInfoContainer}>
-        <View style={{ padding: SIZES.large }}>
+        <View
+          style={{
+            paddingVertical: SIZES.large,
+            marginHorizontal: SIZES.large,
+          }}
+        >
           <View style={{ alignContent: "center" }}>
             <View style={styles.row}>
               <Text
@@ -282,13 +287,18 @@ const PostDetails = ({ post }) => {
                   fontSize: SIZES.large,
                   color: "#474747",
                   fontWeight: "700",
+                  flex: 1,
                 }}
               >
                 {postData?.title}
-                Sėkmę
               </Text>
 
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image source={{ uri: avatarUrl }} style={styles.avatar} />
                 <Text style={styles.avatarTextName}>{PostOwnerName}</Text>
               </View>

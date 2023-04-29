@@ -11,7 +11,7 @@ export const PostTitle = ({ title, price, city }) => {
       <View style={styles.row}>
         <Text
           style={{
-            fontSize: SIZES.large,
+            fontSize: SIZES.font,
             color: "#474747",
             fontWeight: "700",
           }}
@@ -22,8 +22,9 @@ export const PostTitle = ({ title, price, city }) => {
 
       <Text
         style={{
-          fontSize: SIZES.font,
+          fontSize: SIZES.small,
           color: "#BEBEBE",
+          marginTop: 3,
         }}
       >
         {city}

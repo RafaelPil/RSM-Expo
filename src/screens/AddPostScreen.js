@@ -198,8 +198,8 @@ const AddPost = () => {
               message: "Turi būti ne mažiau nei 3 raides",
             },
             maxLength: {
-              value: 60,
-              message: "Ne daugiau kaip 60 raidžiu",
+              value: 150,
+              message: "Ne daugiau kaip 150 raidžiu",
             },
           }}
         />
