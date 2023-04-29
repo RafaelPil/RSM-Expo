@@ -199,7 +199,9 @@ const PostDetails = ({ post }) => {
   //console.log(postData.user.metadata.phone);
   const navigation = useNavigation();
   const user = useUserData();
-  const PostOwnerName = post?.user?.metadata?.name;
+  const PostOwnerName = post?.user?.displayName;
+
+  console.log(post?.user?.displayName);
 
   const { loading, error, data } = useQuery(GET_POST_BY_ID, {
     variables: { postId: postData?.id },
@@ -248,7 +250,7 @@ const PostDetails = ({ post }) => {
             navigation.navigate("Booking", {
               postUserId: postUserId,
               postTitle: postTitle,
-              postById: postById
+              postById: postById,
             })
           }
         >
@@ -283,6 +285,7 @@ const PostDetails = ({ post }) => {
                 }}
               >
                 {postData?.title}
+                Sėkmę
               </Text>
 
               <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -302,8 +305,8 @@ const PostDetails = ({ post }) => {
             <Text
               style={{
                 fontSize: SIZES.medium,
-                color: "#00AEEF",
-                fontWeight: "bold",
+                color: COLORS.primary,
+                fontWeight: "500",
                 marginTop: 15,
               }}
             >
@@ -326,12 +329,11 @@ const PostDetails = ({ post }) => {
           >
             Aprašymas
           </Text>
-          <View style={{ marginTop: SIZES.base }}></View>
+          <View style={{ marginTop: SIZES.font }}></View>
           <Text
             style={{
-              fontSize: SIZES.small,
-              color: "#474747",
-              lineHeight: SIZES.small,
+              fontSize: SIZES.font,
+              color: COLORS.dark_gray,
               fontWeight: "400",
             }}
           >

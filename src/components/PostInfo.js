@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
-import { SIZES, dummyPosts } from "../constants";
+import { COLORS, SIZES, dummyPosts } from "../constants";
 import FocusedStatusBar from "../components/FocusedStatusBar";
 
 const displayedUsers = (dummyPosts || []).slice(0, 5).map((attende) => attende);
@@ -31,8 +31,8 @@ export const PostTitle = ({ title, price, city }) => {
       <Text
         style={{
           fontSize: SIZES.medium,
-          color: "#00AEEF",
-          fontWeight: "bold",
+          color: COLORS.primary,
+          fontWeight: "500",
           marginTop: 15,
         }}
       >

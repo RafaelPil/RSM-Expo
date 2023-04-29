@@ -266,7 +266,7 @@ const BookingScreen = () => {
       <View style={styles.clockMainContainer}>
         {!getTimes.length ? (
           <View>
-            <Text style={styles.text}>Nėra laisvu laiku</Text>
+            <Text style={styles.text}>Nėra laisvų laikų</Text>
           </View>
         ) : (
           <FlatList

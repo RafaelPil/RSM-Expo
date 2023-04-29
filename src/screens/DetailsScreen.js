@@ -17,7 +17,7 @@ const GetPostById = gql`
       description
       userId
       user {
-        metadata
+        displayName
       }
       LikedPost {
         id

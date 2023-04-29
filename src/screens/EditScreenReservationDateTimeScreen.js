@@ -196,6 +196,23 @@ const EditScreenReservationDateTimeScreen = () => {
           <Text style={styles.rowHeaderText}>Laiko valdymas</Text>
         </View>
       </View>
+      {/* <HorizontalDatepicker
+        mode="gregorian"
+        startDate={new Date()}
+        endDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
+        initialSelectedDate={selectedDate}
+        onSelectedDateChange={(date) => setSelectedDate(date)}
+        selectedItemWidth={170}
+        unselectedItemWidth={38}
+        itemHeight={38}
+        itemRadius={20}
+        selectedItemTextStyle={styles.selectedItemTextStyle}
+        unselectedItemTextStyle={styles.selectedItemTextStyle}
+        selectedItemBackgroundColor={COLORS.primary}
+        unselectedItemBackgroundColor="#ececec"
+        flatListContainerStyle={styles.flatListContainerStyle}
+      /> */}
+
       <CalendarStrip
         scrollable
         style={{

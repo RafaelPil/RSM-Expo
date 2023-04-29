@@ -118,7 +118,7 @@ const MyPostComponent = ({ postData }) => {
               justifyContent: "center",
             }}
           >
-            <Feather name="edit" size={22} color="black" />
+            <Feather name="edit" size={22} color={COLORS.dark_gray} />
           </MenuTrigger>
           <MenuOptions>
             <MenuOption
