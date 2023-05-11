@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   Linking,
+  ScrollView,
 } from "react-native";
 import React, { useEffect } from "react";
 import { COLORS, SIZES } from "../constants";
@@ -27,7 +28,7 @@ const MainScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <FocusedStatusBar
         barStyle="dark-content"
         backgroundColor="#00AEEF"
@@ -106,7 +107,7 @@ const MainScreen = () => {
           </Pressable>
         </Pressable> */}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -55,7 +55,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ marginTop: 30 }}>
+    <SafeAreaView style={styles.container}>
       <FocusedStatusBar
         barStyle="dark-content"
         backgroundColor="#00AEEF"
@@ -153,9 +153,9 @@ const RegisterScreen = () => {
         }}
       />
 
-      <View style={{ alignItems: "center" }}>
+      <View style={styles.btnViewStyle}>
         <Pressable
-          style={[styles.btnContainer, { width: width - 150 }]}
+          style={[styles.btnContainer, { width: width - 50 }]}
           onPress={handleSubmit(onRegisterPressed)}
         >
           <Text style={{ fontSize: 14, color: "#fff" }}>
@@ -168,6 +168,10 @@ const RegisterScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 30,
+    flex: 1,
+  },
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 20,
     color: "#474747",
-    fontSize: SIZES.medium,
+    fontSize: SIZES.font,
     fontWeight: "400",
   },
   textInpt: {
@@ -210,6 +214,11 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 20,
     marginTop: 50,
+  },
+  btnViewStyle: {
+    alignItems: "center",
+    marginTop: "auto",
+    marginBottom: 20,
   },
 });
 

@@ -60,7 +60,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ marginTop: 30 }}>
+    <SafeAreaView style={styles.container}>
       <FocusedStatusBar
         barStyle="dark-content"
         backgroundColor="#00AEEF"
@@ -109,9 +109,9 @@ const LoginScreen = () => {
         }}
       />
 
-      <View style={{ alignItems: "center" }}>
+      <View style={styles.btnViewStyle}>
         <Pressable
-          style={[styles.btnContainer, { width: width - 150 }]}
+          style={[styles.btnContainer, { width: width - 50 }]}
           onPress={handleSubmit(onSignInPressed)}
         >
           <Text style={{ fontSize: 14, color: "#fff" }}>
@@ -124,6 +124,10 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 30,
+    flex: 1,
+  },
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -166,6 +170,11 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 20,
     marginTop: 50,
+  },
+  btnViewStyle: {
+    alignItems: "center",
+    marginTop: "auto",
+    marginBottom: 20,
   },
 });
 
