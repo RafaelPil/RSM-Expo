@@ -19,6 +19,7 @@ const CustomInput = ({
   keyboardType,
   heightInput,
   multilineInput,
+  value,
 }) => {
   const { height, width } = useWindowDimensions();
   const [secureEntry, setSecureEntry] = useState(false);

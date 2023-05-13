@@ -34,44 +34,12 @@ import { ScrollView } from "react-native";
 
 initializeApp(firebaseConfig);
 
-const MUTATION_EDIT_POST = gql`
-  mutation editPost(
-    $postId: uuid!
-    $userId: uuid!
-    $city: String!
-    $description: String!
-    $image: String!
-    $price: String!
-    $title: String!
-  ) {
-    update_Post(
-      _set: {
-        city: $city
-        description: $description
-        image: $image
-        price: $price
-        title: $title
-      }
-      where: { id: { _eq: $postId }, _and: { userId: { _eq: $userId } } }
-    ) {
-      returning {
-        id
-        city
-        date
-        description
-        image
-        price
-        userId
-        title
-      }
-    }
-  }
-`;
-
 const EditPostScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const postData = route?.params?.postData;
+
+  // console.log(postData.description);
 
   const userId = useUserId();
 
@@ -91,8 +59,6 @@ const EditPostScreen = () => {
   const { height, width } = useWindowDimensions();
 
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-
-  const [mutation_EditPost] = useMutation(MUTATION_EDIT_POST);
 
   const moveBack = () => {
     navigation.goBack();
@@ -200,7 +166,7 @@ const EditPostScreen = () => {
         <Text style={styles.text}>Pavadinimas</Text>
         <CustomInput
           name="title"
-          placeholder=""
+          placeholder={postData.title}
           control={control}
           multilineInput={true}
           rules={{
@@ -219,7 +185,7 @@ const EditPostScreen = () => {
         <Text style={styles.text}>Kaina</Text>
         <CustomInput
           name="price"
-          placeholder=""
+          placeholder={postData.price}
           control={control}
           keyboardType="numeric"
           rules={{
@@ -238,7 +204,7 @@ const EditPostScreen = () => {
         <Text style={styles.text}>Miestas</Text>
         <CustomInput
           name="city"
-          placeholder=""
+          placeholder={postData.city}
           control={control}
           rules={{
             required: "Įveskite miesta",
@@ -256,7 +222,7 @@ const EditPostScreen = () => {
         <Text style={styles.text}>Išsamus aprašymas</Text>
         <CustomInput
           name="description"
-          placeholder=""
+          placeholder={postData.description}
           control={control}
           heightInput={80}
           multilineInput={true}

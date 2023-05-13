@@ -16,10 +16,10 @@ const ChatRoomScreen = () => {
     //   title: currentChannel.data.name || "Channel",
     // });
 
-    setTitleName(currentChannel.data.name || "Channel");
-  }, [currentChannel.data.name]);
+    setTitleName(currentChannel.data.created_by.name || "Channel");
+  }, [currentChannel.data.created_by.name]);
 
-  console.log(currentChannel.data);
+  console.log(currentChannel.data.created_by.name);
 
   const moveBack = () => {
     navigation.goBack();
