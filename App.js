@@ -8,10 +8,11 @@ import Navigation from "./src/navigation/AuthStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
 import { NHOST_SUBDOMAIN, NHOST_REGION } from "@env";
+import "moment/locale/fr";
 
 const nhost = new NhostClient({
-  subdomain: NHOST_SUBDOMAIN,
-  region: NHOST_REGION,
+  subdomain: "cqdfqhvzqoncuuocckvj",
+  region: "eu-central-1",
   clientStorageType: "expo-secure-storage",
   clientStorage: SecureStore,
 });

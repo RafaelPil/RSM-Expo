@@ -8,9 +8,10 @@ import { useUserData, useUserId } from "@nhost/react";
 import { gql, useMutation } from "@apollo/client";
 import CalendarStrip from "react-native-calendar-strip";
 import { FocusedStatusBar } from "../components";
+import "moment/locale/fr";
 
 const locale = {
-  name: "ltu",
+  name: "fr",
   config: {
     months:
       "Sausis_Vasaris_Kovas_Balandis_Gegužė_Birželis_Liepa_Rugpjūtis_Rugsėjis_Spalis_Lapkritis_Gruodis".split(

@@ -8,10 +8,10 @@ import {
 } from "@env";
 
 export default {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-  appId: FIREBASE_APP_ID,
+  apiKey: "AIzaSyBRqn0zix_Ya8S5O4U8NQ-4dzu_0hZT5MQ",
+  authDomain: "rsm-app-ccbb3.firebaseapp.com",
+  projectId: "rsm-app-ccbb3",
+  storageBucket: "rsm-app-ccbb3.appspot.com",
+  messagingSenderId: "811075680379",
+  appId: "1:811075680379:web:1dc47588efe6a0a3630ade",
 };

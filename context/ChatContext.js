@@ -9,7 +9,7 @@ import { STERAMCHAT_KEY } from "@env";
 export const ChatContext = createContext({});
 
 const ChatContextProvider = ({ children }) => {
-  const client = StreamChat.getInstance(STERAMCHAT_KEY);
+  const client = StreamChat.getInstance("8ubcaab6s6b5");
 
   // component
   const [chatClient, setChatClient] = useState(client);

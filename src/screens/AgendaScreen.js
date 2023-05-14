@@ -14,7 +14,7 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useUserId } from "@nhost/react";
 import { FocusedStatusBar } from "../components";
 
-LocaleConfig.locales["ltu"] = {
+LocaleConfig.locales["fr"] = {
   monthNames: [
     "Sausis",
     "Vasaris",
@@ -70,7 +70,7 @@ LocaleConfig.locales["ltu"] = {
   today: "Šiandien",
 };
 
-LocaleConfig.defaultLocale = "ltu";
+LocaleConfig.defaultLocale = "fr";
 
 const GetEvents = gql`
   subscription getAllEvents {
